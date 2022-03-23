@@ -1,12 +1,14 @@
 -----
 title: 環境構築
-date:  2022-03-18
+date:  2022-03-23
+tableOfContents: true
 -----
 
 Visual Studioを用いる（初心者向け）か，あるいは.NETのSDKのみをインストールしてコマンドラインインタフェースにより演習を実施する（中級者向け）ことを推奨する．後者は，仮想端末での作業に抵抗がなくかつ好みのエディタ（VSCode，Emacs，Viクローン等）を使用したい人にはおススメである．
 なお，Linux版のVisual Studioはないため，Linuxを利用したい場合は後者となる．
 
-なお，このページの内容はC#/F#ともに共通である．C#演習の第5週・第6週目の課題を進めるには `さらなる準備（別ページ） <./setup2.html>`_ が必要である（こちらはC#演習分のみ）．
+なお，このページの内容はC#/F#ともに共通である．C#演習の第5週・第6週目の課題を進めるには `さらなる準備（別ページ） <./setup_gui.html>`_ が必要である（こちらはC#演習分のみ）．
+
 
 ===========================
 Visual Studioのインストール
@@ -147,38 +149,23 @@ C#演習ではVisual Studio 2019 for Macではなく，2022 Previewの使用を�
        .. image::images/ss_chk_mac6.png 
 
 
-======================
-.NET SDKのインストール
-======================
+==============================================
+.NET SDKのインストール （Windows/Mac ほぼ共通）
+==============================================
 
 Visual Studioに含まれているので，上記を行っている場合は以下を行う必要はない．
 
----------
-Windows編
----------
+1. `.NET SDKのダウンロードページ <https://dotnet.microsoft.com/ja-jp/download>`_ より，software development kit (SDK)をダウンロードする．
+   - Windowsの人はWindows版のSDKをダウンロードする．
+   - Mac版についてはいわゆるintel MacとM1 Macではダウンロードするものが違うので注意．前者はx64版を後者はArm64版をダウンロードしよう．
 
-1. `.NET SDKのダウンロードページ <https://dotnet.microsoft.com/ja-jp/download>`_ より，Windows版のsoftware development kit (SDK)をダウンロードする．
-
-#. ダウンロードしたインストーラ（``dotnet-sdk-6.0.201-win-x64.pkg`` みたいな名前になっているはず）を実行し，指示に従ってインストールを完了する．
-
-#. 以下「`Windows/Mac 共通`_」へ
-
-
------
-Mac編
------
-
-1. `.NET SDKのダウンロードページ <https://dotnet.microsoft.com/ja-jp/download>`_ より，Mac版のsoftware development kit (SDK)をダウンロードする．いわゆるintel MacとM1 Macではダウンロードするものが違うので注意．前者はx64と書いてあるものを後者はArm64と書いてあるものをダウンロードしよう．
-
-#. ダウンロードしたインストーラ（ ``dotnet-sdk-6.0.201-osx-x64.pkg`` みたいな名前になっているはず）を実行し，指示に従ってインストールを完了する．
+#. ダウンロードしたインストーラを実行し，指示に従ってインストールを完了する．
+   - Windows版なら``dotnet-sdk-6.0.201-win-x64.exe``みたいな名前
+   - Macのx64版なら``dotnet-sdk-6.0.201-osx-x64.pkg`` みたいな名前
 
 #. 以下「`Windows/Mac 共通`_」へ
 
-----------------
-Windows/Mac 共通
-----------------
-
-4. ターミナル（WindowsだとコマンドプロンプトPowerShell，MacだとTerminal.appやiTerm.app）を開き ``dotnet --list-sdks`` を実行する．下記（私のMacでの実行例）のようにダウンロードしたSDK（6.0.XXX）が表示されたらばOK．
+#. ターミナル（WindowsだとコマンドプロンプトPowerShell，MacだとTerminal.appやiTerm.app）を開き ``dotnet --list-sdks`` を実行する．下記（私のMacでの実行例）のようにダウンロードしたSDK（6.0.XXX）が表示されたらばOK．
    なお，以下で ``$`` はプロンプトを表す（ので環境や設定によって異なる）．
    
    .. code:: bash

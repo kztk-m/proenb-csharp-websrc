@@ -1,13 +1,40 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid (mappend)
+import           Data.Monoid           (mappend)
 import           Hakyll
+
+import           Text.Pandoc
+
+import           Data.Functor.Identity (runIdentity)
+import           Data.Text             (Text)
+import qualified Data.Text             as T
+
+-- import qualified Debug.Trace
 
 conf :: Configuration
 conf = defaultConfiguration
        {
          providerDirectory = "./websrc"
        }
+
+
+-- from: https://svejcar.dev/posts/2019/11/27/table-of-contents-in-hakyll/
+withTOC :: WriterOptions
+withTOC = defaultHakyllWriterOptions
+          { -- writerNumberSections  = True
+          -- ,
+            writerTableOfContents = True,
+            writerTOCDepth        = 2,
+            writerTemplate        = Just tocTemplate
+        }
+
+tocTemplate :: Text.Pandoc.Template Text
+tocTemplate = either error id . runIdentity . compileTemplate "" $ T.unlines
+  [ "<div class=\"toc\">"
+  , "$toc$"
+  , "</div>"
+  , "$body$"
+  ]
 
 
 --------------------------------------------------------------------------------
@@ -28,15 +55,30 @@ main = hakyllWith conf $ do
 
     match "pages/*.md" $ do
       route $ gsubRoute "pages/" (const "") `composeRoutes` setExtension "html"
-      compile $ pandocCompiler
-        >>= loadAndApplyTemplate "templates/default.html" defaultContext
-        >>= relativizeUrls
+      compile $ do
+        underlying <- getUnderlying
+        toc        <- getMetadataField underlying "tableOfContents"
+        let wopt = case toc of
+                     Just "true" -> withTOC
+                     _           -> defaultHakyllWriterOptions
+        pandocCompilerWith defaultHakyllReaderOptions wopt
+          >>= loadAndApplyTemplate "templates/default.html" defaultContext
+          >>= relativizeUrls
 
     match "pages/*.rst" $ do
       route $ gsubRoute "pages/" (const "") `composeRoutes` setExtension "html"
-      compile $ pandocCompiler
-        >>= loadAndApplyTemplate "templates/default.html" defaultContext
-        >>= relativizeUrls
+      compile $ do
+        underlying <- getUnderlying
+        toc        <- getMetadataField underlying "tableOfContents"
+        let wopt = case toc of
+                     Just "true" -> withTOC
+                     _           -> defaultHakyllWriterOptions
+        pandocCompilerWith defaultHakyllReaderOptions wopt
+          >>= loadAndApplyTemplate "templates/default.html" defaultContext
+          >>= relativizeUrls
+      -- compile $ pandocCompiler
+      --   >>= loadAndApplyTemplate "templates/default.html" defaultContext
+      --   >>= relativizeUrls
 
     match "pages/*.html" $ do
       route $ gsubRoute "pages/" (const "")
