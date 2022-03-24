@@ -1,5 +1,9 @@
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, div.title {
     font-family: sans-serif; 
+}
+
+div.title {
+    font-weight: bold; 
 }
 
 pre, code {
@@ -215,24 +219,6 @@ figure img {
     height: auto;
 }
 
-div.note, section.note {
-    background-color: hsl(155, 40%, 97%); 
-    padding: 0.1em 1em; 
-    border-radius: 1em; 
-}
-
-div.caution, section.caution {
-    background-color: hsl(0, 90%, 95%);
-    padding: 0.1em 1em; 
-    border-radius: 1em;
-}
-
-div.caution > p:first-child::before, section.caution > p:first-child::before {
-    content: "注意：";
-    font-weight: bold; 
-    color: hsl(10, 100%, 48%); 
-}
-
 
 
 div#tasks > ol {
@@ -352,71 +338,25 @@ h1+p, h2+p, h3+p {
 }
 
 @media only screen and (min-width: 800px) {
-    #TOC {
-        position: fixed;
-        display: block;
-        width: 15em;
-
-        /* min-height: 100%; */
-        height: 100vh; 
-        top: 0px;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        background-color: hsl(55, 23%, 92%);
-        /* background-color: #EBE9DF; */
-        /* background: black; */
-        /* color: white; */
-
-    }
-    /* #TOC a { */
-    /*     color: white; */
-    /* } */
-    /* #TOC a:visited { */
-    /*     color: #999; */
-    /* } */
-
-    #TOC a {
-        text-decoration: none;
-    }
-
-    #TOC li a:hover {
-        background-color: #D9D6CC;
-    }
-
-    /* #TOC ul:before { */
-    /*     content: "目次"; */
-    /*     font-size: 120%; */
-    /*     font-weight: bold; */
-    /*     margin-left: 0.5em; */
-    /* } */
-    #TOC ul {
-        font-size:    90%; 
-        margin-left:  calc(1em/0.9); 
-        padding-left: 0px; 
-    }
-    #TOC > ul {
-        margin-left:  0px;
-        /* margin-top: 3em; */
-    }
-
-    #TOC > ul::before {
-        content: '\A';
-        display: inline-block; 
-    }
-
-    #TOC li {
-        margin-left: 0px;
+    .toc {
         display: block; 
-        padding-bottom: 0.2em; 
+        /* float: right;  */
+        background-color: hsl(55, 23%, 92%);
+        
+        border-radius: 1em;       
+        margin: 0.5em;
     }
 
-    #TOC li a {
-        display: block;
-        padding-top: 0.1em;
-        padding-bottom: 0.1em;
-        padding-left: calc(0.6em/0.9);  
-        padding-right: calc(0.6em/0.9);
+    .toc > ul {
+        padding: 1em 1em; 
+        margin:  0px 0px;
     }
+
+    .toc > ul > li {
+        display: block;
+        padding-left: 0.5em;
+    }
+
 
     body {
         /* width: 90%; */
@@ -426,10 +366,6 @@ h1+p, h2+p, h3+p {
         padding-right: 0px;
     }
 
-    /* h1 { */
-    /*     margin-left:  5vw; */
-    /*     margin-right: 5vw; */
-    /* } */
     header {
         padding-left:  calc(5vw - 0.8em); 
         padding-right: calc(5vw - 0.8em);
@@ -443,14 +379,8 @@ h1+p, h2+p, h3+p {
         margin-left: 5vw;
         margin-right: 5vw; 
     }
-    footer a {
-        color: inherit; 
-        text-decoration: none; 
-    }
-    footer a:visited {
-        color: inherit; 
-    }
 }
+
 
 
 
@@ -460,15 +390,88 @@ h3 {
     margin-top: 1.5em;
 }
 
+footer a {
+    color: inherit; 
+    text-decoration: none; 
+}
+footer a:visited {
+    color: inherit; 
+}
+
+/* Special items */
+
+div.note, section.note, div.caution, section.caution {
+    padding: 0.1em 1em;
+    border-radius: 1em; 
+
+    margin-top: 0.5em; 
+    margin-bottom: 0.5em; 
+}
+
+div.note, section.note {
+    background-color: hsl(155, 40%, 94%); 
+}
+
+/* div.note div.title p:before  { */
+/*     display: inline-block;  */
+/*     content: "!!\020DD"; */
+/*     /\* color: white;  *\/ */
+/*     /\* padding: 0.1em 0.5em;  *\/ */
+/*     /\* background-color: hsl(155, 40%, 50%); *\/ */
+/*     /\* border-radius: 1em; *\/ */
+/* } */
+
+/* div.note div.title { */
+/*     background-color: hsl(155, 40%, 80%);  */
+/* } */
 
 
+div.caution, section.caution {
+    background-color: hsl(0, 90%, 95%);
+}
+
+div.caution > p:first-child::before, section.caution > p:first-child::before {
+    content: "注意：";
+    font-weight: bold; 
+    color: hsl(10, 100%, 48%); 
+}
+
+
+
+
+/* syntax highlighting */
+
+span.ex {
+    color: gray; 
+}
+
+span.kw {
+    font-weight: bold; 
+    color: blue; 
+}
+
+span.co {
+    color: #008000; 
+}
+
+span.dt {
+    color: blue; 
+}
+
+/* span.op { */
+/*     color: blue;  */
+/* } */
+
+span.st {
+    color: #a31515; 
+}
 
 strong {
     font-style:  normal;
     font-weight: bold;
-    color:       red;
+    color:       hsl(10, 100%, 48%);
 
-    /* background: linear-gradient(to top, #FF6 60%, transparent 50%);     */
+    background: linear-gradient(to top, #FF6 60%, transparent 50%);
 }
 
 em {
@@ -480,12 +483,18 @@ em {
 }
 
 a {
-    color: #00aaff;
+    /* color: #00aaff; */
+    color: hsl( 205, 100%, 50%);
     /* transition: background-color 0.3s ease-in-out; */
+    text-decoration: none; 
+}
+
+a:hover {
+    text-decoration: underline; 
 }
 
 a:visited {
-    color: #999;
+    color: hsl( 205, 90%, 35%)
 }
 
 @media print {
