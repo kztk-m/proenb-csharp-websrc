@@ -1,0 +1,481 @@
+-----
+title: 第1回 C#にさわってみよう
+date:  2022-03-24
+tableOfContents: true 
+-----
+
+==========================
+C#プログラムの基本的な構造
+==========================
+
+
+さて，``dotnet new console -o HelloWorld -f net5.0``で作成されるテンプレートに含まれている，
+以下のHello Worldプログラムについて考えてみよう．
+
+.. code:: cs 
+    
+    // Program.cs 
+    using System;
+    
+    namespace HelloWorldCS
+    {
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                Console.WriteLine("Hello World!");
+            }
+        }
+    }
+
+このプログラムはC#のプログラムの基本的な構造についての示唆に富んでいる．
+
+まず，最初に気付くのは``using System;``の後に``namespace HelloWorldCS {…}``が続いていることである．これらに関する説明は後の回で行うこととする．
+今はC#のプログラムはこのような要素を含むのだと思っておいてほしい（この説明も正確ではないが，その点も含めて後の回で行う）．
+
+
+次に興味深いのは``class Program {…}``の部分である．この部分は``Program``という **クラス** を宣言している．C#はオブジェクト指向言語であり，
+**オブジェクト** という概念が重要となる．ものすごく大雑把には，オブジェクトは， 「データと，それに関連する関数（ **メソッド** と呼ばれる）」をまとめたものであり，
+**クラス** はオブジェクトの定義の記述（方法の一つ）である．ものすごく大雑把にはC#のようなオブジェクト指向言語では， *オブジェクトを作成しそのメソッドを呼び出すことを繰り返すことで計算を行う* ．
+
+さて，クラス``Program``は``static void Main(string [] args)``というメソッドを持っている．この``Main``メソッドは特殊なものであり，Cのmain関数のように，
+プログラムが実行されるときに実行されるメソッドを表している．ここで``Console.WriteLine``は文字列が引数として与えられた場合にはそれを標準出力へ出力するメソッドであるので，
+このプログラムを実行すると``Hello World!``という文字列が標準出力に出力されることになる．
+
+==========================
+クラスのとても基本的な構造
+==========================
+
+.. raw:: html
+ 
+   <pre style="line-height:1.3">
+   <span class="metaname">修飾子</span> <span class="kw">class</span> <span class="metaname">クラス名</span> 
+   {
+       <span class="metaname">フィールドやコンストラクタ，メソッドの宣言の列</span>      
+   }
+   </pre>
+
+
+例：カウンター実装
+------------------
+
+基本的な構造は上記だが，これだとピンとこない人も多いと思うので，例を用いて説明する．今，カウンターを実装することを考える．カウンターの機能はシンプルに数をカウントするだけである．カウンターオブジェクトは内部でカウントを持っている．またカウンターに対してできることは
+
+   - カウントを1増やす
+   - カウントを0にもどす
+   - 現在のカウントを調べる
+
+のみであるようにしたい．
+
+``Counter``クラスのフィールドとコンストラクタ
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ではこの要求を少しずつ形にしていってみよう．
+まずは，カウンターオブジェクトは内部でカウントを持っているので，以下を実装する．
+
+.. code:: cs 
+  
+    // クラスCounterの宣言
+    class Counter 
+    {
+        // int型のprivateフィールド count の宣言
+        private int count; 
+        // Counterのコンストラクタ
+        public Counter() 
+        {
+            // フィールド count の初期化
+            count = 0; 
+        }
+    }
+
+ここで，``private int count = 0;``の部分が **フィールド宣言** である．これはカウンターオブジェクトが``count``という``int``型のフィールドを持っていることを
+表している．また， *private修飾子* はこのフィールドがこのクラスの外からはアクセスできないことを表している．``public Counter() {…}``の部分はこのクラスの
+**コンストラクタ** を定義している．コンストラクタはオブジェクトを生成する際に呼ばれ，ここではフィールド``count``を0で初期化している．
+コンストラクタはクラスと同じ名前である必要がある．
+
+カウンターオブジェクトの作成，より正確な言い方をすれば``Counter``クラスのインスタンス（オブジェクトのことをインスタンスと呼ぶことがある）は ``new``式を用いることで
+行うことができる．
+
+.. code:: cs      
+    
+    Counter c = new Counter(); 
+
+しかしながら，現在のままではこの``c``についてできることがない．
+たとえば，``count``はprivateフィールドなので，たとえば以下のプログラムはコンパイル時エラーとなる．
+
+
+.. code:: cs
+
+   using System; 
+
+   namespace Week1 
+   {
+       class Counter 
+       {
+           private int count; 
+           public Counter() 
+           {
+               count = 0; 
+           }
+       }
+       class Program 
+       {
+           static void Main(string[] args) 
+           {
+              Counter c = new Counter(); 
+              // c.count.ToString()はオブジェクトcのフィールドcountのToString()メソッドを呼ぶの意
+              Console.WriteLine(c.count.ToString()); // エラー
+           }
+       }
+   }
+
+.. note:: 
+
+    単に実行するだけならば，``Main``メソッドを``Counter``の中に書けばよい．
+    
+    .. code:: cs
+    
+       using System; 
+    
+       namespace Week1 
+       {
+           class Counter 
+           {
+               private int count; 
+               public Counter() 
+               {
+                   count = 0; 
+               }
+               static void Main(string[] args) 
+               {
+                  Counter c = new Counter(); 
+                  Console.WriteLine(c.count.ToString()); 
+               }
+           }
+       }
+    
+    が，これは *あまりよくないコード* である．なぜならば，``Counter``はカウンターを実装するということが感心事であるのにそれ以外の処理を行っているためである．
+    さらには，``Counter``は直接カウンターへのアクセスを防ぐために``count``をprivateフィールドにしたので，そのアクセス制限を台無しにしている．
+
+メソッドの追加
+~~~~~~~~~~~~~~
+
+では，``Counter``クラスにメソッドを追加してもっと面白くしてみよう．
+
+.. code:: cs
+
+   class Counter 
+   {
+        private int count; 
+
+        public Counter() 
+        {
+            count = 0; 
+        }
+        public void Inc() 
+        {
+            count++;
+        }
+        public void Reset() 
+        {
+            count = 0; 
+        }
+        public int GetCount() 
+        {
+            return count; 
+        }        
+    }
+
+ここで，``Inc()``はカウントを1増加させ，``Reset()``はカウントを0にリセットし，``GetCount()``は現在のカウントを返すメソッドである．
+public修飾子が示すように，これらはpublicメソッドとして実装されてるため，``Counter``クラスの外側でも用いることができる．
+
+.. code:: cs
+
+   using System; 
+
+   namespace Week1 
+   {
+       class Counter 
+       {
+           private int count; 
+
+           public Counter() 
+           {
+               count = 0; 
+           }
+           public void Inc() 
+           {
+               count++;
+           }
+           public void Reset() 
+           {
+               count = 0; 
+           }
+           public int GetCount() 
+           {
+               return count; 
+           }        
+       }
+       class Program 
+       {
+           static void Main(string[] args) 
+           {
+              Counter c = new Counter(); 
+              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
+              c.Inc(); 
+              c.Inc(); 
+              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
+              c.Reset();
+              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString());  
+              c.Inc();
+              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
+           }
+       }
+   }
+
+このプログラムをビルド・実行すると以下の出力が得られる．
+
+::  
+
+    c.GetCount() = 0
+    c.GetCount() = 2
+    c.GetCount() = 0
+    c.GetCount() = 1
+
+
+.. note::
+
+    C#の慣習として public なメソッドやフィールド（およびプロパティ）の名前は大文字で始める．
+
+
+フィールド宣言の基本的な形
+--------------------------
+
+.. raw:: html
+ 
+   <pre style="line-height:1.3">
+   <span class="metaname">修飾子</span> <span class="metaname">型</span> <span class="metaname">フィールド名</span>;
+   </pre>
+
+あるいは
+
+.. raw:: html
+ 
+   <pre style="line-height:1.3">
+   <span class="metaname">修飾子</span> <span class="metaname">型</span> <span class="metaname">フィールド名</span> = <span class="metaname">初期値</span>;
+   </pre>
+
+.. admonition:: 例
+   :class: example
+
+   .. code:: cs
+             
+      private int counter; 
+
+修飾子
+~~~~~~
+
+上で出てきた``private``や``public``はアクセス修飾子と呼ばれ，たとえば以下のようなものがある（全部ではない）．
+
+  - ``private``: それを含むクラスの中からしかアクセスできない．メソッドやフィールドなどの修飾子を省略した場合はprivateになる．
+  - ``public``:  どこからでもアクセスできる．
+  - ``protected``: 自身と派生クラス（次回）のみからアクセスできる．
+  - ``internal``:  同一コンパイル単位のかからアクセスできる．（ネストされていない）クラスの修飾子を省略した場合はinternalになる．
+
+ネストされていないクラスは``public``か``internal``にしかできない．
+
+修飾子は他にも``static``（後述）や``readonly``，``const``などがある．また，クラスに指定できる修飾子に``abstract``，``sealed``などがある．
+
+メソッド宣言の基本的な形
+------------------------
+
+.. raw:: html
+ 
+   <pre style="line-height:1.3">
+   <span class="metaname">修飾子</span> <span class="metaname">返り値の型</span> <span class="metaname">メソッド名</span>(<span class="metaname">「パラメータの型 パラメータ」のコンマ区切りの列</span>) 
+   {
+         <span class="metaname">文</span>
+         ...
+         <span class="metaname">文</span>
+   }
+   </pre>
+
+返り値がない場合は，``void``を「返り値の型」として用いる．
+
+
+.. admonition:: 例
+   :class: example
+   
+   .. code:: cs 
+   
+       public int GetCount() 
+       {
+           return count;
+       }
+   
+   .. code:: cs 
+   
+       public void Reset() 
+       {
+           count = 0; 
+       }
+   
+   .. code:: cs 
+   
+       static void Main(string[] args) 
+       {
+             Console.WriteLine("Hello World!");
+       }
+       
+
+
+==
+型
+==
+
+型には``Counter``等のクラスや，``int``等の数値型，``bool``（真偽値型）や``string``（文字列型）などがある．
+数値型にはたとえば，以下のようなものがある（全部ではない）．
+
+ - 整数型
+
+   - ``sbyte``: 符号付き8ビット（1バイト）整数型．-128〜127
+   - ``byte``: 符号なし8ビット（1バイト）整数型．0〜255
+   - ``int``: 符号付き32ビット整数型．-2,147,483,648〜2,147,483,647
+   - ``uint``: 符号なし32ビット整数型．0〜4,294,967,295
+   - ``long``: 符号付き64ビット整数型．-9,223,372,036,854,775,808〜9,223,372,036,854,775,807
+   - ``ulong``: 符号なし64ビット整数型．0〜18,446,744,073,709,551,615
+  
+ - 浮動小数点数型
+
+   - ``float``: 単精度浮動小数点型
+   - ``double``: 倍精度浮動小数点型
+
+
+
+======================
+基本的な文（statement）
+======================
+
+宣言文
+------
+
+（主に）変数を宣言する文．
+
+.. raw:: html
+ 
+   <pre style="line-height:1.3">
+   <span class="metaname">型</span> <span class="metaname">変数名</span>;
+   </pre>
+ 
+   <pre style="line-height:1.3">
+   <span class="metaname">型</span> <span class="metaname">変数名</span> = <span class="metaname">初期値</span>;
+   </pre>
+
+
+
+.. admonition:: 例
+   :class: example 
+
+   .. code:: cs
+   
+     Counter c = new Counter(); 
+   
+   式の型が明らかな場合には型の代わりに``var``と書くことができる．たとえば上記は
+   
+   .. code:: cs 
+   
+     var c = new Counter();
+   
+   とも書ける．また，複数の宣言をまとめて行うことができる．
+   
+   .. code:: cs
+   
+     int x, y = 2, z; 
+
+
+式文（いわゆる代入文など）
+--------------------------
+
+「式」のみからなる文．全ての式が式文として使用できるわけではない．代表的なものは，インクリメントやデクリメント（前置後置），メソッド呼出，代入など．
+
+.. admonition:: 例
+   :class: example 
+
+   .. code:: cs 
+      
+      count++;
+
+   .. code:: cs
+
+      Console.WriteLine("Hello World");
+
+   .. code:: cs
+
+      count = 0;
+
+ブロック
+--------
+
+複数の文をまとめた文．
+
+.. raw:: html 
+
+   <pre style="line-height:1.3">
+   {
+         <span class="metaname">文</span>
+         ...
+         <span class="metaname">文</span>
+   }
+   </pre>
+
+         
+
+if文
+----
+
+真偽値によって分岐を行う文．
+
+.. raw:: html
+ 
+   <pre style="line-height:1.3">
+   if (<span class="metaname">式</span>) <span class="metaname">文（宣言文除く）</span> 
+   </pre>
+
+   <pre style="line-height:1.3">
+   if (<span class="metaname">式</span>) <span class="metaname">文（宣言文除く）</span> else <span class="metaname">文（宣言文除く）</span>
+   </pre>
+
+.. admonition:: 例
+   :class: example
+
+   .. code:: cs 
+   
+      if ( x > 0 ) { c++; } 
+
+以下のようなミスを防ぐために
+
+.. code:: cs 
+
+   if (x > 0) 
+      c++; 
+      d++; 
+
+「文（宣言文除く）」のところにはブロックを書くようにするとよい．なお，宣言文除くというのは宣言文が直接来れないという意味であり，
+ブロックの中には含むことができる．
+
+
+.. caution:: 
+
+   C言語と異なり条件に来る式は``bool``型でなければならない．
+
+
+
+
+=======================
+基本的な式（expression）
+=======================
+
+
+
+
+

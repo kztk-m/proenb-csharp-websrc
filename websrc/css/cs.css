@@ -10,6 +10,10 @@ pre, code {
     font-family: "Anonymous Pro", inconsolata, Monaco, Consolas, monospace;
 }
 
+/* pre { */
+/*     line-height: 1.2; */
+/* } */
+
 header {
     background-color: hsl(275, 80%, 33%);
     color: white; 
@@ -82,9 +86,11 @@ nav a.current-link {
 }
 
 footer {
-    margin-top: 2em; 
-    font-size: 80%; 
-    color: hsl(275, 80%, 33%); 
+    text-align: right; 
+    margin-top: 3em; 
+    font-size: 90%;  
+    /* color: hsl(275, 80%, 33%);  */
+    color: #999; 
 }
 
 #TOC li{
@@ -400,12 +406,17 @@ footer a:visited {
 
 /* Special items */
 
-div.note, section.note, div.caution, section.caution {
+div.note, section.note, div.caution, section.caution, div.admonition, section.admonition {
     padding: 0.1em 1em;
     border-radius: 1em; 
 
     margin-top: 0.5em; 
     margin-bottom: 0.5em; 
+}
+
+div.example, section.example {
+    background-color: hsl(36, 0%, 96%);
+    /* border: 0.2em solid hsl(36, 0%, 48%); */
 }
 
 div.note, section.note {
@@ -440,6 +451,11 @@ div.caution > p:first-child::before, section.caution > p:first-child::before {
 
 
 /* syntax highlighting */
+
+span.metaname {
+    background-color: white; 
+    border: 0.1em solid black;
+}
 
 span.ex {
     color: gray; 
