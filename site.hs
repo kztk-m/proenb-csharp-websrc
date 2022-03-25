@@ -4,6 +4,7 @@ import           Data.Monoid           (mappend)
 import           Hakyll
 
 import           Text.Pandoc
+import qualified Text.Pandoc.Shared
 
 import           Data.Functor.Identity (runIdentity)
 import           Data.Text             (Text)
@@ -24,7 +25,7 @@ withTOC = defaultHakyllWriterOptions
           { -- writerNumberSections  = True
           -- ,
             writerTableOfContents = True,
-            writerTOCDepth        = 2,
+            writerTOCDepth        = 3,
             writerTemplate        = Just tocTemplate
         }
 
@@ -61,7 +62,7 @@ main = hakyllWith conf $ do
         let wopt = case toc of
                      Just "true" -> withTOC
                      _           -> defaultHakyllWriterOptions
-        pandocCompilerWith defaultHakyllReaderOptions wopt
+        pandocCompilerWithTransform defaultHakyllReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
           >>= loadAndApplyTemplate "templates/default.html" defaultContext
           >>= relativizeUrls
 
@@ -73,7 +74,7 @@ main = hakyllWith conf $ do
         let wopt = case toc of
                      Just "true" -> withTOC
                      _           -> defaultHakyllWriterOptions
-        pandocCompilerWith defaultHakyllReaderOptions wopt
+        pandocCompilerWithTransform defaultHakyllReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
           >>= loadAndApplyTemplate "templates/default.html" defaultContext
           >>= relativizeUrls
       -- compile $ pandocCompiler
