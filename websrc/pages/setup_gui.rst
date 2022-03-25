@@ -115,27 +115,6 @@ Mac編
 
    .. image::images/ss_eto/mac6.png
 
-   - `HelloEto.Gtk`
-  
-     i. GTKをインストールする（参考：`GTKのインストール`_）
-
-     #. ▶ボタンの右に「HelloEto.Gtk」が表示されていることを確認する．そうでなければ，その部分をクリックして「HelloEto.Gtk」を選択する．
-        左の「ソリューション」の部分で，プロジェクト名``HelloEto.Gtk`` が太字になっていることを確認する．
-        
-        .. image::images/ss_eto/mac_gtk1.png
-
-     #. しばらく待つと，Dockから以下のアイコンのアプケーションが起動していることが確認できるので，アイコンをクリックするなりしてフォーカスをそのアプリケーションに写す．
-
-        .. image::images/ss_eto/mac_gtk2.png
-
-     #. 以下のようなウィンドゥが表示される．
-
-        .. image::images/ss_eto/mac_gtk3.png
-
-     #. "Click Me!"と書かれたボタンをクリックするとダイアログが表示される．
-
-     #. ウィンドウ左上の閉じるボタンか，Ctrl + Q を押すか，メニューからQuitを選択してプログラムを終了する．
-
    - `HelloEto.Mac`
 
      i. ▶ボタンの右に「HelloEto.Mac」が表示されていなければ，その部分をクリックして「HelloEto.Mac」を選択する．左の「ソリューション」の部分で，プロジェクト名「HelloEto.Mac」が太字になっていることを確認する．
@@ -156,6 +135,8 @@ Mac編
         .. code:: 
             
             bin/Debug/net5.0/HelloEto.Mac.app/Contents/MacOS/HelloEto.Mac
+
+        .. image::images/ss_eto/mac_mac2.png
 
         この変更は一回行うのみでよい．
 
@@ -180,6 +161,27 @@ Mac編
         .. caution:: 
 
             ウィンドウ左上の閉じるボタンはプログラムを終了させない．この挙動はMacの一般的なアプリケーションプログラムと同様である．
+
+   - `HelloEto.Gtk`
+  
+     i. GTKをインストールする（参考：`GTKのインストール`_）
+
+     #. ▶ボタンの右に「HelloEto.Gtk」が表示されていることを確認する．そうでなければ，その部分をクリックして「HelloEto.Gtk」を選択する．
+        左の「ソリューション」の部分で，プロジェクト名``HelloEto.Gtk`` が太字になっていることを確認する．
+        
+        .. image::images/ss_eto/mac_gtk1.png
+
+     #. しばらく待つと，Dockから以下のアイコンのアプケーションが起動していることが確認できるので，アイコンをクリックするなりしてフォーカスをそのアプリケーションに写す．
+
+        .. image::images/ss_eto/mac_gtk2.png
+
+     #. 以下のようなウィンドゥが表示される．
+
+        .. image::images/ss_eto/mac_gtk3.png
+
+     #. "Click Me!"と書かれたボタンをクリックするとダイアログが表示される．
+
+     #. ウィンドウ左上の閉じるボタンか，Ctrl + Q を押すか，メニューからQuitを選択してプログラムを終了する．
 
 
 
