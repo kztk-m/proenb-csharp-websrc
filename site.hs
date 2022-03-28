@@ -1,12 +1,19 @@
 --------------------------------------------------------------------------------
+{-# LANGUAGE MultiWayIf        #-}
 {-# LANGUAGE OverloadedStrings #-}
 import           Data.Monoid           (mappend)
 import           Hakyll
 
-import           Text.Pandoc
+import qualified Data.Time             as Time
+
+import qualified System.Directory      as Dir
+import qualified System.FilePath       as FP
+import           Text.Pandoc           (ReaderOptions (..), WriterOptions (..))
+import qualified Text.Pandoc
 import qualified Text.Pandoc.Shared
 
 import           Data.Functor.Identity (runIdentity)
+import           Data.String           (fromString)
 import           Data.Text             (Text)
 import qualified Data.Text             as T
 
@@ -30,12 +37,81 @@ withTOC = defaultHakyllWriterOptions
         }
 
 tocTemplate :: Text.Pandoc.Template Text
-tocTemplate = either error id . runIdentity . compileTemplate "" $ T.unlines
+tocTemplate = either error id . runIdentity . Text.Pandoc.compileTemplate "" $ T.unlines
   [ "<div class=\"toc\">"
   , "$toc$"
   , "</div>"
   , "$body$"
   ]
+
+data ParseBN = W Int | Q Int
+
+getWeekNumber :: ParseBN -> Int
+getWeekNumber (W i) = i
+getWeekNumber (Q i) = i
+
+rstCompilingRule :: Compiler (Item String)
+rstCompilingRule = do
+--  loadBody "templates/nav.html" :: Compiler Template
+
+  underlying <- getUnderlying
+  toc        <- getMetadataField underlying "tableOfContents"
+  let wopt = case toc of
+               Just "true" -> withTOC
+               _           -> defaultHakyllWriterOptions
+
+  fp <- getResourceFilePath
+  mt <- getItemModificationTime underlying
+
+  let lastModified =
+        Time.formatTime
+          Time.defaultTimeLocale
+          "%Y-%m-%d %H:%M:%S"
+          (Time.utcToLocalTime (Time.TimeZone (9 * 60) False "JST") mt)
+
+  let ctxt =
+        constField "lastModified" lastModified <>
+        defaultContext
+
+  let bn = FP.takeBaseName fp
+  case checkBN bn of
+    Just (Q i) -> do
+      inst <- loadBody "questions/instruction.rst"
+
+      let ctxt' =
+            constField "instruction" inst     <>
+            constField "number"      (show i) <>
+            ctxt
+
+      pandocCompilerWithTransform defaultHakyllReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
+        >>= loadAndApplyTemplate "templates/defaultQ.html" ctxt'
+        >>= relativizeUrls
+
+    Just (W i) -> do
+      let ctxt' =
+            constField "number"      (show i) <>
+            ctxt
+
+      pandocCompilerWithTransform defaultHakyllReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
+        >>= loadAndApplyTemplate "templates/defaultW.html" ctxt'
+        >>= relativizeUrls
+
+
+    Nothing ->
+      pandocCompilerWithTransform defaultHakyllReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
+      >>= loadAndApplyTemplate "templates/default.html" ctxt
+      >>= relativizeUrls
+  where
+    checkBN :: String -> Maybe ParseBN
+    checkBN (c:s) =
+      case [ n | (n, []) <- reads s ] of
+        [n] ->
+          if | c == 'w'  -> Just (W n)
+             | c == 'q'  -> Just (Q n)
+             | otherwise -> Nothing
+        _   -> Nothing
+    checkBN _ = Nothing
+
 
 
 --------------------------------------------------------------------------------
@@ -53,33 +129,21 @@ main = hakyllWith conf $ do
       route idRoute
       compile copyFileCompiler
 
+    match "templates/*" $
+      compile $ do
+        templateBodyCompiler
+
+    match "questions/*" $ do
+      compile $ pandocCompilerWithTransform defaultHakyllReaderOptions defaultHakyllWriterOptions (Text.Pandoc.Shared.headerShift 1)
+
 
     match "pages/*.md" $ do
       route $ gsubRoute "pages/" (const "") `composeRoutes` setExtension "html"
-      compile $ do
-        underlying <- getUnderlying
-        toc        <- getMetadataField underlying "tableOfContents"
-        let wopt = case toc of
-                     Just "true" -> withTOC
-                     _           -> defaultHakyllWriterOptions
-        pandocCompilerWithTransform defaultHakyllReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
-          >>= loadAndApplyTemplate "templates/default.html" defaultContext
-          >>= relativizeUrls
+      compile rstCompilingRule
 
     match "pages/*.rst" $ do
       route $ gsubRoute "pages/" (const "") `composeRoutes` setExtension "html"
-      compile $ do
-        underlying <- getUnderlying
-        toc        <- getMetadataField underlying "tableOfContents"
-        let wopt = case toc of
-                     Just "true" -> withTOC
-                     _           -> defaultHakyllWriterOptions
-        pandocCompilerWithTransform defaultHakyllReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
-          >>= loadAndApplyTemplate "templates/default.html" defaultContext
-          >>= relativizeUrls
-      -- compile $ pandocCompiler
-      --   >>= loadAndApplyTemplate "templates/default.html" defaultContext
-      --   >>= relativizeUrls
+      compile rstCompilingRule
 
     match "pages/*.html" $ do
       route $ gsubRoute "pages/" (const "")
@@ -115,19 +179,18 @@ main = hakyllWith conf $ do
     --             >>= loadAndApplyTemplate "templates/default.html" archiveCtx
     --             >>= relativizeUrls
 
-
     match "index.html" $ do
         route idRoute
         compile $ do
+--          loadBody "templates/nav.html" :: Compiler Template
 --            posts <- recentFirst =<< loadAll "posts/*"
-            let indexCtx = defaultContext
+          let indexCtx = defaultContext
 
-            getResourceBody
-                >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/default.html" indexCtx
-                >>= relativizeUrls
+          getResourceBody
+            >>= applyAsTemplate indexCtx
+            >>= loadAndApplyTemplate "templates/default.html" indexCtx
+            >>= relativizeUrls
 
-    match "templates/*" $ compile templateBodyCompiler
 
 
 --------------------------------------------------------------------------------

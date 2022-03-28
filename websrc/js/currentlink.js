@@ -8,7 +8,7 @@ function addClassToCurrentPageLinks() {
 
     // We assume that the menu list are shallow
 
-    document.querySelectorAll('nav a').forEach( elem => {
+    document.querySelectorAll('a').forEach( elem => {
         var tURL = elem.href.split("/");
         var tPage = tURL[ tURL.length - 1 ];
         

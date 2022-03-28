@@ -286,6 +286,27 @@ public修飾子が示すように，これらはpublicメソッドとして実�
 
 修飾子は他にも``static``（後述）や``readonly``，``const``などがある．また，クラスに指定できる修飾子に``abstract``，``sealed``などがある．
 
+型
+~~
+
+型には``Counter``等のクラスや，``int``等の数値型，``bool``（真偽値型）や``string``（文字列型）などがある．
+数値型にはたとえば，以下のようなものがある（全部ではない）．
+
+ - 整数型
+
+   - ``sbyte``: 符号付き8ビット（1バイト）整数型．-128〜127
+   - ``byte``: 符号なし8ビット（1バイト）整数型．0〜255
+   - ``int``: 符号付き32ビット整数型．-2,147,483,648〜2,147,483,647
+   - ``uint``: 符号なし32ビット整数型．0〜4,294,967,295
+   - ``long``: 符号付き64ビット整数型．-9,223,372,036,854,775,808〜9,223,372,036,854,775,807
+   - ``ulong``: 符号なし64ビット整数型．0〜18,446,744,073,709,551,615
+  
+ - 浮動小数点数型
+
+   - ``float``: 単精度浮動小数点型
+   - ``double``: 倍精度浮動小数点型
+
+
 メソッド宣言の基本的な形
 ------------------------
 
@@ -327,29 +348,6 @@ public修飾子が示すように，これらはpublicメソッドとして実�
              Console.WriteLine("Hello World!");
        }
        
-
-
-==
-型
-==
-
-型には``Counter``等のクラスや，``int``等の数値型，``bool``（真偽値型）や``string``（文字列型）などがある．
-数値型にはたとえば，以下のようなものがある（全部ではない）．
-
- - 整数型
-
-   - ``sbyte``: 符号付き8ビット（1バイト）整数型．-128〜127
-   - ``byte``: 符号なし8ビット（1バイト）整数型．0〜255
-   - ``int``: 符号付き32ビット整数型．-2,147,483,648〜2,147,483,647
-   - ``uint``: 符号なし32ビット整数型．0〜4,294,967,295
-   - ``long``: 符号付き64ビット整数型．-9,223,372,036,854,775,808〜9,223,372,036,854,775,807
-   - ``ulong``: 符号なし64ビット整数型．0〜18,446,744,073,709,551,615
-  
- - 浮動小数点数型
-
-   - ``float``: 単精度浮動小数点型
-   - ``double``: 倍精度浮動小数点型
-
 
 
 ======================
@@ -413,6 +411,30 @@ public修飾子が示すように，これらはpublicメソッドとして実�
 
       count = 0;
 
+return文
+--------
+
+メソッドから値を返す．
+
+.. raw:: html 
+
+   <pre>
+   <span class="kw">return</span> <span class="metaname">式</span>
+   </pre>
+
+
+.. admonition:: 例
+   :class: example 
+
+   .. code:: cs 
+      
+      public int GetValue() 
+      { 
+          return count; 
+      }
+
+
+
 ブロック
 --------
 
@@ -438,44 +460,328 @@ if文
 .. raw:: html
  
    <pre style="line-height:1.3">
-   if (<span class="metaname">式</span>) <span class="metaname">文（宣言文除く）</span> 
+   <span class="kw">if</span> (<span class="metaname">式</span>) <span class="metaname">式がtrueに評価されたときに実行される文</span> 
    </pre>
 
    <pre style="line-height:1.3">
-   if (<span class="metaname">式</span>) <span class="metaname">文（宣言文除く）</span> else <span class="metaname">文（宣言文除く）</span>
+   <span class="kw">if</span> (<span class="metaname">式</span>) <span class="metaname">式がtrueに評価されたときに実行される文</span> <span class="kw">else</span> <span class="metaname">式がfalseに評価されたときに実行される文</span>
    </pre>
 
 .. admonition:: 例
    :class: example
 
    .. code:: cs 
+
+      // a と bの小さいほうを返す．
+      if (a < b) { return a; } else { return b; } 
+
+   .. code:: cs
+
+      // isSwapがtrueならaとbの中身を入れ替える．
+      if (isSwap) { var tmp = a; a = b; b = tmp; } 
+
+
+.. tip:: 
    
-      if ( x > 0 ) { c++; } 
+   「式がtrueに評価されたときに実行される文」や「式がfalseに評価されたときに実行される文」
+   のところにはブロックを書くようにするとよい．以下のようなミスを防ぐことができる．
 
-以下のようなミスを防ぐために
+   .. code:: cs 
+    
+      if (x > 0) 
+         c++; 
+         d++; // x > 0 でないときも実行される．
 
-.. code:: cs 
+   .. code:: cs 
 
-   if (x > 0) 
-      c++; 
-      d++; 
-
-「文（宣言文除く）」のところにはブロックを書くようにするとよい．なお，宣言文除くというのは宣言文が直接来れないという意味であり，
-ブロックの中には含むことができる．
+      if (x) 
+         if (y) a++;
+      else b++; // 内側のifに対応するelse（b++やxがtrueがyがfalseのときに実行される）
+    
 
 
 .. caution:: 
 
-   C言語と異なり条件に来る式は``bool``型でなければならない．
+   C言語と異なり条件に来る式は``bool``型でなければならない．これは``for``や``while``でも同じ．
+
+.. note::
+
+   細かい話ではあるが，宣言文単独は「式がtrueに評価されたときに実行される文」や「式がfalseに評価されたときに実行される文」に来ることができない．
+
+   .. code:: cs
+
+      if (x) int b = 0; // エラー
+
+   一方で以下は文法上は正しい．
+
+   .. code:: cs 
+
+      if (x) {int b = 0;} 
+
+      
+
+for文，while文
+--------------
+
+.. raw:: html 
+
+   <pre style="line-height:1.3">
+   <span class="kw">for</span> (<span class="metaname">ループ変数宣言</span> ; <span class="metaname">繰り返し条件</span> ; <span class="metaname">ループ毎の後処理</span>) <span class="metaname">繰り返される文（ループ本体）</span> 
+   </pre>
 
 
+   <pre style="line-height:1.3">
+   <span class="kw">while</span> (<span class="metaname">繰り返し条件</span>) <span class="metaname">繰り返される文（ループ本体）</span> 
+   </pre>
 
+.. admonition:: 例
+   :class: example
+
+   .. code:: cs
+
+      int s = 0; 
+      // s は 0 から n - 1までの和．
+      for (int i = 0; i < n; i++ ) 
+      {
+          s += i; 
+      }      
+
+   .. code:: cs 
+
+      // 標準出力に"yes"を出力しつづける．
+      while (true) // 無限ループ
+      {
+          Console.WriteLine("yes");
+      }
+
+   上のコードは``for``を用いても書ける．
+
+   .. code:: cs
+
+      for (;;) 
+      {
+          Console.WriteLine("yes");
+      }
+
+   .. code:: cs
+
+      for (;true;) 
+      {
+          Console.WriteLine("yes");
+      }
+
+
+continue文，break文
+-------------------
+
+``continue``は次のループに移る．``break``はループから抜ける．
 
 =======================
 基本的な式（expression）
 =======================
 
+式：評価されて値となるもの．
+
+メソッド呼出
+------------
+
+.. admonition:: 例
+   :class: example
+
+   .. code:: cs 
+
+      Console.WriteLine("Hello World!")
+
+   .. code:: cs
+
+      c.Inc() 
+
+   別の式の一部としても使うことができる．
+
+   .. code:: cs
+
+      c.GetValue().ToString() 
 
 
+
+オブジェクト生成式（``new``）
+-----------------------------
+
+オブジェクトを生成する．
+
+.. admonition:: 例
+   :class: example
+ 
+   .. code:: cs 
+             
+       new Counter()
+
+   式なので，他の式の中でも（型が会えば）使うことができる．
+
+   .. code:: cs 
+
+       new Counter().GetCount().ToString()
+
+インクリメント（``++``）とデクリメント（``-``）
+-----------------------------------------------
+
+ - ``++x``は ``x``に1を足して，足した後の値を返す．
+ - ``--x``は ``x``から1を引いて，引いた後の値を返す．
+ - ``x++``は ``x``に1を足して，足す前の値を返す．
+ - ``x--``は ``x``から1を引いて，引く前の値を返す．
+
+.. admonition:: 例
+   :class: example
+
+   .. code:: cs 
+
+      int a = 1; 
+      Console.WriteLine( "a = " + a++.ToString() ); // a = 1
+      Console.WriteLine( "a = " + a++.ToString() ); // a = 2
+   
+
+
+   .. code:: cs 
+
+      int a = 1; 
+      Console.WriteLine( "a = " + (++a).ToString() ); // a = 2
+      Console.WriteLine( "a = " + (++a).ToString() ); // a = 3
+
+   なお ``++a.ToString()``は``++(a.ToString())``と解釈される（結果，エラーになる）．これはメソッド呼出構文のほうが結合が強いため．
+
+
+
+四則演算
+--------
+
+ - ``+`` 可算
+ - ``-`` 減算
+ - ``*`` 乗算
+ - ``/`` 除算
+ - ``%`` 剰余（余り）
+
+.. admonition:: 例
+   :class: example
+
+   .. code:: cs 
+
+      3 + 4 
+
+   .. code:: cs 
+
+      2 + 3 * 4   // 14に評価される
+
+   .. code:: cs 
+
+      (2 + 3) * 4 // 20に評価される．
+
+比較演算
+--------
+
+  - ``==`` 等しい
+  - ``!=`` 等しくない
+  - ``<``  小なり
+  - ``<=`` 小なりイコール 
+  - ``>``  大なり
+  - ``>=`` 大なりイコール
+
+.. admonition:: 例
+   :class: example
+
+   .. code:: cs 
+
+      1 == 1 // true
+
+   .. code:: cs 
+
+      1 != 1 // false
+
+   .. code:: cs
+ 
+      1 < 2 // true 
+
+   .. code:: cs 
+
+      1.0 <= 2.0 // true
+
+..
+   .. note:: 
+
+      以下の結果はおどろくかもしれない．
+
+      .. code:: cs
+
+         Counter c = new Counter();
+         Counter d = new Counter(); 
+
+         Console.WriteLine(c == d); // False 
+         Counter e = c; 
+         Console.WriteLine(c == e); // True
+
+      C#では型は **値型** と **参照型** に分けられ，参照型については ``==`` は参照（ポインタみたいなもの）が同じかどうかを判定する．
+      クラスは参照型となるため，`Counter``も参照型となる．
+      よって，``c``と``d``は物理的（≒ メモリ上で）違うあるオブジェクトを指しているので``c == d``は``false``になり，
+      ``e``と``c``はメモリ上で物理的に同じオブジェクトを指しているので``c == e``は``true``になる．
+
+      ``string``も参照型だが，``==``は``!=``は内容を比較をするようにオーバロードされている．
+
+
+論理演算
+--------
+
+  - ``&&`` 論理積
+  - ``||`` 論理和
+  - ``!``  論理否定
+
+.. admonition:: 例
+   :class: example
+
+   .. code:: cs 
+
+      true && false // false 
+
+   .. code:: cs 
+
+      true || false // true
+
+   .. code:: cs 
+
+      !true // false 
+
+
+.. note::
+
+   ``&&``および``||``は短絡する．すなわち``false && e``および``true || e``の``e``は評価されない．
+
+
+
+代入演算
+--------
+
+  - ``x = e``は``x``に``e``を評価結果を代入する．また，それが，``x = e``の評価結果となる．
+  - ``x += e``は基本的には``x = x + e``に同じ
+  - ``x -= e``は基本的には``x = x - e``に同じ
+  - ``x *= e``は基本的には``x = x * e``に同じ
+  - ``x /= e``は基本的には``x = x / e``に同じ
+  - ``x %= e``は基本的には``x = x % e``に同じ
+  - 他にも``<<=``や``|=``などがあるが，本講義では扱わない．
+
+.. admonition:: 例
+   :class: example
+
+   .. code:: cs 
+
+      int a; 
+      Console.WriteLine(a = 1);  // 1
+      Console.WriteLine(a);      // 1
+      Console.WriteLine(a += 1); // 2
+
+.. note:: 
+
+   ``x[f()] += e``は``x[f()] = x[f()] + e``と異なり，``f()``を一回しか呼ばない
+
+.. note::
+
+    第5回および第6回では，「イベント」を扱うための特殊な``+=``および``-=``が登場する．
 
 

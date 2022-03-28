@@ -1,7 +1,7 @@
 -----
 title: 環境構築
 date:  2022-03-24
-tableOfContents: false
+tableOfContents: true
 -----
 
 以下の二つの方法がある．

@@ -1,0 +1,67 @@
+-------
+title: 第1回 課題
+-------
+
+--------
+基本課題
+--------
+
+以下の``Program.cs``を適切に埋めよ．
+
+.. code:: cs
+
+   // 学籍番号と名前をファイル先頭のコメントに含める
+   using System; 
+
+   class EmoneyCard 
+   {
+       // 残高
+       private int balance;
+       // カードの名前
+       private String name; 
+
+       public EmoneyCard(String n) 
+       {
+          // この中身を実装する
+       }
+
+       public void Charge(int b) 
+       {
+          // この中身を実装する
+          // 金額 b（非負と仮定してよい）を残高に加算する．
+       }
+       public bool Pay(int b) 
+       {
+          // この中身を実装する
+          // 残高が金額 b（非負と仮定してよい） 以上であれば，残高をb減らし true を返す
+          // そうでなければ，残高は変更せず false を返す
+          return false 
+       }
+       public void Print() 
+       {
+          // この中身を実装する
+          // 「Card: name = 名前, balance = 残高」を標準出力に出力する．
+          // たとえば
+       }
+   }
+
+   // この部分は変更しない
+   class Program 
+   {
+       static void Main(string args[]) 
+       {
+           EmoneyCard ec = new EmoneyCard("MyCard"); 
+           ec.Charge("100");
+           ...
+       }
+   }
+
+
+クラス``EmoneyCard``は以下の要件を満たすこと．
+ 
+
+
+--------
+発展課題
+--------
+
