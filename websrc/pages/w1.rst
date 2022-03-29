@@ -59,7 +59,7 @@ C#プログラムの基本的な構造
 例：カウンター実装
 ------------------
 
-基本的な構造は上記だが，これだとピンとこない人も多いと思うので，例を用いて説明する．今，カウンターを実装することを考える．カウンターの機能はシンプルに数をカウントするだけである．カウンターオブジェクトは内部でカウントを持っている．またカウンターに対してできることは
+基本的な構造は上記だが，これだとピンとこない人も多いと思うので，例を用いて説明する．今，カウンターを実装することを考える．カウンターの機能はシンプルに数をカウントするだけである．カウンターオブジェクトは内部でカウントを持っていて，作成時にカウントの初期値を指定することができる．またカウンターに対してできることは
 
    - カウントを1増やす
    - カウントを0にもどす
@@ -81,26 +81,26 @@ C#プログラムの基本的な構造
         // int型のprivateフィールド count の宣言
         private int count; 
         // Counterのコンストラクタ
-        public Counter() 
+        public Counter(int c0) 
         {
-            // フィールド count の初期化
-            count = 0; 
+            // フィールド count に c0 を代入
+            count = c0; 
         }
     }
 
-ここで，``private int count = 0;``の部分が **フィールド宣言** である．これはカウンターオブジェクトが``count``という``int``型のフィールドを持っていることを
-表している．また， *private修飾子* はこのフィールドがこのクラスの外からはアクセスできないことを表している．``public Counter() {…}``の部分はこのクラスの
-**コンストラクタ** を定義している．コンストラクタはオブジェクトを生成する際に呼ばれ，ここではフィールド``count``を0で初期化している．
-コンストラクタはクラスと同じ名前である必要がある．
+ここで，``private int count;``の部分が **フィールド宣言** である．これはカウンターオブジェクトが``count``という``int``型のフィールドを持っていることを
+表している．また， *private修飾子* はこのフィールドがこのクラスの外からはアクセスできないことを表している．``public Counter(int c0) {…}``の部分はこのクラスの
+**コンストラクタ** を定義している．コンストラクタはオブジェクトを生成する際に呼ばれ，ここではフィールド``count``を``c0``で初期化している．
+コンストラクタはクラスと同じ名前である必要がある． *public修飾子* はこのコンストラクタが ``Counter`` クラスの外からアクセスできることを表している．
 
-カウンターオブジェクトの作成，より正確な言い方をすれば``Counter``クラスのインスタンス（オブジェクトのことをインスタンスと呼ぶことがある）は ``new``式を用いることで
-行うことができる．
+
+カウンターオブジェクトの作成，より正確な言い方をすれば``Counter``クラスの **インスタンス** （オブジェクトのことをインスタンスと呼ぶことがある）は ``new``式を用いることで行うことができる．
 
 .. code:: cs      
     
-    Counter c = new Counter(); 
+    Counter c = new Counter(0); 
 
-しかしながら，現在のままではこの``c``についてできることがない．
+しかしながら，現在のままではこのカウンター``c``についてできることがない．
 たとえば，``count``はprivateフィールドなので，たとえば以下のプログラムはコンパイル時エラーとなる．
 
 
@@ -113,17 +113,18 @@ C#プログラムの基本的な構造
        class Counter 
        {
            private int count; 
-           public Counter() 
+           public Counter(int c0) 
            {
-               count = 0; 
+               count = c0; 
            }
        }
        class Program 
        {
            static void Main(string[] args) 
            {
-              Counter c = new Counter(); 
-              // c.count.ToString()はオブジェクトcのフィールドcountのToString()メソッドを呼ぶの意
+              Counter c = new Counter(0); 
+              // c.count.ToString()はオブジェクトcのフィールドcountの
+              // ToString()メソッドを呼ぶの意
               Console.WriteLine(c.count.ToString()); // エラー
            }
        }
@@ -142,13 +143,13 @@ C#プログラムの基本的な構造
            class Counter 
            {
                private int count; 
-               public Counter() 
+               public Counter(int c0) 
                {
-                   count = 0; 
+                   count = c0; 
                }
                static void Main(string[] args) 
                {
-                  Counter c = new Counter(); 
+                  Counter c = new Counter(0); 
                   Console.WriteLine(c.count.ToString()); 
                }
            }
@@ -160,7 +161,8 @@ C#プログラムの基本的な構造
 メソッドの追加
 ~~~~~~~~~~~~~~
 
-では，``Counter``クラスにメソッドを追加してもっと面白くしてみよう．
+では，``Counter``クラスに **（インスタンス）メソッド** を追加してもっと面白くしてみよう．
+（インスタンス）メソッド``Method``はオブジェクト``o``に対し，``o.Method(arg1, arg2)``のよう形で呼出すことができる関数のようなものである．
 
 .. code:: cs
 
@@ -168,10 +170,12 @@ C#プログラムの基本的な構造
    {
         private int count; 
 
-        public Counter() 
+        // コンストラクタ
+        public Counter(int c0) 
         {
-            count = 0; 
+            count = c0; 
         }
+        // メソッド
         public void Inc() 
         {
             count++;
@@ -199,9 +203,9 @@ public修飾子が示すように，これらはpublicメソッドとして実�
        {
            private int count; 
 
-           public Counter() 
+           public Counter(int c0) 
            {
-               count = 0; 
+               count = c0; 
            }
            public void Inc() 
            {
@@ -220,7 +224,7 @@ public修飾子が示すように，これらはpublicメソッドとして実�
        {
            static void Main(string[] args) 
            {
-              Counter c = new Counter(); 
+              Counter c = new Counter(0); 
               Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
               c.Inc(); 
               c.Inc(); 
@@ -246,6 +250,112 @@ public修飾子が示すように，これらはpublicメソッドとして実�
 .. note::
 
     C#の慣習として public なメソッドやフィールド（およびプロパティ）の名前は大文字で始める．
+
+staticメソッドの追加
+~~~~~~~~~~~~~~~~~~~~
+
+さらに``Counter``を便利なものにするために，``"12"``や``"-34"``といった文字列を構文解析してカウンターを作成することを考えてみよう．
+
+このような処理はコンストラクタとしても実装可能であるが，カウンターオブジェクトの生成という感心事からいささか複雑すぎるので避けたい．
+一方で，このような処理を``Counter``クラスの（インスタンス）メソッドとして実装することはできない．これは， *インタンスメソッドはインタンスを操作する* 
+ものであるが，行いたい処理の時点では *インスタンスはまだ生成されていない* ためである．実際に，構文上においても，
+インスタンス``o``に対するインスタンスメソッド``Method``の呼出しは``o.Method(arg1, arg2)``となっていて，インスタンスが与えられなければインスタンスメソッドを
+呼び出すことができない．
+
+**static メソッド** を用いればこの問題を解決することができる．static メソッドはざっくりと説明するならば，
+*インスタンスではなくクラスに属するメソッド* （この言い方は少し正確でない．C#だと構造体型がありそちらもstaticメソッドを持てるので）である．
+そのため，インスタンスが与えられなくても呼び出すことが可能である．
+具体的には以下の形のメソッドを追加する．
+
+.. code:: cs
+
+   public static Counter Parse(string s) 
+   {
+       ...
+   }
+
+*static修飾子* はこのメソッドがstaticメソッドであることを表している．
+
+さて，この関数の実装であるが， `.NETのAPIリファレンス <https://docs.microsoft.com/ja-jp/dotnet/api/?view=net-6.0>`_ をよく眺めれば，
+``Int32.Parse``メソッドを用いることで実装できることに気付く．
+
+.. code:: cs 
+
+   public static Counter Parse(string s) 
+   {
+      int i = Int32.Parse(s); 
+      return new Counter(i); 
+   }
+
+``Int32.Parse``も static メソッドの一つである．また，``Console.WriteLine``も実はstaticメソッドであった．
+このようにstaticメソッド``Method``はクラス``C``に対し，``C.Method(arg1, arg2)``のようにすることで呼び出すことができる．
+実際に以下のプログラムをビルド・実行してみよう．
+
+.. code:: cs
+
+   using System; 
+
+   namespace Week1 
+   {
+       class Counter 
+       {
+           private int count; 
+
+           public static Counter Parse(string s) 
+           {
+               int i = Int32.Parse(s); 
+               return new Counter(i); 
+           }
+           public Counter(int c0) 
+           {
+               count = c0; 
+           }
+           public void Inc() 
+           {
+               count++;
+           }
+           public void Reset() 
+           {
+               count = 0; 
+           }
+           public int GetCount() 
+           {
+               return count; 
+           }        
+       }
+       class Program 
+       {
+           static void Main(string[] args) 
+           {
+              Counter c = Counter.Parse("3"); 
+              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
+              c.Inc(); 
+              c.Inc(); 
+              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
+           }
+       }
+   }
+
+すると以下の出力が得られる．
+
+::  
+
+    c.GetCount() = 3
+    c.GetCount() = 5
+
+ところで，読者の中には以下では何故問題なのかと疑問に思った人もいるかもしれない．
+
+.. code:: cs
+
+   public static Counter Parse(string s) 
+   {
+      int i = Int32.Parse(s); 
+      count = i; // エラー
+   }
+
+直観的には``Parse``はクラスに属するメソッドであるので，インスタンスに属するフィールド``count``を
+オブジェクト経由なしにアクセスすることができないためである．
+
 
 
 フィールド宣言の基本的な形
@@ -284,7 +394,10 @@ public修飾子が示すように，これらはpublicメソッドとして実�
 
 ネストされていないクラスは``public``か``internal``にしかできない．
 
-修飾子は他にも``static``（後述）や``readonly``，``const``などがある．また，クラスに指定できる修飾子に``abstract``，``sealed``などがある．
+前述の``static``も修飾子の一つである．
+
+..
+   修飾子は他にも``readonly``，``const``などがある．また，クラスに指定できる修飾子に``abstract``，``sealed``などがある．
 
 型
 ~~
@@ -306,6 +419,31 @@ public修飾子が示すように，これらはpublicメソッドとして実�
    - ``float``: 単精度浮動小数点型
    - ``double``: 倍精度浮動小数点型
 
+
+コンストラクタ宣言の基本的な形
+------------------------------
+
+.. raw:: html
+ 
+   <pre style="line-height:1.3">
+   <span class="metaname">修飾子</span> <span class="metaname">クラス名</span>(<span class="metaname">「パラメータの型 パラメータ」のコンマ区切りの列</span>) 
+   {
+         <span class="metaname">文</span>
+         ...
+         <span class="metaname">文</span>
+   }
+   </pre>
+
+
+.. admonition:: 例
+   :class: example
+
+   .. code:: cs 
+      
+      public Counter(int c0) 
+      {
+          count = c0; 
+      }
 
 メソッド宣言の基本的な形
 ------------------------
@@ -376,13 +514,13 @@ public修飾子が示すように，これらはpublicメソッドとして実�
 
    .. code:: cs
    
-     Counter c = new Counter(); 
+     Counter c = new Counter(0); 
    
    式の型が明らかな場合には型の代わりに``var``と書くことができる．たとえば上記は
    
    .. code:: cs 
    
-     var c = new Counter();
+     var c = new Counter(0);
    
    とも書ける．また，複数の宣言をまとめて行うことができる．
    
@@ -616,7 +754,7 @@ continue文，break文
              
        new Counter()
 
-   式なので，他の式の中でも（型が会えば）使うことができる．
+   式なので，他の式の中でも（型が合えば）使うことができる．
 
    .. code:: cs 
 

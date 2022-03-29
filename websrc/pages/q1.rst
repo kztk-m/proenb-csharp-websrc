@@ -6,11 +6,12 @@ title: 第1回 課題
 基本課題
 --------
 
-以下の``Program.cs``を適切に埋めよ．
+以下の``Program.cs``を適切に埋めて，プログラム完成させよ．
 
 .. code:: cs
 
-   // 学籍番号と名前をファイル先頭のコメントに含める
+   // あなたの学籍番号
+   // あなたの名前
    using System; 
 
    class EmoneyCard 
@@ -35,33 +36,128 @@ title: 第1回 課題
           // この中身を実装する
           // 残高が金額 b（非負と仮定してよい） 以上であれば，残高をb減らし true を返す
           // そうでなければ，残高は変更せず false を返す
-          return false 
+
+          // 下の行はCS0161エラーを防ぐため．後で消してよい（し消さなくてもよい） 
+          // https://docs.microsoft.com/ja-jp/dotnet/csharp/misc/cs0161
+          return false; 
        }
        public void Print() 
        {
           // この中身を実装する
-          // 「Card: name = 名前, balance = 残高」を標準出力に出力する．
-          // たとえば
+          //
+          // 「<カードの名前>: <残高>」を改行付きで標準出力に出力する．
+          // たとえばカードの名前が "MyCard" で残高が 500 であれば，
+          // "MyCard: 500"を改行付きで標準出力に出力する．
        }
    }
 
    // この部分は変更しない
    class Program 
    {
-       static void Main(string args[]) 
+       static void Main(string[] args) 
        {
            EmoneyCard ec = new EmoneyCard("MyCard"); 
-           ec.Charge("100");
-           ...
+           ec.Charge(100);
+           ec.Print(); 
+           if (ec.Pay(500)) 
+           {
+               Console.WriteLine("payment succeeded");
+           }
+           else 
+           {
+               Console.WriteLine("payment failed"); 
+           }
+           ec.Charge(1000);
+           ec.Print(); 
+           if (ec.Pay(500)) 
+           {
+               Console.WriteLine("payment succeeded");
+           }
+           else 
+           {
+               Console.WriteLine("payment failed"); 
+           }           
+           ec.Print(); 
        }
    }
 
+正しく実装できれば以下が出力される．
 
-クラス``EmoneyCard``は以下の要件を満たすこと．
- 
+.. code:: 
+
+   MyCard: 100
+   payment failed
+   MyCard: 1100
+   payment succeeded
+   MyCard: 600
 
 
 --------
 発展課題
 --------
+
+.. caution:: 
+   
+   本課題を完了できたのならば本課題の解答のみを提出すればよく，基本課題の解答は提出する必要はない．
+
+
+基本課題で作成したクラス ``EmoneyCard`` に以下のメソッドを追加せよ．
+
+- ``public bool TransferFrom(EmoneyCard ec, int b)`` このメソッドは，``ec`` の残高が ``b``（非負と仮定してよい）以上であれば，
+  ``ec``の残高を``b``減らし，自身の残高を``b``増やし，``true``を返す．そうでなければ，``false``を返す．
+
+  - ヒント：``ec.Pay(int b)``と``Charge(int b)``を使う？
+  
+
+また，``Program``クラスの``Main``メソッドを以下のように変更せよ．
+
+.. code:: cs
+   
+   static void Main(string[] args) { 
+       EmoneyCard ec1 = new EmoneyCard("Card1"); 
+       EmoneyCard ec2 = new EmoneyCard("Card2"); 
+
+       ec1.Charge(100);
+       ec2.Charge(100);
+       ec1.Print();
+       ec2.Print();
+       if (ec1.TransferFrom(ec2, 300)) 
+       {
+           Console.WriteLine("transfer succeeded"); 
+       } 
+       else 
+       {
+           Console.WriteLine("transfer failed"); 
+       }
+
+       ec2.charge(1000);
+       ec1.Print();
+       ec2.Print();
+       if (ec1.TransferFrom(ec2, 300)) 
+       {
+           Console.WriteLine("transfer succeeded"); 
+       } 
+       else 
+       {
+           Console.WriteLine("transfer failed"); 
+       }
+
+       ec1.Print();
+       ec2.Print(); 
+   }
+   
+
+そのとき，以下の出力が得られることを確認せよ．
+
+.. code::
+
+   Card1:100 
+   Card2:100 
+   transfer failed 
+   Card1:100 
+   Card2:1100 
+   transfer succeeded 
+   Card1:400 
+   Card2:800
+
 
