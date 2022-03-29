@@ -1,0 +1,59 @@
+-------
+title: 第2回 課題
+-------
+
+--------
+基本課題
+--------
+
+以下の``Calc``クラスについて考える．
+
+.. code:: cs
+
+   using System; 
+
+   class Calc 
+   {
+       protected double val;
+
+       public Calc()
+       {
+          val = 0; 
+       }
+
+       public virtual void Set(double d) 
+       {
+          val = d; 
+       }
+       public virtual void Add(double d) 
+       {
+          val += d; 
+       }
+       public virtual void Sub(double d) 
+       {
+          val -= d; 
+       }
+       public virtual void Mul(double d) 
+       {
+          val *= d; 
+       }
+       public virtual void Div(double d) 
+       {
+          val /= d; 
+       }
+       public void Report() 
+       {
+          Console.WriteLine("Value: " + val); 
+       }
+   }
+
+この``Calc``クラスを継承し，
+
+--------
+発展課題
+--------
+
+.. caution:: 
+   
+   本課題を完了できたのならば本課題の解答のみを提出すればよく，基本課題の解答は提出する必要はない．
+
