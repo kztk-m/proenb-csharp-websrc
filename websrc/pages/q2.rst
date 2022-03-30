@@ -6,7 +6,7 @@ title: 第2回 課題
 基本課題
 --------
 
-以下の``Calc``クラスについて考える．
+「電卓」を表す以下の``Calc``クラスについて考える．
 
 .. code:: cs
 
@@ -47,7 +47,85 @@ title: 第2回 課題
        }
    }
 
-この``Calc``クラスを継承し，
+この``Calc``クラスを継承し，以下のメソッドを備えた関数電卓クラス ``FunCalc`` を作成せよ．
+
+=============================          ===========================
+メソッド名                             説明
+=============================          ===========================
+``public void Pow(double d)``          現在の値を``d``乗にする．
+``public void SetLogBase(double d)``   logの底を``d``に設定する．
+``public void Log()``                  現在の値をそのlogに設定する．
+``public void SetRadianMode()``        三角関数の角度の単位をラジアンに設定する．
+``public void SetDegreeMode()``        三角関数の角度の単位を度に設定する．
+``public void Sin()``                  現在の値を角度して，そのsinに現在を値を設定する．
+``public void Cos()``                  現在の値を角度して，そのcosに現在を値を設定する．
+=============================          ===========================
+
+これらのメソッドを実装するために ``FunCalc``は適当なフィールド（ひとつとは限らない）を持つ必要がある．
+そうしたフィールドは *publicにはしない* ようにすること．
+また，度をラジアンに直す等の共通の処理はprivateなメソッドにまとめるとよい．
+
+提出するプログラムは以下のクラス ``Program`` を持つこと．
+
+.. code:: cs
+
+   class Program 
+   {
+       static void Main(string[] args) 
+       {
+          FunCalc fc = new FunCalc(); 
+          
+          // sin(30°)の計算
+          fc.SetDegreeMode(); 
+          fc.Set(30);
+          fc.Sin(); 
+          fc.Report();
+
+          // cos(π)の計算
+          fc.SetRadianMode();
+          fc.Set(Math.PI); 
+          fc.Cos();
+          fc.Report();
+
+          // 2^10 
+          fc.Set(2);
+          fc.Pow(10);
+          fc.Report(); 
+
+          // log₂(2^10) 
+          fc.SetLogBase(2);
+          fc.Log();
+          fc.Report();
+
+          // log₁₀(log₂(2^10))
+          fc.SetLogBase(10);
+          fc.Log();
+          fc.Report();           
+       }
+   }
+
+期待される出力の例
+
+::
+
+    Value: 0.49999999999999994
+    Value: -1
+    Value: 1024
+    Value: 10
+    Value: 1
+
+
+.. hint:: 
+
+   sinやcos，logや累乗を計算するのには``Math``クラスのstaticメソッド``Sin(double)``，``Cos(double)``，``Log(double,double)``，``Pow(double,double)``が利用できる．
+   πについても``Math.PI``が利用可能である．
+   詳細は， `.NET API リファレンスの関連ページ <https://docs.microsoft.com/en-us/dotnet/api/system.math?view=net-6.0>`__ を参照のこと．
+   特に，``Log``や``Pow``がどっちの引数が何を表しているかをちゃんと確認するとよい．
+
+   また言うまでもないかもだが，180° = πラジアン である．
+
+
+
 
 --------
 発展課題
@@ -56,4 +134,73 @@ title: 第2回 課題
 .. caution:: 
    
    本課題を完了できたのならば本課題の解答のみを提出すればよく，基本課題の解答は提出する必要はない．
+
+基本課題で作成した ``FunCalc``の一部の関数を変更し，不正な値が与えらえたときにエラーとして扱い，
+計算等はせずに ``Error!`` と表示するようにせよ． ただし，``Calc``クラスを **変更してはならない．**
+
+
+具体的には以下のメソッドの動作を変更すれば十分である．
+
+========================   ======================
+メソッド名                 変更
+========================   ======================
+``SetLogBase(double d)``   ``d``が0以下か，1であればエラーとする．
+``Log()``                  ``val``が0以下であればエラーとする．
+``Div(double d)``          ``d``が0であればエラーとする．         
+========================   ======================
+
+また，``Program.Main``にたとえば以下のように動作確認用の記述を追加してよい（既存の処理を削除してはならない）．
+
+.. code:: cs
+
+   class Program 
+   {
+       static void Main(string[] args) 
+       {
+          FunCalc fc = new FunCalc(); 
+          
+          // sin(30°)の計算
+          fc.SetDegreeMode(); 
+          fc.Set(30);
+          fc.Sin(); 
+          fc.Report();
+
+          // cos(π)の計算
+          fc.SetRadianMode();
+          fc.Set(Math.PI); 
+          fc.Cos();
+          fc.Report();
+
+          // 2^10 
+          fc.Set(2);
+          fc.Pow(10);
+          fc.Report(); 
+
+          // log₂(2^10) 
+          fc.SetLogBase(2);
+          fc.Log();
+          fc.Report();
+
+          // log₁₀(log₂(2^10))
+          fc.SetLogBase(10);
+          fc.Log();
+          fc.Report();           
+
+          // エラー処理の動作確認用
+          fc.Div(0);         // Error!
+          fc.Report();       // 直前のfc.Report()と同じ値が表示される
+          fc.Set(0);
+          fc.Log();          // Error!
+          fc.Report();       // Value: 0
+          fc.SetLogBase(-1); // Error! 
+          fc.SetLogBase(1);  // Error!
+       }
+   }
+
+
+.. hint::
+
+   オーバライドを使う．
+
+
 
