@@ -9,6 +9,37 @@
 
     --code-bg-color:     hsl(240, 30%, 96%); /* #f8f8fc */
     --code-border-color: #e2e2e2; 
+
+    --footer-color: #999;
+    --border-color: #AAA;
+
+    --figure-fg-color: white;
+    --figure-border-color: #AAA;
+
+    --tip-bg-color:         hsl(60, 100%, 80%);
+    --example-bg-color:     hsl(205, 40%, 99%);
+    --example-border-color: hsl(205, 10%, 58%);
+    --note-bg-color:        hsl(155, 40%, 94%);
+    --hint-bg-color:        hsl(36, 90%, 95%);
+    --caution-bg-color:     hsl(0, 90%, 95%);
+
+    
+
+    --link-color: hsl( 205, 100%, 50%);
+    --visited-link-color: hsl( 205, 90%, 35%);
+
+    --code-kw-color: blue; 
+    --code-co-color: #008000;
+    --code-dt-color: blue; 
+    --code-st-color: #a31515; 
+    --code-ex-color: #999;
+
+    --code-metaname-bg-color:     white; 
+    --code-metaname-border-color: rgba(0, 0, 0, 0.3); 
+
+    --qnav-tab-color: white; 
+
+    --table-border-color: #222;
 }
 
 h1, h2, h3, h4, h5, h6, div.title {
@@ -24,8 +55,8 @@ pre, code {
 }
 
 li {
-    margin-top:    0.5em; 
-    margin-bottom: 0.5em; 
+    margin-top:    0.7em; 
+    margin-bottom: 0.7em; 
 }
 
 header nav {
@@ -35,8 +66,8 @@ header nav {
 
 header {
     background-color: var(--header-bg-color);
-    border-bottom:    solid 0.1em var(--header-border-color);
-    margin-bottom:    4em; 
+    border-bottom:    solid 0.1rem var(--header-border-color);
+    margin-bottom:    4rem; 
 }
 
 header nav ul {
@@ -67,7 +98,7 @@ header nav > ul {
     z-index: 1; 
 }
 
-.ddt:after {
+.ddt::after {
     content: "\025BC"; /* ▼ */    
 }
 
@@ -86,7 +117,7 @@ header nav > ul {
 
 header nav a, header nav span.ddt {
     display: inline-block;
-    padding: 0.6em  0.8em; 
+    padding: 0.6rem  0.8rem; 
     margin: 0px; 
 }
 
@@ -103,15 +134,15 @@ header nav .top {
 nav a.current-link {
     position: relative;
     /* font-weight: bold;  */
-    box-shadow: inset 0 -0.3em 0 0 var(--header-nav-current-link-color);
+    box-shadow: inset 0 -0.3rem 0 0 var(--header-nav-current-link-color);
 }
 
 footer {
     text-align: right; 
-    margin-top: 3em; 
+    margin-top: 3rem; 
     font-size: 90%;  
     /* color: hsl(275, 80%, 33%);  */
-    color: #999; 
+    color: var(--footer-color); 
 }
 
 #TOC li{
@@ -129,39 +160,39 @@ pre {
     /* margin-right: 1.5em; */
     background-color: var(--code-bg-color);
 
-    padding:       1em;
-    margin-top:    1.5em;
-    margin-bottom: 1.5em;
+    padding:       1rem;
+    margin-top:    1.5rem;
+    margin-bottom: 1.5rem;
 
     /* border-style: solid; */
     /* border-width: 0.08em; */
     border-color: var(--code-border-color);
 
-    border-radius: 1em;
+    border-radius: 1rem;
 
 /*    box-shadow:4px 4px 13px 0px rgba(0,0,0,0.19); */
 }
 
 code {
     background-color: var(--code-bg-color);
-    padding-left:  0.2em;
-    padding-right: 0.2em;
+    padding-left:  0.2rem;
+    padding-right: 0.2rem;
 
     /* padding-top:   0.1em; */
     /* padding-bottom: 0.1em; */
 
     font-size: 100%;
 
-    margin-left: 0.1em;
-    margin-right: 0.1em;
+    margin-left: 0.1rem;
+    margin-right: 0.1rem;
 
-    padding: 0.3em; 
+    padding: 0.3rem; 
 
     /* border-style: solid; */
     /* border-width: 0.08em; */
     border-color: var(--code-border-color);
 
-    border-radius: 0.25em;
+    border-radius: 0.25rem;
 }
 
 pre code {
@@ -190,12 +221,11 @@ h1 {
 }
 
 h2 {
-    border-bottom: 0.075em solid #AAA;
-    /* border-top:    0.075em solid #AAA; */
-    margin-top:    1em;
-    margin-bottom: 1em;
+    border-bottom: 0.075rem solid var(--border-color);
+    margin-top:    1rem;
+    margin-bottom: 1rem;
 
-    padding: 0.1em 0px;
+    padding: 0.1rem 0px;
 
     font-size: 145%;
 }
@@ -220,11 +250,11 @@ figure {
 
 
 figure {
-    background-color: white; 
+    background-color: var(--figure-bg-color); 
     border-style: solid;
-    border-width: 0.075em;
-    border-color: #AAA;
-    padding: 0.5em;
+    border-width: 0.075rem;
+    border-color: var(--figure-border-color);
+    padding: 0.5rem;
 
     
     margin-left: auto;
@@ -257,36 +287,14 @@ div#tasks > ol {
 
 div#tasks > ol > li {
     counter-increment: task-counter; 
-    margin-left: 0em;
+    margin-left: 0rem;
 }
 
 div#tasks > ol > li::before {
     content: "実験タスク" counter(task-counter);
     font-weight: bold; 
-    margin-right: 0.5em;
+    margin-right: 0.5rem;
 }
-
-
-span.required, span.optional {
-    display: inline-block; 
-    font-size:   90%; 
-    font-weight: bold;
-    border-radius: calc(1em / 0.9); 
-    padding: calc(0.1em / 0.9) calc(0.3em / 0.9);     
-    margin-left: -0.2em; 
-    margin-right: 0.5em; 
-}
-
-span.required {
-    color: hsl(0, 100%, 50%); 
-    background-color: hsl(0, 100%, 95%); 
-}
-
-span.optional { 
-    color: hsl(100, 90%, 30%); 
-    background-color: hsl(100, 90%, 95%); 
-}
-
 
 h1+p, h2+p, h3+p {
     margin-top:    0em;
@@ -302,8 +310,8 @@ body {
 }
 
 header nav {
-    padding-left:  calc(3vw - 0.8em); 
-    padding-right: calc(3vw - 0.8em);
+    padding-left:  calc(3vw - 0.8rem); 
+    padding-right: calc(3vw - 0.8rem);
 }
 
 header h1, header ul, header p{
@@ -328,9 +336,9 @@ footer {
         position: absolute; 
 
         font-size: 90%;
-        width: 18em; 
+        width: 18rem; 
         
-        left: calc(100% - 18em);
+        left: calc(100% - 18rem);
 
         /* top:    5vh;  */
         /* bottom: 5vh; */
@@ -355,14 +363,14 @@ footer {
 
     .toc > ul > li {
         display: block;
-        padding-left: 0.5em;
+        padding-left: 0.5rem;
     }
 
     
 
     main.with-right-nav {
         position: relative; 
-        padding-right: 18em;
+        padding-right: 18rem;
     }
     
 
@@ -375,8 +383,8 @@ footer {
     }
 
     header nav {
-        padding-left:  calc(5vw - 0.8em); 
-        padding-right: calc(5vw - 0.8em);
+        padding-left:  calc(5vw - 0.8rem); 
+        padding-right: calc(5vw - 0.8rem);
     }
     
     header h1, header ul, header p{
@@ -410,10 +418,10 @@ footer {
 
 .qnav a {
     display: inline-block;
-    padding: 0.3em 2em; 
+    padding: 0.3rem 2rem; 
     /* background-color: #CCC; */
-    border-top-left-radius:  1.5em;
-    border-top-right-radius: 1.5em;        
+    border-top-left-radius:  1.5rem;
+    border-top-right-radius: 1.5rem;        
 }
 
 .qnav a:link, .qnav a:visited {
@@ -421,24 +429,24 @@ footer {
 }
 
 .qnav a:hover {
-    background-color: white;
+    background-color: var(--qnav-tab-color);
 }
 
 .qnav a.current-link {
-    background-color: white; 
+    background-color: var(--qnav-tab-color); 
     position: relative;
-    border-top:   0.1em solid var(--header-border-color);
-    border-right: 0.1em solid var(--header-border-color); 
-    border-left:  0.1em solid var(--header-border-color); 
+    border-top:   0.1rem solid var(--header-border-color);
+    border-right: 0.1rem solid var(--header-border-color); 
+    border-left:  0.1rem solid var(--header-border-color); 
 }
 
-.qnav a.current-link:before {
+.qnav a.current-link::before {
     content: ''; 
     position: absolute; 
 
-    background-color: white;    
-    bottom: -0.15em; left: 0; right: 0; 
-    height: 0.2em; 
+    background-color: var(--qnav-tab-color);    
+    bottom: -0.15rem; left: 0; right: 0; 
+    height: 0.2rem; 
     z-index: 1;
 }
 
@@ -449,7 +457,7 @@ footer {
 
 h3 {
     font-size:  120%;
-    margin-top: 1.5em;
+    margin-top: 1.5rem;
 }
 
 footer a {
@@ -462,76 +470,64 @@ footer a:visited {
 
 /* Special items */
 
-div.note, section.note, div.caution, section.caution, div.admonition, section.admonition, div.tip, section.tip {
-    padding: 0.1em 1em;
-    border-radius: 1em; 
+div.note, section.note, 
+div.caution, section.caution, 
+div.admonition, section.admonition, 
+div.tip, section.tip, 
+div.hint, section.hint
+{
+    padding: 0.1em 1rem;
+    border-radius: 1rem; 
 
-    margin-top:    1em; 
-    margin-bottom: 1em; 
+    margin-top:    1rem; 
+    margin-bottom: 1rem; 
 }
 
 div.tip, section.tip {
-    background-color: hsl(60, 100%, 80%);
+    background-color: var(--tip-bg-color);
 }
 
 div.example, section.example {
-    background-color: hsl(36, 0%, 96%);
-    /* border: 0.2em solid hsl(36, 0%, 48%); */
+    background-color: var(--example-bg-color);
+    border: 0.15rem solid var(--example-border-color);
+}
+
+.example > p:first-child {
+    font-weight: bold; 
 }
 
 div.note, section.note {
-    background-color: hsl(155, 40%, 94%); 
+    background-color: var(--note-bg-color); 
 }
-
-/* div.note div.title p:before  { */
-/*     display: inline-block;  */
-/*     content: "!!\020DD"; */
-/*     /\* color: white;  *\/ */
-/*     /\* padding: 0.1em 0.5em;  *\/ */
-/*     /\* background-color: hsl(155, 40%, 50%); *\/ */
-/*     /\* border-radius: 1em; *\/ */
-/* } */
-
-/* div.note div.title { */
-/*     background-color: hsl(155, 40%, 80%);  */
-/* } */
-
 
 div.caution, section.caution {
-    background-color: hsl(0, 90%, 95%);
+    background-color: var(--caution-bg-color); 
 }
 
-div.caution > p:first-child::before, section.caution > p:first-child::before {
-    content: "注意：";
-    font-weight: bold; 
-    color: hsl(10, 100%, 48%); 
+div.hint, section.hint {
+    background-color: var(--hint-bg-color);
 }
-
-
-
-
-/* syntax highlighting */
 
 span.metaname {
-    background-color: white; 
-    border: 0.1em solid black;
+    background-color: var(--code-metaname-bg-color); 
+    border: 0.1rem solid var(--code-metaname-border-color);
 }
 
 span.ex {
-    color: gray; 
+    color: var(--code-ex-color); 
 }
 
 span.kw {
     font-weight: bold; 
-    color: blue; 
+    color: var(--code-kw-color); 
 }
 
 span.co {
-    color: #008000; 
+    color: var(--code-co-color); 
 }
 
 span.dt {
-    color: blue; 
+    color: var(--code-dt-color); 
 }
 
 /* span.op { */
@@ -539,7 +535,7 @@ span.dt {
 /* } */
 
 span.st {
-    color: #a31515; 
+    color: var(--code-st-color); 
 }
 
 strong {
@@ -547,7 +543,7 @@ strong {
     font-weight: bold;
     color:       var(--strong-color);
 
-    background: linear-gradient(to top, #FF6 40%, transparent 50%);
+    /* background: linear-gradient(to top, #FF6 40%, transparent 50%); */
 }
 
 em {
@@ -560,7 +556,7 @@ em {
 
 a {
     /* color: #00aaff; */
-    color: hsl( 205, 100%, 50%);
+    color: var(--link-color);
     /* transition: background-color 0.3s ease-in-out; */
     text-decoration: none; 
 }
@@ -570,8 +566,25 @@ a:hover {
 }
 
 a:visited {
-    color: hsl( 205, 90%, 35%)
+    color: var(--visited-link-color);
 }
+
+table {
+    margin: 2rem auto; 
+    border-top:    .1rem solid var(--table-border-color);
+    border-bottom: .1rem solid var(--table-border-color);
+
+    border-collapse: collapse;
+}
+
+thead tr:last-child th {
+    border-bottom: .075rem solid var(--table-border-color);
+}
+
+td, th {
+    padding: 0.6rem 0.4rem;
+}
+
 
 @media print {
     #TOC { 
@@ -593,9 +606,9 @@ a:visited {
         padding-right: 0px; 
     }
     pre {
-        margin-top:    0.5em;
-        margin-bottom: 0.5em; 
-        padding:       0.5em; 
+        margin-top:    0.5rem;
+        margin-bottom: 0.5rem; 
+        padding:       0.5rem; 
     }
 }
 
