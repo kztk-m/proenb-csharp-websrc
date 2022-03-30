@@ -1,0 +1,426 @@
+-----
+title: 第3回 コレクション・ジェネリクス
+tableOfContents: true 
+-----
+
+====
+配列
+====
+
+いくつかのデータをひとまとめにして取り扱いたいことはよくある．
+**配列** は同じ型のデータを固定個まとめて扱うことを可能にする．
+
+.. code:: cs
+
+   using System;
+
+   class ArrayExample
+   {
+       static void Main() 
+       {
+          // intの配列型の nums の宣言．nums は要素5の配列．
+          // 一般に各要素の型が T であるような配列の型は T[]．
+          // new T[n] で要素数がnであるような配列オブジェクトを生成できる．
+          int[] nums = new int[5]; 
+
+          // 配列の各要素への代入
+          nums[0] = 1;
+          nums[1] = 2; 
+          nums[2] = 3;
+          nums[3] = 4;
+          nums[4] = 5; 
+
+          // nums[5] = 6 は例外発生．
+
+          // 各要素を表示する．numsの要素数は nums.Length で取得可．
+          for (int i = 0; i < nums.Length; i++ ) 
+          {
+             // nums[i] は nums の第i要素
+             Console.WriteLine("nums[" + i + "] = " + nums[i]); 
+          }
+
+          // 中括弧を用いると配列の生成時に要素を初期化可．
+          // この場合は要素数を省略できる．書く場合は中括弧の中身の要素数と一致しなければならない．
+          int[] nums2 = new int[] { 1, 2, 3, 4, 5 };           
+
+          // 要素について繰り返しを行いたければ foreach 文（あとで詳細を説明）を使用可能
+          foreach (var n in nums2) 
+          {
+             Console.WriteLine(n);
+          }
+
+          // *宣言時は* 中括弧があれば new int[] も不要
+          int[] nums3 = {1, 2, 3, 4, 5}; 
+
+          // 多次元配列（ここでは二次元）の例
+          double[,] mat1 = { {1,2,3}, {4,5,6} };           
+
+          // Length は要素数．
+          Console.WriteLine( "mat1.Length = " + mat1.Length ); // mat1.Length = 6 
+
+          // 配列 a の次元数は a.Rank 
+          Console.WriteLine( "nums.Rank = " + nums.Rank ); // nums.Rank = 1
+          Console.WriteLine( "mat1.Rank = " + mat1.Rank ); // mat1.Rank = 2 
+
+          // 第d次元の要素数は GetLength(d) で取得可
+          Console.WriteLine( "mat1.GetLength(0) = " + mat1.GetLength(0) ); // mat1.GetLength(0) = 2
+          Console.WriteLine( "mat1.GetLength(1) = " + mat1.GetLength(1) ); // mat1.GetLength(1) = 3
+
+          double[,] mat2 = new double[ mat1.GetLength(1), mat1.GetLength(0) ]; 
+          // 転置する
+          for (int i = 0; i < mat1.GetLength(0) ; i++) 
+          {
+             for (int j = 0; j < mat1.GetLength(1) ; j++) 
+             {
+                 mat2[j,i] = mat1[i,j];
+             }
+          }
+
+          Console.WriteLine(mat1.ToString()); // 残念ながら ToString()はあまりよきにはからってくれない
+
+          // mat2を表示する．
+          for (int i = 0; i < mat2.GetLength(0) ; i++) 
+          {             
+             for (int j = 0; j < mat2.GetLength(1) ; j++) 
+             {
+                 if (j != 0) 
+                 { 
+                     Console.Write(", ");
+                 }
+                 Console.Write(mat2[i,j]);
+             }
+             Console.WriteLine();
+          }          
+       }              
+   }
+
+
+なお，オブジェクトの配列や配列の配列も作ることができる．
+
+.. code:: cs
+
+   using System; 
+
+   class MyObject 
+   {
+       public override string ToString() 
+       {
+          return "It's me, MyObject."; 
+       }
+   }
+   class ArrayExample2
+   {
+       static void Main() 
+       {
+          // MyObject の配列
+          MyObject[] myobjects = {
+             new MyObject(), new MyObject(), new MyObject()
+          };
+
+          Console.WriteLine( myobjects[1] ); // It's me, MyObject.
+
+          // int[] の 配列
+          int[][] arrayOfArrays = new int[3][];
+
+          // 各要素の配列のサイズは違っていてもよい．
+          arrayOfArrays[0] = new int[] {1, 2, 3} ;
+          arrayOfArrays[1] = new int[] {4, 5}; 
+          arrayOfArrays[2] = new int[] {6, 7, 8, 9};
+          // arrayOfArrays[1] = {4,5} は構文エラー．new int[]の部分が省略できるのは宣言時だけ．
+
+          Console.WriteLine( arrayOfArrays[1][1] ); // 5 
+       }
+   }
+
+.. note:: 
+
+   配列の代入には少し注意が必要である．
+
+   .. code:: cs
+
+      using System; 
+      
+      class ArrayExample3
+      {
+         static void Main() 
+         {
+             int[] a = {1,2,3};
+             int[] b = a; 
+   
+             a[1] = 22;
+   
+             for (int i = 0; i < b.Length; i++)
+             {
+                Console.WriteLine("b[i] = " + b[i]);
+             }
+             // 出力：
+             // b[0] = 1
+             // b[1] = 22
+             // b[2] = 3
+         }
+      }
+
+   これは a や b が配列そのものではなく配列への参照であり，aもbも同じ配列を指しているためである．こうした，
+   C#において，その型の値が実体そのものでなく実体への参照であるような型を参照型（reference type）といい，配列型やクラス型，そして文字列型は参照型である．
+   一方で，``int``や``bool``等はその型の値は実体（整数や真偽値）そのものである（ように振る舞う）．そのような型を値型（value type）という．
+   
+   複合的な型やユーザ定義型が参照型かというとそんなことはなく，組型（tuple type）や構造体型（structure type）は値型となる（いずれも本演習では未登場）．
+   本演習ではこの区別には深入りしないが，興味のある人は `https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/types/`_ や，
+   そこから辿れる文章等を調べてみるとよい．
+   
+
+=====================
+プロパティ（property）
+=====================
+
+上で ``nums.Length`` や ``nums.Rank`` は一見フィールドに見える．が，実際には
+これらは **プロパティ** と呼ばれるものである．
+
+インスタンス ``o``のプロパティ ``P`` はフィールドのように``o.P``で読み出したり``o.P = e``で書き込んだりできる．
+しかし，フィールドと異なるのはプロパティは読み出し専用（read-only）は書き込み専用（write-only）にでき，
+またメソッドのように読み出しや書き込みの際に処理を実行できる．
+
+.. code:: cs
+
+   using System; 
+
+   class Student 
+   {
+       private int score = 0; 
+       public int Score {
+          get { return score;  } 
+          set { score = value; } // value は o.Score = e の e の値を指す変数
+       }
+
+       // フィールドと同様の動作をするプロパティについては，getやsetの内容を省略可
+       // auto(matically)-implemented property と呼ばれる．
+       public string Name { get; set; } = ""; // auto-implemented propertyには初期値を指定可
+   }
+   class PropertyExample 
+   {
+       static void Main() 
+       {
+           Student s = new Student(); 
+           s.Name  = "Taro Tohoku";
+           s.Score = 95; 
+           Console.WriteLine( s.Name + ": " + s.Score ); 
+       }
+   }
+
+プロパティにすることにより，たとえば代入される値の内容を検査し適切に例外を投げることができるようになる．
+
+.. code:: cs
+
+   using System; 
+
+   class Student 
+   {
+       private int score = 0; 
+       public int Score {
+          get { return score;  } 
+          set { 
+              if (0 <= value && value <= 100)
+              { 
+                  score = value; 
+              }
+              else 
+              {
+                  // 例外（次回説明）を投げる．
+                  throw new ArgumentException("Scoreは0から100までの範囲内の整数でなければならない");
+              }
+          } 
+       }
+
+       public string Name { get; set; } = ""; 
+   }
+   class PropertyExample1
+   {
+       static void Main() 
+       {
+           Student s = new Student(); 
+           s.Name  = "Taro Tohoku";
+           s.Score = 105; // 例外発生
+           Console.WriteLine( s.Name + ": " + s.Score ); 
+       }
+   }
+
+また，他のプロパティやフィールドから計算される読み出し専用のプロパティを持つこともできる．
+
+.. code:: cs
+
+   using System; 
+
+   class Student 
+   {
+       private int score = 0; 
+       public int Score {
+          get { return score;  } 
+          set { 
+              if (0 <= value && value <= 100)
+              { 
+                  score = value; 
+              }
+              else 
+              {
+                  // 例外（次回説明）を投げる．
+                  throw new ArgumentException("Scoreは0から100までの範囲内の整数でなければならない");
+              }
+          } 
+       }
+       public string Name { get; set; } = ""; 
+
+       public string ScoreRank 
+       {
+          // getのみ定義する．
+          get {
+              if (Score >= 90) 
+              {
+                  return "AA";
+              }
+              else if (Score >= 80) 
+              {
+                  return "A";
+              }
+              else if (Score >= 70) 
+              {
+                  return "B"; 
+              }
+              else if (Score >= 60) 
+              {
+                  return "C";
+              }
+              else 
+              {
+                  return "D";
+              }
+          }
+       }
+   }
+   class PropertyExample2
+   {
+       static void Main() 
+       {
+           Student s = new Student(); 
+           s.Name  = "Taro Tohoku";
+           s.Score = 95;
+           Console.WriteLine( s.Name + ": " + s.Score + " (" + s.ScoreRank + ")"); 
+       }
+   }
+
+実際に ``Length`` や ``Rank`` は配列オブジェクトの読み出し専用のプロパティである．
+
+..
+   たとえば以下のようなコードはコンパイルエラーとなる．
+
+   .. code:: cs
+
+
+       using System; 
+
+       class ArrayExample4
+       {
+          static void Main() 
+          {
+              int[] nums = {1,2,3};
+
+              if (false) {
+                  nums.Length = 1; // コンパイルエラー
+              }
+          }
+       }
+
+``set``のみを定義することで書き込み専用のプロパティを作成することもできる．また，``get``や``set``の前に``private``
+等のアクセス指定子を指定することで，読み出しや書き込みを行える範囲をコントロールすることも可能である．
+
+
+`前回 <./w2.html>`__，`前々回 <w1.html>`__でいくつかのクラスは``T GetXXX()``や``void SetXXX(T x)``といったメソッドを
+持っていたが，こういったメソッドはプロパティとして実装することができる．
+
+
+
+=============
+``List <T>`` 
+=============
+
+配列は基本的ながら強力なデータ構造の一つではあるが，サイズが生成後に変更できないのは不便であることが多い．
+生成後のサイズを増減させたい場合は ``System.Collections.Generic.List<T>`` を用いるとよい．
+
+.. code:: cs
+
+   using System;
+   using System.Collections.Generic;
+
+   class ListExample 
+   {
+       static void Main() 
+       {
+          // 要素がstring型であるようなListを作成．
+          List<string> ns = new List<string>(); 
+
+          ns.Add("apple"); 
+          ns.Add("orange"); 
+          ns.Add("banana"); 
+
+          // 要素を先頭から操作するにはforeach文を利用可能
+          foreach (var n in ns) {
+             Console.WriteLine(n);
+          }
+
+          ns[1] = "mikan"; // 配列のようにインデックスアクセス可能．
+
+          for (int i = 0; i < ns.Count; i++) {
+             Console.WriteLine( "ns[" + i + "] = " + ns[i] ); 
+          }
+
+          // 指定された要素を取り除くことができる
+          // ただし，O(Count - 要素のインデックス)時間かかる
+          ns.Remove("mikan"); 
+
+          Console.WriteLine("After ns.Remove(\"mikan\")");
+          for (int i = 0; i < ns.Count; i++) {
+             Console.WriteLine( "ns[" + i + "] = " + ns[i] ); 
+          }
+
+          // 指定されたインデックスの要素を取り除ける
+          // ただし，O(Count - 要素のインデックス)時間かかる
+          ns.RemoveAt(1); 
+          Console.WriteLine("After ns.RemoveAt(1)");
+          for (int i = 0; i < ns.Count; i++) {
+             Console.WriteLine( "ns[" + i + "] = " + ns[i] ); 
+          }
+
+          // 指定されたインデックスの要素を追加できる
+          ns.Insert(0, "melon"); 
+          Console.WriteLine("After ns.Insert(0,\"melon\")");
+          for (int i = 0; i < ns.Count; i++) {
+             Console.WriteLine( "ns[" + i + "] = " + ns[i] ); 
+          }
+
+          // 要素がintであるようなListを作成．
+          List<int> ms1 = new List<int> {};
+
+          List<int> ms2; 
+          // 作成時の要素を指定可能
+          ms2 = new List<int> {1, 2, 3};
+          for (int i = 0; i < ms2.Count; i++) {
+              Console.WriteLine( "ms2[" + i + "] = " + ms2[i] );
+          }
+
+          // 配列のときと同様の書き方はできない（以下はエラーになる）
+          // List<int> ms3 = {1, 2, 3}; 
+       }
+   }
+
+
+
+
+========================
+ジェネリクス（generics）
+========================
+
+
+
+========
+名前空間
+========
+
