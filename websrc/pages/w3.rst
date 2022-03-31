@@ -7,7 +7,7 @@ tableOfContents: true
 配列
 ====
 
-いくつかのデータをひとまとめにして取り扱いたいことはよくある．
+いくつかのデータをひとまとめ（コレクション）にして取り扱いたいことはよくある．
 **配列** は同じ型のデータを固定個まとめて扱うことを可能にする．
 
 .. code:: cs
@@ -43,7 +43,7 @@ tableOfContents: true
           // この場合は要素数を省略できる．書く場合は中括弧の中身の要素数と一致しなければならない．
           int[] nums2 = new int[] { 1, 2, 3, 4, 5 };           
 
-          // 要素について繰り返しを行いたければ foreach 文（あとで詳細を説明）を使用可能
+          // 要素について繰り返しを行いたければ foreach 文 を使用可能
           foreach (var n in nums2) 
           {
              Console.WriteLine(n);
@@ -390,6 +390,7 @@ tableOfContents: true
           }
 
           // 指定されたインデックスの要素を追加できる
+          // ただし，最良でもO(Count - 要素のインデックス)時間，最悪O(Count)時間かかる．
           ns.Insert(0, "melon"); 
           Console.WriteLine("After ns.Insert(0,\"melon\")");
           for (int i = 0; i < ns.Count; i++) {
@@ -411,16 +412,209 @@ tableOfContents: true
        }
    }
 
+.. note:: 
 
+   ``List<T>`` は最後尾でない場所に対する要素の削除や追加が重い（末尾への要素の追加はO(1)時間で済む場合とO(Count)時間かかる場合がある）．その代わり，
+   インデックスアクセスがO(1)時間で可能である．
+   
+   他の「T型の要素の列」を扱うためのクラスに ``LinkedList<T>`` がある．
+   こちらは着目している要素の前後への挿入や，その要素の削除がO(1)で可能でる．その代わりにインデックスアクセスが
+   できず，着目している要素へのアクセスは先頭あるいは末尾から辿っていく必要がありO(Count)時間かかる．
+   目的によって使いわけよう．
 
 
 ========================
 ジェネリクス（generics）
 ========================
 
+``List<T>``のような型パラメータ（``T``）を取るようなクラスは **ジェネリッククラス** と呼ばれる．
+ジェネリクスは「ジェネリック…」の総称である．
+
+ユーザ自身もジェネリッククラスを作成することが可能である．
+
+.. code:: cs
+
+   using System;
+
+   class MyPair<T, U> 
+   {
+       public T Fst { get; set; }
+       public U Snd { get; set; }
+
+       public MyPair (T fst, U snd) 
+       {
+           Fst = fst; 
+           Snd = snd;
+       }
+   }
+   class GenericsExample 
+   {
+       static void Main() 
+       {
+           MyPair<string, int> mp = new MyPair<string,int>("orange", 23); 
+           mp.Fst = "apple";
+           Console.WriteLine("(" + mp.Fst + ", " + mp.Snd + ")"); // (apple, 23)
+
+           MyPair<string, MyPair<int, bool>> nested = 
+               new MyPair<string, MyPair <int, bool>>("orange", new MyPair<int, bool>(24, true));
+           Console.WriteLine("(" + nested.Fst + ", " + nested.Snd.Fst + ", " + nested.Snd.Snd + ")"); // (orange, 24, true)
+
+           // C# 9.0から，生成するオブジェクトの型が明らかな場合は new の後の型名を省略できる．
+           MyPair<string, MyPair<int, bool>> nested2 = new ("orange", new (24, true));
+       }
+   }
+
+ジェネリクスもポリモーフィズムを実現する重要な言語機能の一つである．
+
+
+========
+練習問題
+========
+
+プレイリストを管理するためのクラス ``PlayList`` を作成しなさい．
+このクラスは曲名のリストを管理し，以下のpublicなコンストラクタ・メソッドを持つ．
+
+=============================   ===================================
+``PlayList(string[] titles)``   曲目が``titles``で与えらるようなプレイリストを作成するコンストラクタ．
+``void PrintTrack(int i)``      ``i``番目の曲目を標準出力に表示する．
+``void PrintAllTracks()``       全ての曲目を標準出力に表示する．
+=============================   ====================================
+
+動作確認用のクラス
+
+.. code:: cs 
+
+    class ListExercise 
+    {
+        static void Main()
+        {
+            PlayList pl = new PlayList (new string[] { "赤とんぼ", "アルプス一万尺", "荒城の月" });
+            pl.PrintTrack(0); // 赤とんぼ
+            pl.PrintTrack(1); // アルプス一万尺
+            pl.PrintTrack(2); // 荒城の月
+
+            // 各自の定めた表示形式にて "赤とんぼ", "アルプス一万尺", "荒城の月" の情報を含む出力がなされる．
+            pl.PrintAllTracks(); 
+        }
+    }
+
+
+
+
+
+
 
 
 ========
 名前空間
 ========
+
+（読みとばしてもよい．）
+
+さて，先程 ``using System.Collections.Generic;``という``using System;``以外の``using``が出てきたので， **名前空間** について説明しておく．
+
+
+C#において，クラス名などの名前はいずれかの名前空間に属している．たとえば，``Console``は``System``という名前空間に属している．
+また，上記の``MyPair``や``ArrayExample``等は「空」の名前空間（グローバル名前空間）に属している．
+名前空間は名前空間を含むことができる．たとえば，``System``は``Collections``という名前空間を含んでいて，その``Collections``は
+``Generic``という名前空間を含んでいる．上記の``List<T>``はその``Generic``に含まれている．
+
+名前空間にある名前にアクセスするには
+
+.. raw:: html
+
+   <pre><span class="metaname">名前空間</span>.<span class="metaname">名前</span></pre>
+
+のように"."を用いる．たとえば，``System.Console``などのようにする．名前空間がネストされている場合は，その分だけ"."で名前空間をつなげて書く．
+たとえば，``System.Collections.Generic.List<T>`` など．``System.Console``などの名前空間が明示された名前を **完全修飾名** と呼ぶ．
+なお，上記の``MyPair``や``ArrayExample``はグローバル名前空間に属するのでそれ自身が完全修飾名となる．
+
+なので，usingを用いなくても``Console``や``List<T>``を用いたプログラムを書くことができる．
+
+.. code:: cs
+
+   class NameSpaceExample 
+   {
+       static void Main() 
+       {
+           System.Collections.Generic.List<int> ns = 
+             new System.Collections.Generic.List<int>() { 1, 2, 3 };
+           
+           for (int i = 0; i < ns.Count ; i++) 
+           {
+              System.Console.WriteLine( "ns[" + i + "] = " + ns[i]);
+           }
+       }
+   }
+
+いちいち完全修飾名を書くのは煩わしいので，指定の名前空間に属する名前を修飾なしに使える（「名前を **インポート** する」と言う）ようにするのが``using``ディレクティブである．
+``using``を使うことにより，上記のプログラムは以下のように書ける．
+
+.. code:: cs
+
+   using System; 
+   using System.Collections.Generic;
+
+   class NameSpaceExample2
+   {
+       static void Main() 
+       {
+           List<int> ns = new List<int>() { 1, 2, 3 };
+           
+           for (int i = 0; i < ns.Count ; i++) 
+           {
+              Console.WriteLine( "ns[" + i + "] = " + ns[i]);
+           }
+       }
+   }
+
+``using``はその名前空間に含まれる名前空間はインポートしない．なので以下はエラーになる．
+
+.. code:: cs
+
+   using System; 
+
+   class NameSpaceExample3
+   {
+       static void Main() 
+       {
+           // エラー
+           Collections.Generic.List<int> ns = new Collections.Generic.List<int>() { 1, 2, 3 };
+       }
+   }
+
+``namespace``ディレクティブを用いることで，その名前空間に名前を定義することができる．
+
+.. code:: cs
+
+   namespace N1 {
+       // N1に属するA 
+       class A { protected int m; }
+   }
+
+   namespace N1 {
+       namespace N2 {
+           // N1.N2 に属する A
+           // 違う名前空間であれば同じ名前が属することができる．
+           class A { static protected int n = 0; }
+           // N1.N2 に属する B
+           class B {}
+       }
+       class C : N2.B {}
+       // この A は N1.A のほう
+       class D : A { private int f() { return m; } }
+   }
+
+   namespace N1.N2 {
+       // この A は N1.N2.A 
+       class D : A {
+           // Mainメソッドはどの名前空間に属するクラスに定義されててもよい
+           static void Main() 
+           {
+               // 完全修飾することで N1 の A にアクセスできる
+               object o = new N1.A(); 
+               System.Console.WriteLine(n); 
+           }
+       }
+   }
 

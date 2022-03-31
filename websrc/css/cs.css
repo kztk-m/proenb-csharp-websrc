@@ -583,6 +583,7 @@ thead tr:last-child th {
 
 td, th {
     padding: 0.6rem 0.4rem;
+    vertical-align: top; 
 }
 
 

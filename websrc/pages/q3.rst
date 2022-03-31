@@ -1,4 +1,234 @@
------
+-----------------
 title: 第3回 課題
------
+-----------------
+
+--------
+基本課題
+--------
+
+以下の``Item``クラスを考える．
+
+.. code:: cs
+
+   // 以下の内容は変更しない．
+   class Item : System.IEquatable<Item>
+   {
+      public string Name { get; private set; }
+      public int Price { get; private set; }
+
+      public Item(string s, int p)
+      {
+         Name = s;
+         Price = p;
+      }
+
+      // 以下はItemオブジェクト同士の等価性検査を行えるようにするためのもの．
+      // 本課題を進める上で理解する必要はない．
+      // 
+      // 参考： https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
+      // ここに書かれている通り，C#的にはclassでなくrecordを使うべきではある．
+
+      // object.Equals のオーバライド
+      // ジェネリックでないコレクションはこっちを使う場合がある？
+      public override bool Equals(object o)
+      {
+         // e as T は (T) e に近いが， (T) eと異なり T へのキャストが失敗したらnullとなる．
+         return Equals(o as Item);
+      }
+
+      // System.IEquatable<Item>.Equals の定義（オーバライドでなく定義であることの詳細は次回）
+      // List<Item>やLinkedList<Item>のRemove等はこっちを使う
+      public bool Equals(Item o)
+      {
+         // &&の短絡を利用．oがnull のときは o.Name や o.Price は 評価されない．
+         // o != null と書くと下に定義した演算子が呼ばれ無限ループする
+         return (object) o != null && Name == o.Name && Price == o.Price;
+      }
+
+      // aとbがItem型であるときに a == bと書いたときに呼ばれる．
+      // aとbがItem型であるときにも a.Equals(b) は a が Itemの派生型のインスタンスであるときには
+      // 上のメソッドは呼ばれない場合がある．対し，a == b はこのメソッドが呼ばれることに注意．
+      public static bool operator ==(Item a, Item b)
+      {
+         if ((object) a == null)
+         {
+               return (object) b == null;
+         }
+         return a.Equals(b);
+      }
+      public static bool operator !=(Item a, Item b)
+      {
+         return !(a == b);
+      }
+
+      // 今回は関係ないが GetHashCode も実装しないと 
+      // HashSet や Dictionary につっこんだときの挙動が変になる．
+      public override int GetHashCode()
+      {
+         return (Name, Price).GetHashCode();
+      }
+
+      public override string ToString()
+      {
+         // {Name = Chocolate, Price = 250} みたいな文字列に
+         return "{Name = " + Name + ", Price = " + Price + "}";
+      }
+   }
+
+そのとき``Item``で表される商品を扱うためのショッピングカートを表すクラス ``Cart`` を作成せよ．
+
+カートは以下の2種類の情報を管理する．
+
+  - カート内の商品：ユーザは商品（``Item``）を追加したり削除したりできる
+  - 予算：作成時に指定し，予算を超えるときは商品をカートに追加することはできない
+
+また，以下のpublicなコンストラクタやメソッドを持つ．
+
+========================   =============================================================
+名前                       満たすべき挙動
+========================   =============================================================
+``Cart(int budget)``       予算が``budget``であるような空のショッピングカートを作成するコンストラクタ．
+``void Add(Item i)``       商品``i``のカートへの追加を試みる．ただし，``i``を追加することでカート内の商品の金額の合計が予算を超えるのならば追加しない．
+``void Remove(Item i)``    商品``i``をカートから一つ取り除く．
+``void Report()``          カート内の全商品，合計金額，購入した場合の予算の残りを標準出力に出力する．ただし，``for``文や``while``文（``do``文も）を使ってはならない（``foreach``文を使う？）
+``int Budget``             予算を確認するためのread-onlyなフィールド
+========================   =============================================================
+
+提出するプログラムは以下の動作確認用のクラスを含むこと．
+
+.. code:: cs 
+
+   class Program
+   {
+      static void Main()
+      {
+         // 商品
+         Item chocolate = new Item("チョコレート", 120);
+         Item chip = new Item("チップ", 100);
+         Item popCorn = new Item("ポップコーン", 110);
+         Item candy = new Item("キャンディ", 20);
+
+         // 予算300のカート
+         Cart sc = new Cart(300);
+         sc.Add(chocolate);
+         sc.Add(chip);
+         sc.Add(popCorn); // 予算オーバ追加できず
+
+         sc.Report();
+
+         sc.Remove(chip);
+         sc.Add(candy);
+
+         Console.WriteLine();
+         sc.Report();
+
+         sc.Add(popCorn);
+
+         Console.WriteLine();
+         sc.Report();
+
+         // 名前と値段の同じ商品は等価として扱われる
+         sc.Remove(new Item("チョコレート", 120));
+
+         Console.WriteLine();
+         sc.Report();
+
+         sc.Add(candy);
+         sc.Add(candy);
+         sc.Add(candy);
+         sc.Add(popCorn);
+
+         Console.WriteLine();
+         sc.Report();
+      }
+   }
+
+たとえば以下のような出力が得られる．
+
+::
+
+   チョコレート: 120
+   チップ: 100
+   合計: 220
+   残額: 80
+
+   チョコレート: 120
+   キャンディ: 20
+   合計: 140
+   残額: 160
+
+   チョコレート: 120
+   キャンディ: 20
+   ポップコーン: 110
+   合計: 250
+   残額: 50
+
+   キャンディ: 20
+   ポップコーン: 110
+   合計: 130
+   残額: 170
+
+   キャンディ: 20
+   ポップコーン: 110
+   キャンディ: 20
+   キャンディ: 20
+   キャンディ: 20
+   ポップコーン: 110
+   合計: 300
+   残額: 0
+
+--------
+発展課題
+--------
+
+.. caution:: 
+   
+   本課題を完了できたのならば本課題の解答のみを提出すればよく，基本課題の解答は提出する必要はない．
+
+``Cart``クラスの``Report()``メソッドを変更しカートの中身を表示する際に同じ商品はまとめて表示するようにせよ．
+
+実行例
+
+::
+
+   チョコレート: 120 x 1
+   チップ: 100 x 1
+   合計: 220
+   残額: 80
+
+   チョコレート: 120 x 1
+   キャンディ: 20 x 1
+   合計: 140
+   残額: 160
+
+   チョコレート: 120 x 1
+   キャンディ: 20 x 1
+   ポップコーン: 110 x 1
+   合計: 250
+   残額: 50
+
+   キャンディ: 20 x 1
+   ポップコーン: 110 x 1
+   合計: 130
+   残額: 170
+
+   キャンディ: 20 x 4
+   ポップコーン: 110 x 2
+   合計: 300
+   残額: 0
+
+
+.. hint:: 
+
+   ``List<Item>``を使って，既に表示した商品かどうかを管理し，既に表示した商品ならば何もせず，そうでなければカートの中その商品の数を
+   数えるとよいう方法で実装できる．与えられた要素がリストに含まれているかの検査を ``foreach`` で書くのは難しくないが，``List<T>.Contains(T)`` メソッドを
+   使うことができる（`当該メソッドの詳細 <https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.contains?view=net-6.0#system-collections-generic-list-1-contains(-0)>`__）．
+
+   ただ，今回分では紹介しなかったが連想配列を表すクラス``Dictionary<Item, int>``を使うのが自然か．このクラスがどのようなコンストラクタかメソッドを知るには `.NET API リファレンスの当該クラスのページ <https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2?view=net-6.0>`__ を見るとよい．次回の演習でも少し紹介する．
+
+
+
+
+
+
 

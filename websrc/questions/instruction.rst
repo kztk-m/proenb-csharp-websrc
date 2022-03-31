@@ -24,7 +24,7 @@ Visual Studio場合はの「新しいプロジェクトの作成」（Windows）
 課題の実施
 ----------
 
-``Program.cs`` を問題文の指示の通りに埋める．``Program.cs``には **学籍番号と名前をコメントとして含める** こと．
+.cs ファイルを問題文の指示の通りに作成する．提出する .csファイルには先頭部分に **学籍番号と名前をコメントとして含める** こと．
 
 ----
 提出
@@ -51,7 +51,7 @@ Visual Studio場合はの「新しいプロジェクトの作成」（Windows）
      :raw-html:`<code>git archive --prefix=<span class="metaname">プロジェクト名/</span> <span class="metaname">ブランチ名</span> -o <span class="metaname">プロジェクト名</span>.zip</code>` 
      などとすればレポジトリの内容を纏めた.zipファイルを作成できる．
   
-     * **公開レポジトリに回答を置かないように．**
+     * **公開レポジトリに解答を決して置かないように．**
 
 3. 得られた「プロジェクト名.zip」をClassroom内の当該回の「課題」より提出する．
 
