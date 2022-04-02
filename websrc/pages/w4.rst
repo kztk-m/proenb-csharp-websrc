@@ -1,0 +1,569 @@
+-----
+title: 第4回 ファイル入出力と例外処理
+tableOfContents: true
+-----
+
+
+前回の続き：ディクショナリ
+==========================
+
+**ディクショナリ（連想配列などとも言われる）** は大雑把には添字に一般のデータを許した配列のようなコレクションである．
+.NETにおいても，``System.Collections.Generic.Dictionary<TKey,TValue>``として提供されている．
+
+.. code:: cs
+
+  using System;
+  using System.Collections.Generic;
+
+  class DictionaryExample
+  {
+     static void Main()
+     {
+         // ディクショナリの作成
+         Dictionary<string, int> dict = new Dictionary<string, int>();
+
+         // Dictionary に要素を追加するには Add メソッドを用いる．
+         dict.Add( "Chocolate", 2 );
+         dict.Add( "Chips",     4 );
+         dict.Add( "Candy",     5 );
+
+         // 要素には配列のようにアクセスできる
+         dict["Chips"] = 7;
+         Console.WriteLine( "dict[\"Chips\"] = " + dict["Chips"] ); // 7
+
+         Console.WriteLine();
+         // foreach 文では個々の要素は KeyValuePair<string, int> として手に入る
+         // 添字として使われるデータの部分をキー
+         // それに対応したデータをバリューと呼ぶ．
+         // 用語が衝突しているが，式の評価結果である値とは直接は関係はない．
+         foreach ( KeyValuePair<string, int> kv in dict )
+         {
+             Console.WriteLine( kv.Key + " -> " + kv.Value );
+         }
+
+         Console.WriteLine();
+         // キーのみが必要な場合は Keys プロパティを使う．
+         // もちろん，キーからバリューを引けるので バリューにもアクセスできる．
+         // なお dict.Keys は Dictionary<string, int>.KeyCollection 型
+         foreach ( string k in dict.Keys )
+         {
+             Console.WriteLine( k + " -> " + dict[k] );
+         }
+
+         Console.WriteLine();
+         // バリューのみが必要な場合は Values プロパティを使う．
+         foreach ( int v in dict.Values )
+         {
+             Console.WriteLine( "Value: " + v );
+         }
+
+         // 新しいキーは添字アクセスでも追加できる
+         dict["Banana"] = 2;
+
+         // キーを指定することで，そのキーと関連づけられているバリューの組を配列から取り除ける．
+         dict.Remove("Candy");
+
+         Console.WriteLine();
+         foreach ( var kv in dict )
+         {
+             Console.WriteLine( kv.Key + " -> " + kv.Value );
+         }
+     }
+  }
+
+上のプログラムの出力は以下となる．
+
+::
+
+  dict["Chips"] = 7
+
+  Chocolate -> 2
+  Chips -> 7
+  Candy -> 5
+
+  Chocolate -> 2
+  Chips -> 7
+  Candy -> 5
+
+  Value: 2
+  Value: 7
+  Value: 5
+
+  Chocolate -> 2
+  Chips -> 7
+  Banana -> 2
+
+オブジェクト初期化子（object initializer）
+==========================================
+
+ディクショナリは **オブジェクト初期化子** を用いることで下記のように初期値を指定することができる．
+
+.. code:: cs
+
+  using System;
+  using System.Collections.Generic;
+
+  class DictionaryExample2
+  {
+     static void Main()
+     {
+         Dictionary<string, int> dict = new Dictionary<string, int>()
+         {
+             // この{}で囲まれている部分がオブジェクト初期化子（{}を含む）
+             ["Chocolate"] = 2, // 注意 ";" でなく ","
+             ["Chips"]     = 4,
+             ["Candy"]     = 5
+         };
+
+         foreach ( KeyValuePair<string, int> kv in dict )
+         {
+             Console.WriteLine( kv.Key + " -> " + kv.Value );
+         }
+     }
+  }
+
+オブジェクト初期化子は上記の ``new Dictionary<string, int>()``の直後の中括弧の部分である．
+一般に，C#ではオブジェクト生成直後のpublicフィールドやプロパティ，添字への代入を，
+オブジェクト初期化子を使うことで生成とまとめて行うことができる．
+
+.. code:: cs
+
+   using System;
+
+   class Point {
+     public double X;
+     public double Y;
+   }
+
+   class ObjectInitializerExample
+   {
+       static void Main()
+       {
+           // オブジェクト初期化子により，XとYに生成後に代入する．
+           // 実際に以下は
+           //
+           //    Point temp = new Point();
+           //    temp.X = 2;
+           //    temp.Y = 3;
+           //    Point p = temp;
+           //
+           // のように挙動する．
+           Point p = new Point() { X = 2, Y = 3 };
+           Console.WriteLine( "(" + p.X + ", " + p.Y + ")" );
+       }
+   }
+
+
+例外とその捕捉
+==============
+
+さて，以下のコードはどのように振る舞うだろうか？
+
+.. code:: cs
+
+  using System;
+  using System.Collections.Generic;
+
+  class ExceptionExample
+  {
+     static void Main()
+     {
+         // 空のディクショナリの作成
+         Dictionary<string, int> dict = new Dictionary<string, int>();
+
+         // 存在しないキーへのアクセス
+         Console.WriteLine( dict["somekey"] );
+     }
+  }
+
+実際に実行させてみると，以下のような実行時エラーとなる.
+
+::
+
+   Unhandled exception. System.Collections.Generic.KeyNotFoundException: The given key 'somekey' was not present in the dictionary.
+      at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+      at ExceptionExample.Main() in /Users/kztk/prog/cs/Materials/Week4/ExceptionExample/Program.cs:line 12
+
+もちろん，このようなエラーは``ContainsKey(TKey)`` メソッド等を使って逐一検査すれば防ぐことができる．
+しかしながら，そうした逐一の検査は *煩雑でありなおかつコードの見通しを悪く* する．
+また，問題が起きてしまった場合の処理も共通であることもしばしばである．
+たとえば，対話的アプリケーションだとエラーを報告しユーザの入力を再度促すことになるだろうし，
+対話的でないアプリケーションだとユーザフレンドリーなエラーメッセージを吐いて終了することになるだろう．
+
+そのような問題を解決するのが **例外処理** である．例外は上記の存在しないキーへのアクセスなど様々な原因で投げられる．
+``try``-``catch``文を用いると例外を捕捉することができる．
+
+.. code:: cs
+
+  using System;
+  using System.Collections.Generic;
+
+  class ExceptionExample2
+  {
+     static void Main()
+     {
+         // 空のディクショナリの作成
+         Dictionary<string, int> dict = new Dictionary<string, int>();
+
+         try
+         {
+             Console.WriteLine("Hi");
+             Console.WriteLine( dict["somekey"] );
+             Console.WriteLine("Hello");
+             Console.WriteLine( dict["anotherkey"] );
+             Console.WriteLine("Hello?");
+             Console.WriteLine( dict["yetanotherkey"] );
+             Console.WriteLine("Hello??");
+         }
+         catch (KeyNotFoundException e)
+         {
+             // tryの中で KeyNotFoundException型（あるいはその派生型）の例外が発生したら，以下の処理を実施．
+             Console.WriteLine("Caught exception:");
+             Console.WriteLine(e);
+             Console.WriteLine("---------------------------");
+             Console.WriteLine("e.GetType().Name: " + e.GetType().Name );
+             Console.WriteLine("e.Message: " + e.Message );
+             Console.WriteLine("e.Source: " + e.Source );
+             Console.WriteLine("e.TargetSite: " + e.TargetSite );
+             Console.WriteLine("e.StackTrace:");
+             Console.WriteLine( e.StackTrace );
+         }
+         // 例外が発生し捕捉された or 発生しなかったならばここに処理が移る．
+         Console.WriteLine("Hello, again.");
+     }
+  }
+
+上記プログラムを実行すると以下の出力が得られる．
+
+::
+
+   Hi
+   Caught exception:
+   System.Collections.Generic.KeyNotFoundException: The given key 'somekey' was not present in the dictionary.
+      at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+      at ExceptionExample2.Main() in /Users/kztk/prog/cs/Materials/Week4/ExceptionExample2/Program.cs:line 14
+   ---------------------------
+   e.GetType().Name: KeyNotFoundException
+   e.Message: The given key 'somekey' was not present in the dictionary.
+   e.Source: System.Private.CoreLib
+   e.TargetSite: Void ThrowKeyNotFoundException[T](T)
+   e.StackTrace:
+      at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+      at ExceptionExample2.Main() in /Users/kztk/prog/cs/Materials/Week4/ExceptionExample2/Program.cs:line 14
+   Hello, again.
+
+例外を投げるには``throw``文を使用する．
+
+.. code:: cs
+
+   using System;
+
+   class Student
+   {
+       private int score = 0;
+       public int Score {
+          get { return score;  }
+          set {
+              if (0 <= value && value <= 100)
+              {
+                  score = value;
+              }
+              else
+              {
+                  // 例外を投げる．
+                  throw new ArgumentException("Scoreは0から100までの範囲内の整数でなければならない");
+              }
+          }
+       }
+       public string Name { get; set; } = "";
+   }
+
+   class ExceptionExample3
+   {
+       static void Main()
+       {
+          try
+          {
+             Student s = new Student () { Name = "Taro Tohoku", Score = 105 } ;
+          }
+          catch(ArgumentException e)
+          {
+             Console.WriteLine(e);
+          }
+       }
+   }
+
+上記のコードの実行結果は以下となる．
+
+::
+
+   System.ArgumentException: Scoreは0から100までの範囲内の整数でなければならない
+      at Student.set_Score(Int32 value) in /Users/kztk/prog/cs/Materials/Week4/ExceptionExample3/Program.cs:line 16
+      at ExceptionExample3.Main() in /Users/kztk/prog/cs/Materials/Week4/ExceptionExample3/Program.cs:line 29
+
+一般的には例外とは，``System.Exception``を継承しているクラスのオブジェクトである．そのため，``System.Exception``かその派生クラス（上記 ``ArgumentException`` や ``KeyNotFoundException`` など）を継承することでユーザ適宜の例外を作成することもできる．
+
+また，一つの``try``はいくつもの``catch``ブロックを持つことができる．
+
+.. code:: cs
+
+   try
+   {
+      // s や dict が適当に定義されているとする
+      s.Score = dict[s.Name];
+      Console.WriteLine(s.Score);
+   }
+   catch(ArgumentNullException e)
+   {
+       // ArgumentNullException が起きたときの処理
+       // この具体例においては，s.Name がnullの場合に発生
+       // なお，ArgumentNullException は ArgumentException の派生クラス
+   }
+   catch(ArgumentException e)
+   {
+      // ArgumentException が起きたときの処理
+      // この具体例においては，dict[s.Name] が0〜100の範囲にないときに発生
+      // なお，ArgumentException は Exception の（直接ではないが）派生クラス
+   }
+   catch(Exception e)
+   {
+      // Exceptionが起きたときの処理
+      // この具体例では一見発生しなさそうに見えるが，WriteLine がIOExceptionを投げる可能性がある．
+      // 私は未確認だが，標準出力が/dev/fullにリダイレクトされている場合？
+      // （参考： https://blog.sunfishcode.online/bugs-in-hello-world/ ）
+   }
+
+このとき，より特定（より派生側の）の例外に対する catch をより先頭に書く．そうでければ最初のcatchで例外が捕捉されてしまうので，後段のcatchが使われなくなる．
+
+
+ファイル入出力
+==============
+
+ここではテキストファイルについてのみ紹介する．
+
+ファイルからの入力
+------------------
+
+``System.IO.File``のstaticメソッド ``ReadAllText`` や ``ReadAllLines`` を利用したり，
+``OpenText``して得られる``System.IO.StreamReader``オブジェクトを利用したりする方法がある（他にもある）．
+
+.. code:: cs
+
+   using System;
+   using System.IO;
+
+   class FileInputExample
+   {
+       static void Main()
+       {
+           // いろんな方法でファイルの中身を標準出力に出力する．
+
+           string fileToOpen = "./MyText.txt";
+
+           try
+           {
+               // ファイルの内容を一気に，一個のstringとして読みとる．
+               // ファイルが小さい，またはどうせ一度は全部読む必要があるのなら．
+               string txt = File.ReadAllText(fileToOpen);
+               Console.WriteLine("一気に全部読む（結果を文字列に）");
+               Console.WriteLine(txt);
+
+               Console.WriteLine("一気に全部読む（結果を文字列の配列に）");
+               // ファイルの内容を一気に，各行のstringの列として読みとる（各行の終端の改行文字は含まれない）
+               // ファイルが小さい，またはどうせ一度は全部読む必要があるのなら．
+               string[] lines = File.ReadAllLines(fileToOpen);
+               foreach (var s in lines)
+               {
+                   // 読みこんだ行を表示する．
+                   Console.WriteLine(s);
+               }
+
+               Console.WriteLine("一行ごと処理");
+               // （utf-8の）テキストファイルを開く
+               StreamReader sr = File.OpenText(fileToOpen);
+               try
+               {
+                   // ファイルの中身を一行ずつ処理する．ファイルが大きいときなどメモリ使用量を気にするとき．
+                   string s;
+                   while ((s = sr.ReadLine()) != null)
+                   {
+                       Console.WriteLine(s);
+                   }
+               }
+               finally
+               {
+                   // finallyブロックは例外が発生した場合もしない場合も実行される
+
+                   // 開いたファイルを閉じる．srがGCされる際にも閉じられるが，
+                   // 同時に開けるファイルの数は有限なので，不要になったらすぐに閉じるのがよい
+                   sr.Dispose();
+               }
+
+               Console.WriteLine("一行ごと処理（usingを使用）");
+               // using文を使うともっと簡潔に書ける
+               using (StreamReader sr2 = File.OpenText(fileToOpen))
+               {
+                   // この中で例外が発生した場合もそうでない場合も sr2.Dispose() が呼ばれる
+                   while (sr2.Peek() > -1) // Peek を使ったほうが上に比べてトリッキーでないかも
+                   {
+                       Console.WriteLine(sr2.ReadLine());
+                   }
+               }
+           }
+           catch (FileNotFoundException e)
+           {
+               // FileNotFoundExceptionのオブジェクトの FileName プロパティは見付からなかったファイル名を保持
+               // https://docs.microsoft.com/en-us/dotnet/api/system.io.filenotfoundexception?view=net-6.0
+               // 日本語版 https://docs.microsoft.com/ja-jp/dotnet/api/system.io.filenotfoundexception?view=net-6.0
+               Console.WriteLine("ファイル '" + e.FileName + "'が見付かりません");
+           }
+           // 他の例外は捕捉しない
+       }
+   }
+
+MyText.txt の中身
+
+::
+
+   りんご
+   オレンジ
+   バナナ
+   みかん
+
+出力結果
+
+::
+
+   一気に全部読む（結果を文字列に）
+   りんご
+   オレンジ
+   バナナ
+   みかん
+   一気に全部読む（結果を文字列の配列に）
+   りんご
+   オレンジ
+   バナナ
+   みかん
+   一行ごと処理
+   りんご
+   オレンジ
+   バナナ
+   みかん
+   一行ごと処理（usingを使用）
+   りんご
+   オレンジ
+   バナナ
+   みかん
+
+
+using文
+-------
+
+C#はGC付きの言語であり，参照されないオブジェクトはいずれ解放される．
+しかしながら，プログラミングにおいてはメモリ以外にもさまざまなリソースを使用する必要がある場合がある．
+ファイナライザを利用しGC時にオブジェクトが保有しているリソースを解放することはできるものの，
+リソースは有限であるものの使用後すぐに解放することが望ましい．
+開いたファイル——に関連付けられたファイル記述子——はそのようなリソースの一つである．
+
+リソースを確保（たとえばファイルを開く）した後の処理中に例外が発生する可能性があり，その場合にもリソースは解放（たとえばファイルを閉じる）されなければならない．
+その目的に``try``-``finally``を利用することもできるが，簡潔なのは **using文** （usingディレクティブとは違う）を使う方法である．
+
+基本的な構文は大雑把には以下の通りである．
+
+.. raw:: html
+ 
+   <pre style="line-height:1.3">
+   <span class="kw">using</span> (<span class="metaname">型</span> <span class="metaname">変数</span> = <span class="metaname">リソースを確保する式</span> )
+   <span class="metaname">文</span>
+   </pre>
+
+usingブロック内で例外が発生した場合にもそうでない場合にも導入された変数に対し ``Dispose()`` が呼ばれリソースが解放される．
+
+.. note::
+
+   そのため，導入された変数の型は **インタフェース** ``System.IDisposable`` を実装してなければならない．
+
+
+ファイルへの出力
+----------------
+
+``System.IO.File``のstaticメソッド ``WriteAllText`` や ``WriteAllLines`` を利用したり，
+``CreateText``して得られる``System.IO.StreamWriter``オブジェクトを利用したりする方法がある（他にもある）．
+
+
+.. code:: cs
+
+   using System;
+   using System.IO;
+
+   class FileOutputExample
+   {
+       static void Main()
+       {
+           string[] txts = { "りんご", "オレンジ", "バナナ", "みかん" };
+
+           // txtはtxtsの各要素を"\n"を間に挟んでつなげた文字列
+           // つまり，txt = txts[0] + "\n" + txts[1] + "\n" + ... + "\n" + txts[txts.Length - 1]
+           string txt = String.Join("\n", txts);
+
+           // 文字列の内容を一気に書く
+           File.WriteAllText("./MyText1.txt", txt);
+
+           // 文字列配列の内容を一気に書く
+           File.WriteAllLines("./MyText2.txt", txts);
+
+           // 一行ずつ書く
+           using (StreamWriter sw = File.CreateText("./MyText3.txt"))
+           {
+               foreach (var s in txts)
+               {
+                   sw.WriteLine(s);
+               }
+           }
+       }
+   }
+
+
+上記プログラムを実行すると，実行したディレクトリにMyText1.txt，MyText2.txt および MyText3.txt というファイルが作成される．
+いずれも以下のような内容だが，MyText1.txt は最終行に終端の改行がない．
+
+:: 
+
+  りんご
+  オレンジ
+  バナナ
+  みかん
+
+
+いくつかの文字列操作関数
+========================
+
+
+
+.. note::
+
+   charは0〜65535の範囲しか表すことができない一方，unicodeのコードポイントの最大値は 0x10FFFF = 1114111 となる．   
+   実際に絵文字等のcharの範囲でそのコードポイントを表わせない文字はcharのペアとして表わされる（サロゲートペア）．
+   一方で，stringのindexや長さなどは utf-16で表現したときのindexや長さになっている．
+   そのため，stringの長さやそindexは文字の数や文字の位置とずれることがある．たとえば，以下のように．
+
+   .. code::
+   
+      using System;
+
+      class StringPitfall
+      {
+        static void Main() {
+
+           Console.WriteLine("😱".Length);              // 2 
+           Console.WriteLine("0x{0:X}", (int) "😱"[0]); // 0xD83D 
+           Console.WriteLine("0x{0:X}", (int) "😱"[0]); // 0xDE31
+        }
+      }
+
+   https://docs.microsoft.com/en-us/dotnet/api/system.string?view=net-6.0 によると
+
+   .. raw:: html 
+
+       <blockquote>To work with Unicode characters instead of <a href="https://docs.microsoft.com/en-us/dotnet/api/system.char?view=net-6.0" class="no-loc" data-linktype="relative-path">Char</a> objects, use the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.stringinfo?view=net-6.0" class="no-loc" data-linktype="relative-path">System.Globalization.StringInfo</a> and <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.textelementenumerator?view=net-6.0" class="no-loc" data-linktype="relative-path">TextElementEnumerator</a> classes, or the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string.enumeraterunes?view=net-6.0" class="no-loc" data-linktype="relative-path">String.EnumerateRunes</a> method and the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.text.rune?view=net-6.0" class="no-loc" data-linktype="relative-path">Rune</a> struct.</blockquote>
+     
