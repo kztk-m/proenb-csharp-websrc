@@ -1,3 +1,214 @@
 -----------------
 title: 第4回 課題
 -----------------
+
+
+--------
+基本課題
+--------
+
+``Dictionary<string, int>``型の値の要素をファイルから読みとることで追加したい．具体的には，
+
+::
+
+   Chocolate,2
+   Chips,4
+   Candy,5
+
+というファイルを読んで，今着目しているディクショナリ``dict``に
+
+.. code:: cs
+
+   dict["Chocolate"] = 2; 
+   dict["Chips"]     = 4; 
+   dict["Candy"]     = 5; 
+
+としたのと同等の要素を追加したい．
+
+
+上記を達成するため，以下のプログラムの空欄を埋めて完成させよ．
+
+.. code:: cs 
+
+   // あなたの学籍番号
+   // あなたの名前
+
+   using System; 
+   using System.Collections.Generic; 
+
+   // インベントリ（いわゆる「アイテム欄」）
+   class Inventory 
+   {   
+      private Dictionary<string,int> items { get; private set } = new Dictionary(); 
+      
+      public void AddItemsFromFile(string filepath) 
+      {
+         // 実装する．
+         //
+         // 与えられたパス filepath にファイルが存在し，そのファイルの中身が，各行が
+         // 
+         //    アイテム名,個数
+         //
+         // という形式であるようなテキストファイルになっているときに，
+         // 各行に含まれているアイテム名と個数のマッピングを辞書 item に追加する．
+         // アイテム名は","を含まないことを仮定してよい．
+         //
+         // 基本課題 (1)ではアイテム名は重複しないことを仮定してよい．
+         // また，上記で指定された形式以外のファイルが与えられた場合の挙動は
+         // 考えなくてよい．
+      }
+
+      public void PrintAll() 
+      {
+          foreach (var k in items.Keys)
+          {
+              Console.WriteLine( k + " × " + items[k] );
+          }
+      }
+   }
+
+   class Program 
+   {
+      static void Main() 
+      {
+          Inventory i = new Inventory();
+          i.AddItemsFromFile("./items.txt");
+          i.PrintAll();
+      }
+   }
+
+./items.txtの中身の例::
+
+   Chocolate,2
+   Chips,14
+   Candy,5
+
+そのときの期待される出力::
+
+   Chocolate × 2
+   Chips × 14
+   Candy × 5
+   
+./items.txtも提出物に含めること．
+
+.. hint::
+
+   個数の部分を処理するには，``Int32.Parse(string)``を使うとよい．
+
+   この関数の使い方は以下のプログラムを参考にせよ．
+
+   .. code:: cs
+
+      using System; 
+
+      // 参考：https://docs.microsoft.com/en-us/dotnet/api/system.int32.parse?view=net-6.0#system-int32-parse(system-string)
+      class Int32Example 
+      {
+          static void TryParseInt(string s) 
+          {           
+              try 
+              {
+                  int n = Int32.Parse(s); 
+                  Console.WriteLine(s + " ==> " + n);
+              }
+              catch(FormatException e)
+              {
+                  Console.WriteLine(s + ": ill-formed");
+              }
+              catch(OverflowException e)
+              {
+                  Console.WriteLine(s + ": overflow");
+              }
+              catch(ArgumentNullException e) 
+              {
+                  Console.WriteLine("the input is null");
+              }
+          }
+
+          static void Main() 
+          {
+              TryParseInt("1234");
+              TryParseInt("-1234");
+              TryParseInt("0xbeef");
+              TryParseInt("+34");
+              TryParseInt("3e10");
+              TryParseInt("011"); 
+              TryParseInt("1,000");
+              TryParseInt(string.Join("", new string[] { "1", "000", "000", "000", "000" }));
+          }
+      }
+
+   上のコードの出力::
+
+      1234 ==> 1234
+      -1234 ==> -1234
+      0xbeef: ill-formed
+      +34 ==> 34
+      3e10: ill-formed
+      011 ==> 11
+      1,000: ill-formed
+      1000000000000: overflow
+
+
+---------
+基本課題2
+---------
+
+基本課題で作成した``AddItemsFromFile(string)``を拡張し，
+入力したテキストファイルに同じアイテム名が複数含まれていた場合にそれらの個数を合計するようにせよ．
+
+./items.txtの中身の例::
+
+   Chocolate,2
+   Chips,14
+   Candy,5
+   Chocolate,40
+
+そのときの期待される出力::
+
+   Chocolate × 42
+   Chips × 14
+   Candy × 5
+
+
+
+
+--------
+発展課題
+--------
+
+.. caution:: 
+   
+   本課題を完了できたのならば本課題の解答のみを提出すればよく，基本課題の解答は提出する必要はない．
+
+以下の基本課題で作成した``AddItemsFromFile(string)``を拡張し，
+入力したテキストファイルにコメントや余計な空白，空行が入っていても正常に読みこめるようにせよ．
+ただし，"#"で始まる行をコメントとする（"#"が行頭でない場合はコメントでないのに注意）
+また，指定されたフォーマットで解釈することに失敗した場合には，``items``は何も変更しないようにせよ．
+
+./items.txtの中身の例::
+
+   #コメント行
+   Chocolate,  2
+     Chips ,14  
+
+   Candy,5
+   Chocolate,40
+
+そのときの期待される出力::
+
+   Chocolate × 42
+   Chips × 14
+   Candy × 5
+
+./items.txtの中身の例::
+
+   # コメント行
+   Chocolate,  2
+     Chips ,14  
+
+   Candy,5
+   Chocolate,40
+       #コメントでない行
+
+上の場合は items は空のままとなるので何も出力されない．

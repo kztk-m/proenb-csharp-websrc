@@ -539,13 +539,119 @@ usingブロック内で例外が発生した場合にもそうでない場合に
 ========================
 
 
+.. code:: cs
+
+   using System;
+   using System.Collections.Generic;
+
+   class StringExample
+   {
+       static void Main(string[] args)
+       {
+           string[] fruits = { "apple", "orange", "banana" };
+
+           // Join(string s, string[] ss)で配列ssに含まれる各文字列を指定された区切りsで結合できる
+           string joined = string.Join("|", fruits );
+           Console.WriteLine( joined ); // apple|orange|banana
+
+           Console.WriteLine();
+
+           // Split(char c)を使うと指定の区切り文字cで文字列を分割できる
+           string[] separated = joined.Split('|');
+           Console.WriteLine("\"" + joined + "\".Split('|'): ");
+           showSplit( separated ); 
+
+           // Splitはオーバロードされていて，区切りに使うのは文字列でもよい
+           string toSplit = "a--b--  c --d-----e--  --f";
+           Console.WriteLine("\"" + toSplit + "\".Split(\"--\")" ); 
+           showSplit( toSplit.Split("--") ); 
+
+           // Split() と引数なしで呼び出せば空白（改行や全角スペース含む）で区切る
+           Console.WriteLine("Split()の例"); 
+           showSplit( "Hello, World.  こんにちは世界\t全角スペース→　←全角スペース\n二行目（\\r\\n終端）\r\n三行目（\\r終端）\r四行目".Split() );
+
+           Console.WriteLine();
+
+           // StartsWith(string s)で指定された文字列sで始まっているか判定できる        
+           Console.WriteLine("\"おはようございます\".StartsWith(\"おはよう\") = " + "おはようございます".StartsWith("おはよう") );
+           Console.WriteLine("\"おはようございます\".StartsWith(\"ございます\") = " + "おはようございます".StartsWith("ございます") );
+
+           Console.WriteLine("");
+
+           // IndexOf(string s)で指定された文字列sの最初に出現する位置を取得できる（含まれていない場合は -1）
+           Console.WriteLine("\"eieio-eieio\".IndexOf(\"ie\") = " + "eieio-eieio".IndexOf("ie") ); // "eieio-eieio".IndexOf("ie") = 1
+           Console.WriteLine("\"eieio-eieio\".IndexOf(\"ff\") = " + "eieio-eieio".IndexOf("ff") ); // "eieio-eieio".IndexOf("ff") = -1
+
+
+           Console.WriteLine();
+
+           // Substring(int index) で指定された位置以降の文字列を切り出す
+           Console.WriteLine( "abcdefghijk".Substring(2) ); // cdefghijk
+
+           // Substring(int index, int length)で指定された位置からlengthだけ文字列を切り出す
+           Console.WriteLine( "abcdefghijk".Substring(2, 4) ); // cdef
+
+           try 
+           {
+               // index + length が元の文字列の長さを超えたら  ArgumentOutOfRangeException が発生
+               Console.WriteLine( "abcdefghijk".Substring(2, 400) );             
+           }
+           catch (ArgumentOutOfRangeException e)
+           {
+               Console.WriteLine("例外発生: " + e.GetType().Name + ": " + e.Message ); 
+           }
+
+           Console.WriteLine("");
+
+           // Trim() で先頭および終端からの連続した空白を削除
+           Console.WriteLine( "\"" + " Hello, World.  ".Trim() + "\"" ); // "Hello, World."
+
+           // 空白は違う種類の文字でもよい（unicodeの空白文字ならよく全角空白でもOK）
+           // 参考：unicodeの空白文字 https://www.compart.com/en/unicode/category/Zs
+           Console.WriteLine( "\"" + "　\tHello, World. \r\n ".Trim() + "\"" ); // "Hello, World."
+           //                         ↑ 全角空白文字
+       }
+
+       static void showSplit(string[] ss) {
+           Console.Write("\t"); // タブ文字
+           foreach (var s in ss) {
+               Console.Write("\"" + s + "\" ");
+           }
+           Console.WriteLine(); 
+       }
+   }
+
+上の実行結果
+
+::
+
+   apple|orange|banana
+
+   "apple|orange|banana".Split('|'):
+           "apple" "orange" "banana"
+   "a--b--  c --d-----e--  --f".Split("--")
+           "a" "b" "  c " "d" "" "-e" "  " "f"
+   Split()の例
+           "Hello," "World." "" "こんにちは世界" "全角スペース→" "←全角スペース" "二行目（\r\n終端）" "" "三行目（\r終端）" "四行目"
+
+   "おはようございます".StartsWith("おはよう") = True
+   "おはようございます".StartsWith("ございます") = False
+
+   "eieio-eieio".IndexOf("ie") = 1
+   "eieio-eieio".IndexOf("ff") = -1
+
+   cdefghijk
+   cdef
+   例外発生: ArgumentOutOfRangeException: Index and length must refer to a location within the string. (Parameter 'length')
+
+   "Hello, World."
+   "Hello, World."
+
 
 .. note::
 
-   charは0〜65535の範囲しか表すことができない一方，unicodeのコードポイントの最大値は 0x10FFFF = 1114111 となる．   
-   実際に絵文字等のcharの範囲でそのコードポイントを表わせない文字はcharのペアとして表わされる（サロゲートペア）．
-   一方で，stringのindexや長さなどは utf-16で表現したときのindexや長さになっている．
-   そのため，stringの長さやそindexは文字の数や文字の位置とずれることがある．たとえば，以下のように．
+   ``Substring``や``IndexOf``で指定するindexや長さは``string``を``char``の配列として見たときのものである．
+   このことは以下のように絵文字等の扱いで直観に反することがある．
 
    .. code::
    
@@ -561,9 +667,21 @@ usingブロック内で例外が発生した場合にもそうでない場合に
         }
       }
 
-   https://docs.microsoft.com/en-us/dotnet/api/system.string?view=net-6.0 によると
+   これは，charがunicodeのコードポイントを表すのに十分でないためである．charは0〜65535の範囲しか表すことができない一方，
+   unicodeのコードポイントの最大値は 0x10FFFF = 1114111 となる．   
+   実際に絵文字等のcharの範囲で表わせないコードポイントはcharのペアとして表わされる（`参考： UTF-16, an encoding of ISO 10646 <https://datatracker.ietf.org/doc/html/rfc2781#section-2>`__）．
 
-   .. raw:: html 
+   また，コードポイント自体も「文字」とは対応しない場合がある．たとえば，「🇯🇵」という一文字は二つのコードポイント（U+1F1EF U+1F1F5）で表現される．
 
-       <blockquote>To work with Unicode characters instead of <a href="https://docs.microsoft.com/en-us/dotnet/api/system.char?view=net-6.0" class="no-loc" data-linktype="relative-path">Char</a> objects, use the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.stringinfo?view=net-6.0" class="no-loc" data-linktype="relative-path">System.Globalization.StringInfo</a> and <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.textelementenumerator?view=net-6.0" class="no-loc" data-linktype="relative-path">TextElementEnumerator</a> classes, or the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string.enumeraterunes?view=net-6.0" class="no-loc" data-linktype="relative-path">String.EnumerateRunes</a> method and the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.text.rune?view=net-6.0" class="no-loc" data-linktype="relative-path">Rune</a> struct.</blockquote>
-     
+   ..
+      https://docs.microsoft.com/en-us/dotnet/api/system.string?view=net-6.0 によると
+
+      .. raw:: html 
+
+          <blockquote>To work with Unicode characters instead of <a href="https://docs.microsoft.com/en-us/dotnet/api/system.char?view=net-6.0" class="no-loc" data-linktype="relative-path">Char</a> objects, use the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.stringinfo?view=net-6.0" class="no-loc" data-linktype="relative-path">System.Globalization.StringInfo</a> and <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.textelementenumerator?view=net-6.0" class="no-loc" data-linktype="relative-path">TextElementEnumerator</a> classes, or the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string.enumeraterunes?view=net-6.0" class="no-loc" data-linktype="relative-path">String.EnumerateRunes</a> method and the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.text.rune?view=net-6.0" class="no-loc" data-linktype="relative-path">Rune</a> struct.</blockquote>
+
+
+   ..
+      では，コードポイント単位ならば，一つのコードポイントが一つの「文字」に対応しているのかというとそうでもなく，
+      たとえば「🇯🇵」は二つのコードポイントで表現されている．
+            

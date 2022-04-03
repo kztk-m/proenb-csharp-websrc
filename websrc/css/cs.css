@@ -538,6 +538,10 @@ span.st {
     color: var(--code-st-color); 
 }
 
+span.sc {
+    color: var(--code-st-color); 
+}
+
 strong {
     font-style:  normal;
     font-weight: bold;
