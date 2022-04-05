@@ -1,0 +1,415 @@
+-----
+title: 第5回 GUIプログラミング
+tableOfContents: true
+-----
+
+オープンソースかつクロスプラットフォームのGUIライブラリ `Eto.Forms <https://github.com/picoe/Eto>`__
+を用いて，GUIプログラムを作成してみよう．この演習をすすめる前には `環境構築 (Eto.Forms) <./setup_gui.html>`__ を
+完了させておこう．
+
+   
+
+``Form``クラス
+==============
+
+いわゆるウィンドウを表すクラス．
+
+Eto.Formsのテンプレートからデフォルト設定で生成されるコードは，
+以下のように，
+
+- Formの派生クラスを定義するコードと，
+- そのフォームからなるGUIアプリケーションを実行するコード（バックエンド毎．デフォルトだとMac，Wpf，GTKの3つ）
+
+の二つの部分からなっている．
+
+.. code:: cs
+
+   // PROJECTNAME/MainForm.cs
+   using System;
+   using Eto.Forms;
+   using Eto.Drawing; 
+
+   namespace PROJECTNAME 
+   {
+       // partialはMainFormの定義を分割可能にする．ここでは不要
+       // publicは必要．コンパイル単位が異なるため．
+       public partial class MainForm : Form 
+       {
+          public MainForm() 
+          {
+          // 作成される Form にいろいろなGUI部品を追加
+          }
+       }
+   }
+
+.. code:: cs
+
+   // PROJECTNAME.BACKEND/Program.cs
+   using System;
+   using Eto.Forms;
+
+   namespace PROJECTNAME.BACKEND
+   {
+       class Program
+       {
+           [STAThread] // 属性．COMのスレッドモデルをsingle-threaded apartmentに指定する…らしい．
+           // この public も必須ではない
+           public static void Main(string[] args)           
+           {
+               // Macの場合
+               new Application(Eto.Platforms.Mac64).Run(new MainForm());
+               // Wpfの場合
+               new Application(Eto.Platforms.Wpf).Run(new MainForm());
+               // GTKの場合
+               new Application(Eto.Platforms.Gtk).Run(new MainForm());
+           }
+       }
+   }
+   
+本演習では後者はの部分は変更せずに，前者の``MainForm.cs``を拡張することで進めていく．
+すなわち，作成する``Form``に様々なGUI部品（コントロールと呼ばれる）を追加することになる．
+
+その際は以下のプロパティを適切に設定することが有用であろう．
+
+
+=========================      =================================
+``public string Title``        ウィンドゥのタイトルを表すプロパティ
+``public Control Content``     ウィンドゥの中身となるGUI部品
+``public Size ClientSize``     中身のサイズ（ボーダーやタイトルバーを除いたサイズ）
+==========================     =================================
+
+またテンプレート生成されたコードでは，以下のプロパティが用いられている．
+
+==========================    =============================
+``public MenuBar Menu``       メニューバーを表す（Macだとウィンドウの中じゃなくて上の部分）
+``public ToolBar ToolBar``    ツールバーを表す
+==========================    =============================
+
+では，まずは``Title``，``Content``，``ClientSize``のみを使うように，``MainForm.cs``で定義されている``MainForm``クラスのコンストラクタを以下のように
+変更してみよう．
+
+.. code:: cs
+
+   public void MainForm() 
+   {
+       Title = "Hello World"; 
+       ClientSize = new Size(200, 200);
+       Content = new Label() { Text = "Hello, World!" }; // オブジェクト初期化子を利用
+   }
+
+以下のようなウィンドウが表示されたことだろう（以下はMacにおける例）
+
+.. image:: images/eto/hello_world.png 
+
+ところで，Macにおいては左上の「閉じる」ボタンを押してもアプリケーションが終了しないことに気付いたかもしれない．
+これはいささか不便である．幸いなことに空のMenuBarをMenuに代入すると Mac 環境ではいろいろなアイテムを Eto.Forms が追加してくれる．
+
+.. code:: cs
+
+   public void MainForm() 
+   {
+       Title = "Hello World"; 
+       ClientSize = new Size(200, 200);
+       Content = new Label() { Text = "Hello, World!" }; // オブジェクト初期化子を利用
+       Menu = new MenuBar(); 
+   }
+
+これで，Command + Q等の標準的な操作でアプリケーションを終了することができるようになる（WpfやGtkだと「閉じる」ボタンで，終了する）．
+
+*オブジェクト初期化子があれば，引数なしのコンストラクタの括弧は省略できる．* 
+たとえば，上の``Content = ``の行は
+
+.. code:: cs 
+
+       Content = new Label { Text = "Hello, World!" }; // オブジェクト初期化子を利用
+
+とも書ける．
+
+
+コントロール（GUI部品）
+=======================
+
+さて，上記にあった ``Label`` は単に与えられたテキストを表示するという **コントロール** （GUI部品）である．
+たとえば，よく使うコントロールは ``Label``を含め以下のようなものであろう．
+
+===========================    =====================
+コントロール（を表すクラス）   説明
+===========================    =====================
+``Label``                      テキストを画面に表示する
+``Button``                     その名の通りボタン
+``TextBox``                    一行のテキストを入力できる欄
+``TextArea``                   複数のテキストを入力できる欄．スクロールバー付き
+===========================    =====================
+
+
+Eto.Formsでは他にも様々なコントロールが提供されている．たとえば以下など．
+
+===========================    ==================
+コントロール（を表すクラス）   説明
+===========================    =====================
+``CheckBox``                   ラベル付きのチェックボックス
+``RadioButton``                ラジオボタン（一個 on にすると他が off になるボタン）
+``DropDown``                   ドロップダウンリスト
+``ImageView``                  画像の表示
+``Slider``                     「つまみ」を縦か横に動かして値を決める部品
+===========================    ==================
+
+
+コンテナ（コントロールを保持もの）
+=================================
+
+コントロールを複数個（1個のみのときもある）保持するコントロールは **コンテナ** と呼ばれる．
+
+スクロールを可能にする``Scrollable``，タブでコントロールを切り替えられる``TabControl``，
+二つのコントロールを区切り線で分ける``Splitter``や次項で説明するレイアウトがある．
+また，``Form``もコントロールを一個保持するようなコンテナの一つである．
+
+レイアウト
+==========
+
+**レイアウト** はコンテナの一種であり，コントロールを適切な位置に並べてくれる．
+Eto.Formsの提供する代表的なレイアウトに以下のようなものがある．
+
+=================      =================================================
+``StackLayout``        横または縦の一方向にコントロールを並べるレイアウト
+``TableLayout``        表のセルのようにコントロールを配置するレイアウト
+``DynamicLayout``      縦と横を切り替えつつコントロールを並べるレイアウト
+=================     =================================================
+
+ここでは，``StackLayout``と``TableLayout``について紹介する．
+
+
+``StackLayout``の例
+-------------------
+
+.. code:: cs
+
+   public static void MainForm() 
+   {
+       Title = "StackLayout Example";
+       ClientSize = new Size(200, 200);
+       Menu = new MenuBar();
+
+       StackLayout stackLayout = new StackLayout();
+
+       // stackLayout自体と「中身」との間のスペース
+       stackLayout.Padding = 10;
+       
+       // stackLayoutの各コンポーネント間のスペース
+       stackLayout.Spacing =  5; 
+
+       // コンポーネントの配置の方向を指定（Orientation.Horizontalなら横）．
+       // デフォルトが縦なので，この文は実は不要
+       stackLayout.Orientation = Orientation.Vertical; 
+
+       // 横方向の配置位置．HorizontalAlignment.Stretchは左も右もいっぱいまで伸ばす．
+       stackLayout.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+
+       stackLayout.Items.Add(new Label { Text = "Label．日本語も書けるよ！" });
+       stackLayout.Items.Add(new Button { Text = "Button" });
+       // 縦に伸べるTextArea．伸びないようにするには二つ目の引数をfalseにする．
+       stackLayout.Items.Add(new StackLayoutItem(new TextArea { Text = "1\n22\n333" }, true)); 
+       stackLayout.Items.Add(new TextBox { PlaceholderText = "なにか入力" });
+
+       Content = stackLayout;
+   }
+
+上記の実行例（Macの場合）
+
+.. image:: images/eto/stack_layout.png 
+
+上のプログラムでは下記のプロパティを使った．
+
+============================     ==================================
+プロパティ名                     大雑把な説明
+============================     ==================================
+``Padding``                      StackLayout自体とその中身の間のスペース
+``Spacing``                      StackLayoutに含まれる各コンポーネント間のスペース（``int``型）
+``Orientation``                  StackLayoutの方向．``Orientation.Vertical``か``Orientation.Horizontal``か．
+``HorizontalContentAlignment``   ``Orientation``が ``Orientation.Vertical``のときの各コンポーネントの水平位置
+                                 ``HorizontalAlignment.Left``，``HorizontalAlignment.Right``，
+                                 ``HorizontalAlignment.Center``，``HorizontalAlignment.Stretch``のいずれか
+``VerticalContentAlignment``     上の縦版．``VerticalAlignment.Top``，``VerticalAlignment.Bottom``，
+                                 ``VerticalAlignment.Center``，``VerticalAlignment.Stretch``のいずれか
+``Items``                        保持するコンポーネントのコレクション．読み出し専用（代入できないという意味）
+============================     ==================================
+
+ここ``Items``は ``StackLayoutItem`` を保持するコレクションである．C#では暗黙の型変換をユーザが定義することができ，各コントロールの基底クラスである``Control``
+から``StackLayoutItem``への型変換が定義されているため，コントロールを直接 ``Items`` へ ``Add``メソッドを使って追加することができる．
+また，``StackLayoutItem``のコンストラクタ``StackLayoutItem(Control, bool)``を使うことにより，そのコントロールが``Orientation``に沿って伸長するかどうかを指定できる．
+
+
+.. note:: 
+
+   上記はオブジェクト初期化子とコレクション初期化子（``new List<int> {1,2,3,4}``の``{1,2,3,4}``の部分）を使うことで，以下のようにより簡潔に記述できる．
+
+   .. code:: cs 
+
+       public MainForm()
+        {
+            Title = "StackLayout Example";
+            ClientSize = new Size(200, 200);
+            Menu = new MenuBar();
+
+            // オブジェクト初期化子を使った方法
+            Content = new StackLayout
+            {
+                Padding = 10,
+                Spacing = 5,
+                Orientation = Orientation.Vertical,
+                HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                // Items は read-only プロパティだが，オブジェクト初期化子中に
+                // Items = {a, b, c, d} と書くことで Items.Add(a), Items.Add(b), Items.Add(c), Items.Add(d) 
+                // をオブジェクト生成後に呼ぶことができる
+                Items = {
+                    new Label  { Text = "Label. 日本語も書けるよ！" },
+                    new Button { Text = "Button" },
+                    new StackLayoutItem ( new TextArea { Text = "1\n22\n333" }, true ),
+                    new TextBox { PlaceholderText = "なにか入力" }
+                }
+            };
+        }
+
+
+``TableLayout``の例
+-------------------
+
+``TableLayout``は Eto.Forms の提供するレイアウトのうち基本となるものである（``StackLayout``や``DynamicLayout``も内部でTableLayoutを使用している）．
+表組みのようなレイアウトを実現する．
+
+.. code:: cs
+
+        public MainForm()
+        {
+            Title = "TableLayout Example";
+            ClientSize = new Size(400, 400);
+            Menu = new MenuBar();
+
+            TableLayout tableLayout = new TableLayout();
+            // 横と縦のパディングを指定（4引数バージョンもある）
+            tableLayout.Padding = new Padding(10, 5);
+            // tableLayoutのSpacingは横と縦の両方を指定
+            tableLayout.Spacing = new Size(10, 5);
+            tableLayout.Rows.Add(
+                new TableRow(new Label { Text = "Apple" },
+                             // 横方向に伸長するセル
+                             new TableCell(new TextBox { }, true),
+                             new Label { Text = "Banana" }));
+            tableLayout.Rows.Add(
+                new TableRow(new Label { Text = "Cabbage" },
+                             new TextArea { },
+                             // TableLayout.AutoSized は中の要素が伸長しないセルを作る（このセルは伸長する行に置かれている）
+                             TableLayout.AutoSized(new DropDown { Items = { "Item 1", "Item 2", "Item 3" } }))
+                // この行は伸長する							 
+                { ScaleHeight = true });
+            tableLayout.Rows.Add(
+                new TableRow(new Label { Text = "Tuna" },
+                             // null は伸長する何もないセル
+                             null,
+                             new Label { Text = "Bonito" }));
+
+            // 以下をアンコメントしたらどうなる？
+            // tableLayout.Raw.Add(null); // 伸長する何もない行の追加
+
+            Content = tableLayout;
+        }
+
+上記の実行例（Macの場合）
+
+.. image:: images/eto/stack_layout.png 
+
+
+上のプログラムでは下記の``TableLayout``のプロパティを使った．
+
+============================     ==================================
+プロパティ名                     大雑把な説明
+============================     ==================================
+``Padding``                      TableLayout自体とその中身の間のスペース
+``Spacing``                      TableLayoutに含まれる各コンポーネント間のスペース（``Size``型）
+``Rows``                         各要素がTableRowであるコレクション（読み出し専用）
+============================     ==================================
+
+また，TableRowの以下のコンストラクタおよびプロパティを使用した．
+
+
+=============================================     ========================================================
+メンバ名                                          大雑把な説明
+=============================================     ========================================================
+``TableRow(TableCell c1, ..., TableCell cn)``     セル ``c1``, ... , ``cn`` を含んだ行を作るコンストラクタ
+``ScaleHeight``                                   行が伸長可能かどうか
+=============================================     ========================================================
+
+
+``StackLayoutItem``のときと同様に``Control``から``TableCell``への暗黙の型変換が定義されている．そのため，
+それを利用することで，``Control``型の``new Label { Text = "Apple" }``等をそのまま``TableRow``コンストラクタの
+引数に渡すことができる．セルの横幅を伸長可能にしたい場合は上記のようにコンストラクタ``TableCell(Control, bool)``を使用する．
+
+``TableLayout.AutoSized`` というstatic メソッドは伸長するセルの中に伸長したくないコントロールを配置するのに使う．
+
+
+
+レイアウトを組み合せる
+----------------------
+
+レイアウトを組み合わせることで，複雑なレイアウトを実現することができる．
+
+
+たとえば
+
+::
+
+   Button1 Button2 Button3 [TextBox                           ]
+
+   +----------------------------------------------------------+
+   | TextArea                                                 |
+   |                                                          |
+   |                                                          |
+   |                                                          |
+   |                                                          |
+   +----------------------------------------------------------+
+
+   Label
+
+
+というレイアウトは，StackLayoutを組み合わせることにより実現可能である．
+
+.. code:: cs
+
+        public MainForm()
+        {
+            Title = "Combining Layout Example";
+            ClientSize = new Size(600, 400);
+            Menu = new MenuBar();
+
+            StackLayout headerPart = new StackLayout();
+            headerPart.Orientation = Orientation.Horizontal;
+            headerPart.Spacing = 5;
+            headerPart.Items.Add(new Button { Text = "戻る" });
+            headerPart.Items.Add(new Button { Text = "進む" });
+            headerPart.Items.Add(new Button { Text = "再読込" });
+            headerPart.Items.Add(new StackLayoutItem(new TextBox { PlaceholderText = "アドレス" }, true));
+
+            StackLayout mainPart = new StackLayout();
+            mainPart.Spacing = 5;
+            mainPart.Padding = 5;
+            mainPart.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            mainPart.Items.Add(headerPart);
+            mainPart.Items.Add(new StackLayoutItem(new TextArea { Text = "本文用テキストエリア" }, true));
+            mainPart.Items.Add(new Label { Text = "ステータスバー" });
+
+            Content = mainPart;
+        }
+
+上記の実行例（Macの場合）
+
+.. image::./images/eto/combined_layout.png
+
+
+ボタンを押したときの動作
+========================
+
+さて，これまではGUI部品を配置するだけで，GUI部品がなにか面白いことをすることはなかった．
+ここではボタンを押したときの動作を実装してみよう．
+
+
+
