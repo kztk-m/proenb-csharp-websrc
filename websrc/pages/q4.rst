@@ -37,49 +37,53 @@ title: 第4回 課題
    // あなたの学籍番号
    // あなたの名前
 
-   using System; 
-   using System.Collections.Generic; 
+   using System;
+   using System.Collections.Generic;
 
    // インベントリ（いわゆる「アイテム欄」）
-   class Inventory 
-   {   
-      private Dictionary<string,int> items { get; private set } = new Dictionary(); 
-      
-      public void AddItemsFromFile(string filepath) 
-      {
-         // 実装する．
-         //
-         // 与えられたパス filepath にファイルが存在し，そのファイルの中身が，各行が
-         // 
-         //    アイテム名,個数
-         //
-         // という形式であるようなテキストファイルになっているときに，
-         // 各行に含まれているアイテム名と個数のマッピングを辞書 item に追加する．
-         // アイテム名は","を含まないことを仮定してよい．
-         //
-         // 基本課題 (1)ではアイテム名は重複しないことを仮定してよい．
-         // また，上記で指定された形式以外のファイルが与えられた場合の挙動は
-         // 考えなくてよい．
-      }
-
-      public void PrintAll() 
-      {
-          foreach (var k in items.Keys)
-          {
-              Console.WriteLine( k + " × " + items[k] );
-          }
-      }
-   }
-
-   class Program 
+   class Inventory
    {
-      static void Main() 
-      {
-          Inventory i = new Inventory();
-          i.AddItemsFromFile("./items.txt");
-          i.PrintAll();
-      }
+       public Dictionary<string, int> Items { get; private set; } = new Dictionary<string, int>();
+
+       public void AddItemsFromFile(string filepath)
+       {
+           // 実装する．
+           //
+           // 与えられたパス filepath にファイルが存在し，そのファイルの中身が，各行が
+           // 
+           //    アイテム名,個数
+           //
+           // という形式であるようなテキストファイルになっているときに，
+           // 各行に含まれているアイテム名と個数の対応をディクショナリ Item に追加する．
+           // アイテム名は","を含まないことを仮定してよい．
+           // 個数は int で表現可能な数に比べて十分に小さいとする．
+           //
+           // 基本課題 (1)ではアイテム名は重複しないことを仮定してよい．
+           // また，上記で指定された形式以外のファイルが与えられた場合の挙動は
+           // 考えなくてよい．
+           //
+           // また，今回の課題ではファイルが見付からなかったり，filepathが適切な形式でなかったりすることは考えなくてよい．
+       }
+
+       public void PrintAll()
+       {
+           foreach (var k in Items.Keys)
+           {
+               Console.WriteLine(k + " × " + Items[k]);
+           }
+       }
    }
+
+   class Program
+   {
+       static void Main()
+       {
+           Inventory i = new Inventory();
+           i.AddItemsFromFile("./items.txt");
+           i.PrintAll();
+       }
+   }
+
 
 ./items.txtの中身の例::
 
@@ -92,8 +96,8 @@ title: 第4回 課題
    Chocolate × 2
    Chips × 14
    Candy × 5
-   
-./items.txtも提出物に含めること．
+
+**./items.txtも提出物に含めること．**
 
 .. hint::
 
@@ -173,7 +177,16 @@ title: 第4回 課題
    Chips × 14
    Candy × 5
 
+.. hint::
 
+   ディクショナリにキーが含まれているかどうかを確認するには``ContainsKey(TKey)``メソッドを用いることができる．
+   たとえば式
+
+   .. code:: cs
+
+      dict.ContainsKey( k ) 
+
+   の評価結果は``k``が``dict``に含まれていれば``true``，そうでなければ``false``である．
 
 
 --------
@@ -187,7 +200,8 @@ title: 第4回 課題
 以下の基本課題で作成した``AddItemsFromFile(string)``を拡張し，
 入力したテキストファイルにコメントや余計な空白，空行が入っていても正常に読みこめるようにせよ．
 ただし，"#"で始まる行をコメントとする（"#"が行頭でない場合はコメントでないのに注意）
-また，指定されたフォーマットで解釈することに失敗した場合には，``items``は何も変更しないようにせよ．
+また，ある行において指定されたフォーマットで解釈することに失敗した場合には，``Items``は
+その行以前までの行を読み取った結果で更新されるようにせよ．
 
 ./items.txtの中身の例::
 
@@ -213,5 +227,11 @@ title: 第4回 課題
    Candy,5
    Chocolate,40
        #コメントでない行
+   Candy,25
 
-上の場合は items は空のままとなるので何も出力されない．
+そのときの期待される出力::
+
+   Chocolate × 42
+   Chips × 14
+   Candy × 5
+
