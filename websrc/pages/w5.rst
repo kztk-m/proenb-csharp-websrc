@@ -90,7 +90,7 @@ Eto.Formsのテンプレートからデフォルト設定で生成されるコ�
 
 .. code:: cs
 
-   public void MainForm() 
+   public MainForm() 
    {
        Title = "Hello World"; 
        ClientSize = new Size(200, 200);
@@ -106,7 +106,7 @@ Eto.Formsのテンプレートからデフォルト設定で生成されるコ�
 
 .. code:: cs
 
-   public void MainForm() 
+   public MainForm() 
    {
        Title = "Hello World"; 
        ClientSize = new Size(200, 200);
@@ -184,7 +184,7 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
 
 .. code:: cs
 
-   public static void MainForm() 
+   public MainForm() 
    {
        Title = "StackLayout Example";
        ClientSize = new Size(200, 200);
@@ -271,6 +271,19 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
         }
 
 
+練習問題
+~~~~~~~~
+
+上記のプログラムを少し改変してみて挙動の変化を確認してみよう．たとえば，以下等をしてみるとよい．
+
+- ``Orientation`` を変えてみる
+- 紹介されたが上の例では使われなかったプロパティを使ってみる
+- ``Padding``や``Spacing``を変えてみる
+- 同じコントロールを複数追加してみる
+- ``StackLayoutItem``コンストラクタの第二引数にfalseを渡してみる
+- あるいは，コントロール``c``を追加する際に``Add(c)``を``Add(new StackLayoutItem (c, true)``としてみる
+
+
 ``TableLayout``の例
 -------------------
 
@@ -347,6 +360,16 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
 ``TableLayout.AutoSized`` というstatic メソッドは伸長するセルの中に伸長したくないコントロールを配置するのに使う．
 
 
+練習問題
+~~~~~~~~
+
+上記のプログラムを少し改変してみて挙動の変化を確認してみよう．たとえば，以下等をしてみるとよい．
+
+- 「以下をアンコメントしたらどうなる？」に従ってみる
+- ``TableLayout.AutoSized``を使わないでみる．あるいは``TextAre``を追加する際に``AutoSized``を使ってみる
+- ``Padding``や``Spacing``を変えてみる
+- 同じコントロールを複数追加してみる
+- ``StackLayout``のときのように，オブジェクト初期化子をできるだけ活用する形にプログラムを変更してみる
 
 レイアウトを組み合せる
 ----------------------
@@ -358,7 +381,7 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
 
 ::
 
-   Button1 Button2 Button3 [TextBox                           ]
+   (Button1) (Button2) (Button3) [TextBox                     ]
 
    +----------------------------------------------------------+
    | TextArea                                                 |
@@ -410,6 +433,199 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
 
 さて，これまではGUI部品を配置するだけで，GUI部品がなにか面白いことをすることはなかった．
 ここではボタンを押したときの動作を実装してみよう．
+
+まずは非常に単純なアプリケーションを作ってみる．このアプリケーションの画面には一つのボタンと一つのラベルがあるのみである．
+ボタンを押すと，ラベルにボタンを押した回数が表示されるというものである．
+各コントロールの配置は適当でよい．
+
+コントロールの配置だけを考えれば以下のようなプログラム（``MainForm``コンストラクタのみ抜粋）が書けるだろう．
+
+.. code:: cs
+
+        public MainForm()
+        {
+            Title = "Button Example";
+            ClientSize = new Size(200, 100);
+            Menu = new MenuBar();
+
+            Button countButton = new Button { Text = "Count" };
+            Label countLabel = new Label { Text = "0" };
+
+            StackLayout stackLayout = new StackLayout();
+            stackLayout.Padding = 5;
+            stackLayout.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            stackLayout.Items.Add(new StackLayoutItem(countLabel, true));
+            stackLayout.Items.Add(countButton);
+
+            Content = stackLayout;
+        }
+
+上記の実行例（Macの場合）
+
+.. image::./images/eto/button_layout_only.png
+
+
+イベントハンドラの登録
+----------------------
+
+ボタン``button``を押したときに，なにかをさせたい場合はイベントハンドラに関数を登録すればよい．これは，
+``button``の``Click``フィールドに以下のようにメソッドを登録すればよい．
+
+.. code:: cs
+
+   // クリックされたときに YOUR_METHOD(イベント発生させたオブジェクト，EventArgs型のオブジェクト) が呼び出される
+   button.Click += YOUR_METHOD; 
+
+
+C#ではクラスやオブジェクトはイベント（のハンドラを格納するもの）を持つことができる．イベントはフィールドやプロパティとは異なり，
+その当該のクラスからしか発生させる（イベントハンドラを呼び出す）ことができない（なので，派生クラスからイベントを発生させたい場合は，
+基底クラスのほうでイベント発生をラップする protected ないし public なメソッドを用意する必要がある）．
+ただし，イベントはそのクラスの外でも購読（イベントハンドラを登録する）ことができる．
+上記の``+=``は``button.Click``というイベントを購読する（あるいは"button.Click"というイベントに対するイベントハンドラを登録する）ための構文である．
+また，イベントの購読解除も行うことができ，対応する構文は``-=``である．
+
+さて，上記の``YOUR_METHOD``の部分はstatic メソッドでもそうでない通常のメソッド（インスタンスメソッド）でもよいが，
+今回の目的でもっとも簡潔なのは以下に紹介する **ラムダ式** を使う方法である．
+
+匿名関数（ラムダ式）
+-------------------
+
+匿名関数を作成するため式（ラムダ式）の基本的な構文は以下である．
+
+.. raw:: html 
+
+   <pre style="line-height:1.3">
+   (<span class="metaname">引数の列</span>) => 
+   {
+         <span class="metaname">文</span>
+         ...
+         <span class="metaname">文</span>
+   }
+   </pre>
+
+たとえば，上記のボタンの例だと
+
+.. code:: cs
+
+   int cnt = 0; 
+   // sとeは無名関数のパラメータ．型はオプショナル
+   countButton.Click += (s, e) => 
+   {
+       // あたり前に感じるかもしれないが，無名関数の中身の部分では，
+       // その外側で定義された変数にもアクセスできる．
+       cnt++; 
+       countLabel.Text = cnt.ToString(); 
+   };
+
+のように書く．``MainForm``コンストラクタ全体は以下のようになる．
+   
+.. code:: cs
+
+        public MainForm()
+        {
+            Title = "Button Example";
+            ClientSize = new Size(200, 100);
+            Menu = new MenuBar();
+
+            Button countButton = new Button { Text = "Count" };
+            Label countLabel = new Label { Text = "0" };
+
+            int cnt = 0;
+            countButton.Click += (s, e) =>
+            {
+                cnt++;
+                countLabel.Text = cnt.ToString();
+            };
+
+            StackLayout stackLayout = new StackLayout();
+            stackLayout.Padding = 5;
+            stackLayout.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            stackLayout.Items.Add(new StackLayoutItem(countLabel, true));
+            stackLayout.Items.Add(countButton);
+
+            Content = stackLayout;
+        }
+
+
+.. note:: 
+
+   インスタンスメソッドを使った場合は，たとえば，``MainForm``のインスタンスを用いる場合は
+   
+   .. code:: cs
+
+       public class MainForm : Form
+       {
+           private int cnt = 0;
+           private Label countLabel;
+           private void countUp(object sender, EventArgs e)
+           {
+               cnt++;
+               countLabel.Text = cnt.ToString();
+           }
+           public MainForm()
+           {
+               Title = "Button Example";
+               ClientSize = new Size(200, 100);
+               Menu = new MenuBar();
+
+               Button countButton = new Button { Text = "Count" };
+               countLabel = new Label { Text = "0" };
+
+               countButton.Click += this.countUp;
+
+               StackLayout stackLayout = new StackLayout();
+               stackLayout.Padding = 5;
+               stackLayout.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+               stackLayout.Items.Add(new StackLayoutItem(countLabel, true));
+               stackLayout.Items.Add(countButton);
+
+               Content = stackLayout;
+           }
+       }
+
+   となり，あるいはカウントやラベルの情報を格納するためだけのクラスを作る場合は
+
+   .. code:: cs 
+
+       public class MainForm : Form
+       {
+           private class countUpClass
+           {
+               private int count;
+               private Label label;
+               public countUpClass(int c, Label l)
+               {
+                   count = c; label = l;
+               }
+               public void countUp(object sender, EventArgs e)
+               {
+                   count++;
+                   label.Text = count.ToString();
+               }
+           }
+
+           public MainForm()
+           {
+               Title = "Button Example";
+               ClientSize = new Size(200, 100);
+               Menu = new MenuBar();
+
+               Button countButton = new Button { Text = "Count" };
+               Label countLabel = new Label { Text = "0" };
+
+               countButton.Click += new countUpClass(0, countLabel).countUp;
+
+               StackLayout stackLayout = new StackLayout();
+               stackLayout.Padding = 5;
+               stackLayout.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+               stackLayout.Items.Add(new StackLayoutItem(countLabel, true));
+               stackLayout.Items.Add(countButton);
+
+               Content = stackLayout;
+           }
+       }
+   
+   のようになる．
 
 
 
