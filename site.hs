@@ -22,6 +22,7 @@ import qualified Data.Text             as T
 conf :: Configuration
 conf = defaultConfiguration
        {
+         deployCommand = "sh ./deploy.sh",
          providerDirectory = "./websrc"
        }
 
