@@ -25,11 +25,14 @@ C#演習の第5週・第6週目の課題を進めるには `さらなる準備�
 Visual Studioのインストール
 ===========================
 
+.. role:: underline
+   :class:underline 
+
 ---------
 Windows編
 ---------
 
-C#演習ではVisual Studio Community 2019 （ *最新版ではない* ）を用いる．
+WindowsではVisual Studio Community 2019 （ *最新版ではない* ）を用いる．
 
 .. note:: 
      
@@ -38,7 +41,7 @@ C#演習ではVisual Studio Community 2019 （ *最新版ではない* ）を用
 **インストール中はネットワーク接続が必要なことに注意する．**
 
 #. `Visual Studio 2019のリリースノート <https://docs.microsoft.com/ja-jp/visualstudio/releases/2019/release-notes>`_ より，
-   "Download Community 2019"のリンクを辿り，Visual Studio Community 2019をダウンロードする．
+   "Download Community 2019 :underline:`↓`"と書かれた青いボタンを押し，Visual Studio Community 2019をダウンロードする．
 
    ..
       .. image::images/ss_dl_win1.png
@@ -63,7 +66,8 @@ C#演習ではVisual Studio Community 2019 （ *最新版ではない* ）を用
    ..
       .. image::images/ss_dl_win5.png 
 
-#. 起動時にいろいろ聞かれるが適当に答えたのでよい．最終的には以下の画面が表示される．インストーラは閉じてOK．
+#. 起動時にいろいろ聞かれるが適当に答えたのでよい（サインインのアカウントも好きなものでよいし，設定しなくてもよい）．
+   インストールが終了すると自動的にVisual Studio 2019が起動され，以下の画面が表示される．インストーラのウィンドゥのほうは閉じてOK．
 
    .. image::images/ss_dl_win7.png 
 
@@ -71,7 +75,7 @@ C#演習ではVisual Studio Community 2019 （ *最新版ではない* ）を用
   
    i. 上記で「新しいプロジェクトの作成」を選ぶ．
 
-   #. テンプレート選択画面で，C#の「コンソール アプリ」を選ぶ．
+   #. テンプレート選択画面で，C#の「コンソール アプリケーション」を選ぶ．
 
       .. image::images/ss_chk_win2.png 
 
@@ -92,13 +96,15 @@ C#演習ではVisual Studio Community 2019 （ *最新版ではない* ）を用
 
       .. image::images/ss_chk_win5.png 
 
-   #. コードを実行するには上の左よりのあたりにある「▶ HelloWorldCS」と書かれたボタンを押す．
+   #. コードを実行するには上のツールバーの真ん中あたりにある「▶ HelloWorldCS」と書かれたボタンを押す．
       すると，ビルドが行われ実行形式が作成された後にその実行形式が実行される．
       ビルド時の出力等が表示された後に，「Microsoft Visual Studio デバッグコンソール」に ``Hello, World!`` と表示されればOK．
 
       .. image::images/ss_chk_win6.png 
 
-   #. F#でも同様であることを確認しておこう（テンプレートを選ぶ場面でF#の「コンソール アプリ」を選べばよい）．
+   #. F#でも同様であることを確認しておこう（新しいプロジェクトを作成する際のテンプレートを選ぶ場面で，「すべての言語」を「F#」に変更し，「コンソール アプリケーション」を選べばよい）．
+
+     
 
 -----
 Mac編
@@ -148,7 +154,10 @@ C#演習ではVisual Studio 2019 for Macではなく，Visual Studio 2022 for Ma
        .. image::images/ss_dl_mac6.png 
 
 #.  上で「完了時にVisual Studio Previewを開く」をチェックしていたら（なにもしていなければそうなっているはず），
-    起動時にいろいろ聞かれるかもだが最終的に「Visual Studio 2022 for Mac」と書かれたウィンドウが表示される．
+    インストールが終了すると自動的にVisual Studio 2022 for Macが起動される．
+    起動時にいろいろ聞かれるが適当に答えたのでよい（サインインのアカウントも好きなものでよいし，設定しなくてもよい）．
+    最終的に「Visual Studio 2022 for Mac」と書かれたウィンドウが表示される．
+
     
     - 2022年3月18日現在ではまだローカライズが完全でないようであり，一部英語の項目等が残っている．
 
@@ -169,7 +178,7 @@ C#演習ではVisual Studio 2019 for Macではなく，Visual Studio 2022 for Ma
 
        .. image::images/ss_chk_mac2.png 
 
-       - C#/F#は使用する言語を選ぶ．ここでは好きな言語を選んでおいたのでよいだろう．
+       - C#/F#の部分は使用する言語を選ぶ．両方の言語について動作確認しよう．
 
     #. ターゲットフレームワークを聞かれるので適当に選ぶ．
 
@@ -212,8 +221,6 @@ Visual Studioに含まれているので，上記を行っている場合は以�
    - Windows版なら``dotnet-sdk-6.0.201-win-x64.exe``みたいな名前
    - Macのx64版なら``dotnet-sdk-6.0.201-osx-x64.pkg`` みたいな名前
 
-#. 以下「`Windows/Mac 共通`_」へ
-
 #. ターミナル（WindowsだとコマンドプロンプトPowerShell，MacだとTerminal.appやiTerm.app）を開き，以下を実行する．
 
    .. code:: 
@@ -228,13 +235,20 @@ Visual Studioに含まれているので，上記を行っている場合は以�
       5.0.406 [/usr/local/share/dotnet/sdk]
       6.0.201 [/usr/local/share/dotnet/sdk]
 
-#. 動作確認もしておこう（F#の場合は ``dotnet new console -o HelloWorldCS`` の代わりに ``dotnet new console -o HelloWorldCS -lang F#`` とする）．
+#. 動作確認もしておこう．
    
    i. 適当なディレクトリに移動して以下を実行する．
 
       .. code:: 
           
           dotnet new console -o HelloWorldCS --langVersion 8.0
+
+      .. note::
+
+         ``--langVersion 8.0``の部分は必須ではない．単に，Visual Studio 2019 にて C#の「コンソール アプリケーション」テンプレートと
+         生成されるHello Worldのコードを一致させたかったためである．なお，上述のように Visual Studio 2022 を使用した場合は，
+         下記とは異なるHello Worldのコード（C# 9.0の機能を利用したもの）が出力される．
+         
 
    #. ``HelloWorldCS`` というディレクトリができているので，そこに移動する．  
 
@@ -280,8 +294,10 @@ Visual Studioに含まれているので，上記を行っている場合は以�
 
       すると，"Hello, World!"が表示されるのが確認できるはずだ． 
 
-   
+   #. F#でも同様であることを確認しておこう（``dotnet new``を実行する場面で，``dotnet new console -o HelloWorldCS`` の代わりに ``dotnet new console -lang "F#" -o HelloWorldFS`` とする．また，このコマンドだと``HelloWorldCS``ではなく``HelloWorldFS``というディレクトリが作成される）
 
 
+      .. note::
 
+         F#でもターゲットフレームワークが .NET 5.0 のときと .NET 6.0 のときで出力される Hello World のコードが変わる．
 

@@ -58,6 +58,10 @@ div.title {
     font-weight: bold; 
 }
 
+.underline {
+    text-decoration: underline;
+}
+
 pre, code {
     font-family: "Anonymous Pro", inconsolata, Monaco, Consolas, monospace;
 }
