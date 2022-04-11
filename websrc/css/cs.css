@@ -609,8 +609,12 @@ div.hint, section.hint {
 }
 
 span.metaname {
+    font-style: oblique 10deg; 
+    font-size: 0.9rem;
     background-color: var(--code-metaname-bg-color); 
-    border: 0.1rem solid var(--code-metaname-border-color);
+    border: 0.075rem solid var(--code-metaname-border-color);
+    padding: 0.1rem 0.2rem;
+    border-radius: 0.3rem;
 }
 
 span.ex {
