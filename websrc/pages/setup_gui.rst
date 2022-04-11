@@ -288,6 +288,11 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
 
        dotnet new -l eto
 
+
+   .. note::
+
+      ``dotnet``のバージョンによっては，``dotnet new eto -l``のように書かなけれならないかもしれない．
+
    たとえば，以下のように表示されるはず．
 
    .. code:: 
@@ -313,7 +318,7 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
 
           cd HelloEto 
 
-   #. 以下を実行するを実行する．      
+   #. 以下を実行する．     
 
       .. code:: 
    
@@ -339,6 +344,10 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
        .. code::
 
           dotnet run --project HelloEto.Wpf
+
+       .. note::
+
+          「warning NU1701: パッケージ XXXX はプロジェクトのターゲット フレームワーク YYYY ではなく ZZZZ を使用して復元されました。このパッケージは、使用しているプロジェクトと完全な互換性がない可能性があります。」という警告が多数表示されるが，他にエラーや警告がなければ無視してよい．
 
        .. note::
           

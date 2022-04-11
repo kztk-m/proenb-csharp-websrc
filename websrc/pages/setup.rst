@@ -104,6 +104,16 @@ WindowsではVisual Studio Community 2019 （ *最新版ではない* ）を用�
 
    #. F#でも同様であることを確認しておこう（新しいプロジェクトを作成する際のテンプレートを選ぶ場面で，「すべての言語」を「F#」に変更し，「コンソール アプリケーション」を選べばよい）．
 
+      .. note:: 
+
+         もし以上のとおりやった上でF#でのビルドに失敗し，「パッケージ FSharp.Core が見つかりません。ソース Microsoft Visual Studio Offline Packages には、この ID のパッケージが存在しません。」というエラーメッセージが出る場合は，コマンドライン（WindowsだとPowerShellか「コマンド プロンプト」を利用）から
+
+         ::
+
+            dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+
+
+         を実行する．あるいは，以下の「`.NET SDKのインストール （Windows/Mac ほぼ共通）`_」の手順1～4を読みSDKをインストールするとよい．（それでも直らなければ，教員・TAに質問をしてください．）
      
 
 -----
@@ -206,6 +216,21 @@ C#演習ではVisual Studio 2019 for Macではなく，Visual Studio 2022 for Ma
        
        .. image::images/ss_chk_mac6.png 
 
+    #. 上記の動作確認はC#/F#の両方について行おう．
+
+
+    .. note:: 
+
+         もし以上のとおりやった上でF#でのビルドに失敗し，「パッケージ FSharp.Core が見つかりません。ソース Microsoft Visual Studio Offline Packages には、この ID のパッケージが存在しません。」というエラーメッセージが出る場合は，コマンドライン（MacだとTerminal.app）から
+
+         ::
+
+            dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+
+
+         を実行する．あるいは，以下の「`.NET SDKのインストール （Windows/Mac ほぼ共通）`_」の手順1～4を読みSDKをインストールするとよい．（それでも直らなければ，教員・TAに質問をしてください．）
+
+
 
 ==============================================
 .NET SDKのインストール （Windows/Mac ほぼ共通）
@@ -221,7 +246,7 @@ Visual Studioに含まれているので，上記を行っている場合は以�
    - Windows版なら``dotnet-sdk-6.0.201-win-x64.exe``みたいな名前
    - Macのx64版なら``dotnet-sdk-6.0.201-osx-x64.pkg`` みたいな名前
 
-#. ターミナル（WindowsだとコマンドプロンプトPowerShell，MacだとTerminal.appやiTerm.app）を開き，以下を実行する．
+#. ターミナル（WindowsだとPowerShellか「コマンド プロンプト」，MacだとTerminal.appやiTerm.app）を開き，以下を実行する．
 
    .. code:: 
 
