@@ -17,6 +17,8 @@ import           Data.String           (fromString)
 import           Data.Text             (Text)
 import qualified Data.Text             as T
 
+import qualified Data.List             (isPrefixOf)
+
 -- import qualified Debug.Trace
 
 conf :: Configuration
@@ -98,10 +100,15 @@ rstCompilingRule = do
         >>= relativizeUrls
 
 
-    Nothing ->
+    Nothing -> do
+      let tmpl =
+            if "setup" `Data.List.isPrefixOf` bn then
+              "templates/defaultSetup.html"
+            else
+              "templates/default.html"
       pandocCompilerWithTransform defaultHakyllReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
-      >>= loadAndApplyTemplate "templates/default.html" ctxt
-      >>= relativizeUrls
+        >>= loadAndApplyTemplate tmpl ctxt
+        >>= relativizeUrls
   where
     checkBN :: String -> Maybe ParseBN
     checkBN (c:s) =

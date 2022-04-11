@@ -1,5 +1,6 @@
 :root {
     --header-nav-bg-color: hsl(275, 80%, 33%);
+    --header-nav-bg-highlight-color: hsl(275, 60%, 48%);
     --header-bg-color:     hsl(275, 80%, 95%);
     --header-nav-fg-color: white; 
     --header-nav-current-link-color: hsl(40, 90%, 55%);
@@ -273,24 +274,38 @@ header nav li {
     margin:  0px; 
 }
 
+header nav a:hover, header nav .dd:hover {
+    background-color: var(--header-nav-bg-highlight-color);
+}
+
 header nav > ul {
     display: flex; 
     flex-wrap: nowrap;
-    overflow-x: auto;
+    /* overflow-x: auto; */
 
     justify-content: space-between; 
+}
+
+.dd {
+    position: relative; 
+    cursor:   pointer; 
 }
 
 .dd ul {
     display:  none;    
     position: absolute;
     background-color: var(--header-nav-bg-color);
-    box-shadow: 0px 0.5em 1em 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0.5em 1em 0px rgba(0,0,0,0.3);
     z-index: 1; 
+
+    white-space: nowrap;
 }
 
 .ddt::after {
-    content: "\025BC"; /* ▼ */    
+    content:   "\025BE"; /* ▼ */    
+    /* font-size: 80%; */
+    margin-left:  0.2em; 
+    margin-right: 0.2em;
 }
 
 .ddt {
@@ -298,18 +313,36 @@ header nav > ul {
     position: relative;     
 }
 
-.dd:hover ul {
+.dd:hover ul, .dd:focus ul {
     display: block;
 }
 
-.dd:hover ul li {
-    display: inline-block; 
+.dd:hover ul li, .dd:focus ul li {
+    display: block; 
 }
 
-header nav a, header nav span.ddt {
+
+header nav > ul > li > a, header nav span.ddt {
     display: inline-block;
-    padding: 0.6rem  0.8rem; 
+    padding: 0.6rem  1rem; 
     margin: 0px; 
+}
+
+header nav .dd li {
+    display: inline-block;
+    margin: 0px;     
+
+    /* white-space: nowrap;  */
+    border-top: 0.05em solid var(--header-nav-bg-highlight-color);
+}
+
+header nav .dd ul li:first-child {
+    border-top: none; 
+}
+
+header nav .dd a {
+    display: inline-block; 
+    padding: 0.6rem  1rem; 
 }
 
 header nav a, header nav a:visited {
@@ -327,6 +360,23 @@ nav a.current-link {
     /* font-weight: bold;  */
     box-shadow: inset 0 -0.3rem 0 0 var(--header-nav-current-link-color);
 }
+
+nav .dd a.current-link {
+    position: relative; 
+    box-shadow: none;
+    /* box-shadow: inset  0.0rem 0 0 0 var(--header-nav-current-link-color); */
+    /* box-shadow: inset -0.5rem 0 0 0 var(--header-nav-current-link-color); */
+    /* background-color: var(--header-nav-current-link-color); */
+}
+
+nav .dd a.current-link::before {
+    position: absolute;
+    content: "\025B8"; /* ▸ */
+    left:    0px;
+    color: var(--header-nav-current-link-color);
+}
+
+
 
 #TOC li{
     margin-top: 0em;
@@ -457,8 +507,8 @@ header h1, header ul, header p{
     display: inline-block;
     padding: 0.3rem 2rem; 
     /* background-color: #CCC; */
-    border-top-left-radius:  1.5rem;
-    border-top-right-radius: 1.5rem;        
+    border-top-left-radius:  1.2rem;
+    border-top-right-radius: 1.2rem;        
 }
 
 .qnav a:link, .qnav a:visited {

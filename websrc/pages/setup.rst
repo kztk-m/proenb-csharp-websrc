@@ -1,5 +1,5 @@
 -----
-title: 環境構築1
+title: 第0回 環境構築1（C#/F#共通）
 date:  2022-03-24
 tableOfContents: true
 -----
@@ -67,7 +67,7 @@ WindowsではVisual Studio Community 2019 （ *最新版ではない* ）を用�
       .. image::images/ss_dl_win5.png 
 
 #. 起動時にいろいろ聞かれるが適当に答えたのでよい（サインインのアカウントも好きなものでよいし，設定しなくてもよい）．
-   インストールが終了すると自動的にVisual Studio 2019が起動され，以下の画面が表示される．インストーラのウィンドゥのほうは閉じてOK．
+   インストールが終了すると自動的にVisual Studio 2019が起動され，以下の画面が表示される．インストーラのウィンドウのほうは閉じてOK．
 
    .. image::images/ss_dl_win7.png 
 

@@ -1,9 +1,10 @@
 -----
-title: 環境構築2（Eto.Formsの設定）
+title: 第0回 環境構築2（C#演習用）
 date:  2022-03-24
 tableOfContents: true
 -----
 
+C#演習第5・6回課題ではクロスプラットフォームGUIフレームワーク`Eto.Forms <https://github.com/picoe/Eto>`__を用いるので，その環境をセットアップする．
 `環境設定1 <./setup.html>`__で「Visual Studioのインストール」を選んだ人は，`Visual Studioの設定`_を，
 「.NET SDKのインストール （Windows/Mac ほぼ共通）」を選んだ人は「`コマンドライン環境の設定`_」を参照する．
 
@@ -33,7 +34,7 @@ Visual Studio 2019を用いる．Eto.Formsの拡張機能は令和4年3月24日(
 
    .. image::images/ss_eto/win2.png
    
-   すると拡張機能の管理ウィンドウが表示されるので，右上の検索窓から"Eto.Forms"を検索する．すると，"Eto.Froms Visual Studio Addin"がリストされるので，
+   すると拡張機能の管理ウィンドウが表示されるので，右上の検索窓から"Eto.Forms"を検索する．すると，"Eto.Forms Visual Studio Addin"がリストされるので，
    「ダウンロード」する．
 
    .. image::images/ss_eto/win4.png
@@ -224,11 +225,11 @@ Mac編
         ..
            .. image::images/ss_eto/mac_mac3.png 
 
-     #. 以下のようなウィンドゥが表示される．
+     #. 以下のようなウィンドウが表示される．
 
         .. image::images/ss_eto/mac_mac4.png 
 
-     #. ツールバー上のボタン「Click Me!」は初期ウィンドゥサイズだと隠れてしまっている．拡張して表示しよう．
+     #. ツールバー上のボタン「Click Me!」は初期ウィンドウサイズだと隠れてしまっている．拡張して表示しよう．
 
         .. image::images/ss_eto/mac_mac5.png 
 
@@ -260,7 +261,7 @@ Mac編
         ..
            .. image::images/ss_eto/mac_gtk2.png
 
-     #. 以下のようなウィンドゥが表示される．
+     #. 以下のようなウィンドウが表示される．
 
         .. image::images/ss_eto/mac_gtk3.png
 
