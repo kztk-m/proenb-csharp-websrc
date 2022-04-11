@@ -31,7 +31,22 @@ C#プログラムの基本的な構造
 このプログラムはC#のプログラムの基本的な構造についての示唆に富んでいる．
 
 まず，最初に気付くのは``using System;``の後に``namespace HelloWorldCS {…}``が続いていることである．これらに関する説明は後の回で行うこととする．
-今はC#のプログラムはこのような要素を含むのだと思っておいてほしい（この説明も正確ではないが，その点も含めて後の回で行う）．
+特に ``namespace``はプログラムの構成要素として必須ではないので，本演習では後で説明するのにとどめる．上のプログラムは，``namespace``の部分を除くと
+
+.. code:: cs 
+    
+    using System;
+    
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello World!");
+        }
+    }
+
+となる．``using Sysmtem;``の部分はしばらくはプログラムはそういうものを含むのだと思ってほしい．
+
 
 
 次に興味深いのは``class Program {…}``の部分である．この部分は``Program``という **クラス** を宣言している．C#はオブジェクト指向言語であり，
@@ -46,6 +61,9 @@ C#プログラムの基本的な構造
 クラスのとても基本的な構造
 ==========================
 
+まずは，クラスはどういう構造をもっているかを見ていこう．基本的には以下の構造をしているが，
+これだとピンとこない人も多いと思うので，例を用いて説明することにする．
+
 .. raw:: html
  
    <pre style="line-height:1.3">
@@ -59,11 +77,11 @@ C#プログラムの基本的な構造
 例：カウンター実装
 ------------------
 
-基本的な構造は上記だが，これだとピンとこない人も多いと思うので，例を用いて説明する．今，カウンターを実装することを考える．カウンターの機能はシンプルに数をカウントするだけである．カウンターオブジェクトは内部でカウントを持っていて，作成時にカウントの初期値を指定することができる．またカウンターに対してできることは
+今，カウンターを実装することを考える．カウンターの機能はシンプルに数をカウントするだけである．カウンターオブジェクトは内部でカウントを持っていて，作成時にカウントの初期値を指定することができる．またカウンターに対してできることは
 
-   - カウントを1増やす
-   - カウントを0にもどす
-   - 現在のカウントを調べる
+- カウントを1増やす
+- カウントを0にもどす
+- 現在のカウントを調べる
 
 のみであるようにしたい．
 
@@ -108,27 +126,24 @@ C#プログラムの基本的な構造
 
    using System; 
 
-   namespace Week1 
+   class Counter 
    {
-       class Counter 
+       private int count; 
+       public Counter(int c0) 
        {
-           private int count; 
-           public Counter(int c0) 
-           {
-               count = c0; 
-           }
-       }
-       class Program 
-       {
-           static void Main(string[] args) 
-           {
-              Counter c = new Counter(0); 
-              // c.count.ToString()はオブジェクトcのフィールドcountの
-              // ToString()メソッドを呼ぶの意
-              Console.WriteLine(c.count.ToString()); // エラー
-           }
+           count = c0; 
        }
    }
+   class Program 
+   {
+       static void Main(string[] args) 
+       {
+          Counter c = new Counter(0); 
+          // c.count.ToString()はオブジェクトcのフィールドcountに対し，ToString()メソッドを呼ぶの意
+          Console.WriteLine(c.count.ToString()); // エラー
+       }
+   }
+   
 
 .. note:: 
 
@@ -138,22 +153,20 @@ C#プログラムの基本的な構造
     
        using System; 
     
-       namespace Week1 
+       class Counter 
        {
-           class Counter 
+           private int count; 
+           public Counter(int c0) 
            {
-               private int count; 
-               public Counter(int c0) 
-               {
-                   count = c0; 
-               }
-               static void Main(string[] args) 
-               {
-                  Counter c = new Counter(0); 
-                  Console.WriteLine(c.count.ToString()); 
-               }
+               count = c0; 
+           }
+           static void Main(string[] args) 
+           {
+              Counter c = new Counter(0); 
+              Console.WriteLine(c.count.ToString()); 
            }
        }
+       
     
     が，これは *あまりよくないコード* である．なぜならば，``Counter``はカウンターを実装するということが感心事であるのにそれ以外の処理を行っているためである．
     さらには，``Counter``は直接カウンターへのアクセスを防ぐために``count``をprivateフィールドにしたので，そのアクセス制限を台無しにしている．
@@ -163,6 +176,7 @@ C#プログラムの基本的な構造
 
 では，``Counter``クラスに **（インスタンス）メソッド** を追加してもっと面白くしてみよう．
 （インスタンス）メソッド``Method``はオブジェクト``o``に対し，``o.Method(arg1, arg2)``のよう形で呼出すことができる関数のようなものである．
+具体的にはカウンタをインクリメントするメソッド``Inc()``，リセットするメソッド``Reset()``，取得するメソッド``GetCount()``を定義してみよう．
 
 .. code:: cs
 
@@ -190,52 +204,49 @@ C#プログラムの基本的な構造
         }        
     }
 
-ここで，``Inc()``はカウントを1増加させ，``Reset()``はカウントを0にリセットし，``GetCount()``は現在のカウントを返すメソッドである．
+上の実装が示すように，``Inc()``はカウントを1増加させ，``Reset()``はカウントを0にリセットし，``GetCount()``は現在のカウントを返す．
 public修飾子が示すように，これらはpublicメソッドとして実装されてるため，``Counter``クラスの外側でも用いることができる．
 
 .. code:: cs
 
    using System; 
 
-   namespace Week1 
+   class Counter 
    {
-       class Counter 
+       private int count; 
+       public Counter(int c0) 
        {
-           private int count; 
-
-           public Counter(int c0) 
-           {
-               count = c0; 
-           }
-           public void Inc() 
-           {
-               count++;
-           }
-           public void Reset() 
-           {
-               count = 0; 
-           }
-           public int GetCount() 
-           {
-               return count; 
-           }        
+           count = c0; 
        }
-       class Program 
+       public void Inc() 
        {
-           static void Main(string[] args) 
-           {
-              Counter c = new Counter(0); 
-              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
-              c.Inc(); 
-              c.Inc(); 
-              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
-              c.Reset();
-              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString());  
-              c.Inc();
-              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
-           }
+           count++;
+       }
+       public void Reset() 
+       {
+           count = 0; 
+       }
+       public int GetCount() 
+       {
+           return count; 
+       }        
+   }
+   class Program 
+   {
+       static void Main(string[] args) 
+       {
+          Counter c = new Counter(0); 
+          Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
+          c.Inc(); 
+          c.Inc(); 
+          Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
+          c.Reset();
+          Console.WriteLine("c.GetCount() = " + c.GetCount().ToString());  
+          c.Inc();
+          Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
        }
    }
+
 
 このプログラムをビルド・実行すると以下の出力が得られる．
 
@@ -276,8 +287,8 @@ staticメソッドの追加
 
 *static修飾子* はこのメソッドがstaticメソッドであることを表している．
 
-さて，この関数の実装であるが， `.NETのAPIリファレンス <https://docs.microsoft.com/ja-jp/dotnet/api/?view=net-6.0>`_ をよく眺めれば，
-``Int32.Parse``メソッドを用いることで実装できることに気付く．
+さて，この関数の実装であるが，
+``Int32.Parse``メソッド（参考：`.NETのAPIリファレンス <https://docs.microsoft.com/en-us/dotnet/api/?view=net-6.0>`__）を用いることで実装できる．
 
 .. code:: cs 
 
@@ -295,46 +306,43 @@ staticメソッドの追加
 
    using System; 
 
-   namespace Week1 
+   class Counter 
    {
-       class Counter 
+       private int count; 
+       public static Counter Parse(string s) 
        {
-           private int count; 
-
-           public static Counter Parse(string s) 
-           {
-               int i = Int32.Parse(s); 
-               return new Counter(i); 
-           }
-           public Counter(int c0) 
-           {
-               count = c0; 
-           }
-           public void Inc() 
-           {
-               count++;
-           }
-           public void Reset() 
-           {
-               count = 0; 
-           }
-           public int GetCount() 
-           {
-               return count; 
-           }        
+           int i = Int32.Parse(s); 
+           return new Counter(i); 
        }
-       class Program 
+       public Counter(int c0) 
        {
-           static void Main(string[] args) 
-           {
-              Counter c = Counter.Parse("3"); 
-              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
-              c.Inc(); 
-              c.Inc(); 
-              Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
-           }
+           count = c0; 
+       }
+       public void Inc() 
+       {
+           count++;
+       }
+       public void Reset() 
+       {
+           count = 0; 
+       }
+       public int GetCount() 
+       {
+           return count; 
+       }        
+   }
+   class Program 
+   {
+       static void Main(string[] args) 
+       {
+          Counter c = Counter.Parse("3"); 
+          Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
+          c.Inc(); 
+          c.Inc(); 
+          Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
        }
    }
+
 
 すると以下の出力が得られる．
 
@@ -387,10 +395,10 @@ staticメソッドの追加
 
 上で出てきた``private``や``public``はアクセス修飾子と呼ばれ，たとえば以下のようなものがある（全部ではない）．
 
-  - ``private``: それを含むクラスの中からしかアクセスできない．メソッドやフィールドなどの修飾子を省略した場合はprivateになる．
-  - ``public``:  どこからでもアクセスできる．
-  - ``protected``: 自身と派生クラス（次回）のみからアクセスできる．
-  - ``internal``:  同一コンパイル単位のかからアクセスできる．（ネストされていない）クラスの修飾子を省略した場合はinternalになる．
+- ``private``: それを含むクラスの中からしかアクセスできない．メソッドやフィールドなどの修飾子を省略した場合はprivateになる．
+- ``public``:  どこからでもアクセスできる．
+- ``protected``: 自身と派生クラス（次回）のみからアクセスできる．
+- ``internal``:  同一コンパイル単位のかからアクセスできる．（ネストされていない）クラスの修飾子を省略した場合はinternalになる．
 
 ネストされていないクラスは``public``か``internal``にしかできない．
 
@@ -405,19 +413,19 @@ staticメソッドの追加
 型には``Counter``等のクラスや，``int``等の数値型，``bool``（真偽値型）や``string``（文字列型）などがある．
 数値型にはたとえば，以下のようなものがある（全部ではない）．
 
- - 整数型
+- 整数型
 
-   - ``sbyte``: 符号付き8ビット（1バイト）整数型．-128〜127
-   - ``byte``: 符号なし8ビット（1バイト）整数型．0〜255
-   - ``int``: 符号付き32ビット整数型．-2,147,483,648〜2,147,483,647
-   - ``uint``: 符号なし32ビット整数型．0〜4,294,967,295
-   - ``long``: 符号付き64ビット整数型．-9,223,372,036,854,775,808〜9,223,372,036,854,775,807
-   - ``ulong``: 符号なし64ビット整数型．0〜18,446,744,073,709,551,615
+  - ``sbyte``: 符号付き8ビット（1バイト）整数型．-128〜127
+  - ``byte``: 符号なし8ビット（1バイト）整数型．0〜255
+  - ``int``: 符号付き32ビット整数型．-2,147,483,648〜2,147,483,647
+  - ``uint``: 符号なし32ビット整数型．0〜4,294,967,295
+  - ``long``: 符号付き64ビット整数型．-9,223,372,036,854,775,808〜9,223,372,036,854,775,807
+  - ``ulong``: 符号なし64ビット整数型．0〜18,446,744,073,709,551,615
   
- - 浮動小数点数型
+- 浮動小数点数型
 
-   - ``float``: 単精度浮動小数点型
-   - ``double``: 倍精度浮動小数点型
+  - ``float``: 単精度浮動小数点型
+  - ``double``: 倍精度浮動小数点型
 
 
 コンストラクタ宣言の基本的な形
@@ -763,10 +771,10 @@ continue文，break文
 インクリメント（``++``）とデクリメント（``-``）
 -----------------------------------------------
 
- - ``++x``は ``x``に1を足して，足した後の値を返す．
- - ``--x``は ``x``から1を引いて，引いた後の値を返す．
- - ``x++``は ``x``に1を足して，足す前の値を返す．
- - ``x--``は ``x``から1を引いて，引く前の値を返す．
+- ``++x``は ``x``に1を足して，足した後の値を返す．
+- ``--x``は ``x``から1を引いて，引いた後の値を返す．
+- ``x++``は ``x``に1を足して，足す前の値を返す．
+- ``x--``は ``x``から1を引いて，引く前の値を返す．
 
 .. admonition:: 例
    :class: example
@@ -792,11 +800,11 @@ continue文，break文
 四則演算
 --------
 
- - ``+`` 可算
- - ``-`` 減算
- - ``*`` 乗算
- - ``/`` 除算
- - ``%`` 剰余（余り）
+- ``+`` 可算
+- ``-`` 減算
+- ``*`` 乗算
+- ``/`` 除算
+- ``%`` 剰余（余り）
 
 .. admonition:: 例
    :class: example
@@ -816,12 +824,12 @@ continue文，break文
 比較演算
 --------
 
-  - ``==`` 等しい
-  - ``!=`` 等しくない
-  - ``<``  小なり
-  - ``<=`` 小なりイコール 
-  - ``>``  大なり
-  - ``>=`` 大なりイコール
+- ``==`` 等しい
+- ``!=`` 等しくない
+- ``<``  小なり
+- ``<=`` 小なりイコール 
+- ``>``  大なり
+- ``>=`` 大なりイコール
 
 .. admonition:: 例
    :class: example
@@ -867,9 +875,9 @@ continue文，break文
 論理演算
 --------
 
-  - ``&&`` 論理積
-  - ``||`` 論理和
-  - ``!``  論理否定
+- ``&&`` 論理積
+- ``||`` 論理和
+- ``!``  論理否定
 
 .. admonition:: 例
    :class: example
@@ -896,13 +904,13 @@ continue文，break文
 代入演算
 --------
 
-  - ``x = e``は``x``に``e``を評価結果を代入する．また，それが，``x = e``の評価結果となる．
-  - ``x += e``は基本的には``x = x + e``に同じ
-  - ``x -= e``は基本的には``x = x - e``に同じ
-  - ``x *= e``は基本的には``x = x * e``に同じ
-  - ``x /= e``は基本的には``x = x / e``に同じ
-  - ``x %= e``は基本的には``x = x % e``に同じ
-  - 他にも``<<=``や``|=``などがあるが，本講義では扱わない．
+- ``x = e``は``x``に``e``を評価結果を代入する．また，それが，``x = e``の評価結果となる．
+- ``x += e``は基本的には``x = x + e``に同じ
+- ``x -= e``は基本的には``x = x - e``に同じ
+- ``x *= e``は基本的には``x = x * e``に同じ
+- ``x /= e``は基本的には``x = x / e``に同じ
+- ``x %= e``は基本的には``x = x % e``に同じ
+- 他にも``<<=``や``|=``などがあるが，本講義では扱わない．
 
 .. admonition:: 例
    :class: example
