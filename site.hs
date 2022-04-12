@@ -79,7 +79,9 @@ rstCompilingRule = do
   let bn = FP.takeBaseName fp
   case checkBN bn of
     Just (Q i) -> do
-      inst <- loadBody "questions/instruction.rst"
+      inst <-
+        if i <= 4 then loadBody "questions/instruction.rst"
+        else           loadBody "questions/eto_instruction.rst"
 
       let ctxt' =
             constField "instruction" inst     <>

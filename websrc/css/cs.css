@@ -63,7 +63,7 @@ div.title {
     text-decoration: underline;
 }
 
-pre, code {
+pre, code, .directorylist li {
     font-family: "Anonymous Pro", inconsolata, Monaco, Consolas, monospace;
 }
 
@@ -113,6 +113,7 @@ code {
 pre code {
     background-color: transparent; 
     border-style: none;
+    display: block;
     border-width: 0px;
     padding: 0px; 
     margin:  0px;
@@ -652,6 +653,10 @@ span.sc {
     color: var(--code-st-color); 
 }
 
+span.with-prompt::before {
+    content: "$ ";
+}
+
 strong {
     font-style:  normal;
     font-weight: bold;
@@ -706,6 +711,85 @@ td > p, th > p {
     margin-top:    0px; 
     margin-bottom: 0px; 
 }
+
+/*
+  Here, .directorylist part is just an straightforward adaptation of 
+  https://codepen.io/khoama/pen/AoPeMM.
+
+  Here is the original license of the original code. 
+
+  Copyright (c) 2022 by Khoa Ma (https://codepen.io/khoama/pen/AoPeMM)
+
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation files
+  (the "Software"), to deal in the Software without restriction,
+  including without limitation the rights to use, copy, modify, merge,
+  publish, distribute, sublicense, and/or sell copies of the Software,
+  and to permit persons to whom the Software is furnished to do so,
+  subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+ */ 
+
+.directorylist ul {
+    list-style: none;
+}
+.directorylist li {
+    position: relative; 
+    margin-top:    0.5rem;
+    margin-bottom: 0.5rem;
+}
+.directorylist li::before {
+    position: absolute;
+    left:  -1.2rem;
+    top:   -.5rem;
+    content: '';
+    display: block;
+    border-left:   0.1rem solid #ddd;
+    height: 1rem;
+    border-bottom: 0.1rem solid #ddd;
+    width:  1rem;    
+}
+
+.directorylist li::after{
+    position: absolute;
+    left:   -1.2rem;
+    bottom: -0.5rem;
+    content: '';
+    display: block;
+    border-left: 0.1rem solid #ddd;
+    height: 100%;
+}
+
+.directorylist > ul > li:first-child::before {
+    display: none; 
+}
+
+.directorylist > ul > li:first-child::after {
+    display: none; 
+}
+
+.directorylist li:last-child::after {
+    display: none; 
+}
+
+
+/*
+  End of the .directorylist part        
+*/
+
+
 
 @media print {
     #TOC { 
