@@ -32,6 +32,11 @@ tableOfContents: true
          Console.WriteLine( "dict[\"Chips\"] = " + dict["Chips"] ); // 7
 
          Console.WriteLine();
+         // ContainsKey メソッドにより，キーを含んでいるか否かを検査できる．
+         Console.WriteLine( dict.ContainsKey("Candy") );  // True
+         Console.WriteLine( dict.ContainsKey("Banana") ); // False 
+
+         Console.WriteLine();
          // foreach 文では個々の要素は KeyValuePair<string, int> として手に入る
          // 添字として使われるデータの部分をキー
          // それに対応したデータをバリューと呼ぶ．
@@ -77,6 +82,9 @@ tableOfContents: true
 
   dict["Chips"] = 7
 
+  True
+  False
+
   Chocolate -> 2
   Chips -> 7
   Candy -> 5
@@ -93,10 +101,24 @@ tableOfContents: true
   Chips -> 7
   Banana -> 2
 
+上記のコードで使用した``Dictionary<TKey,TValue>``のコンストラクタ，プロパティ，メソッド
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+=============================    ==========================
+``Dictionary<TKey,TValue>()``    キーが``TKey``，バリューが``TValue``型であるようなディクショナリを作成するコンストラクタ．
+``Add(TKey, TValue)``            キーとバリューの対応を付けを辞書に追加する．キーが辞書にすでに存在していたら例外（後述）発生．
+``this[TKey]``                   インデクサ．``dict[k] = v``は``k``が存在しない場合は``dict.Add(k,v)``と同様．存在する場合はバリューを``v``で上書き．
+                                 ``dick[k]``を式として使うときはキーが辞書に存在してなければ例外発生．
+``Keys``                         キーのコレクションを表すプロパティ．読み出し専用．
+``Values``                       バリューのコレクションを表すプロパティ．読み出し専用．
+``Remove(TKey)``                 指定されたキーと対応するバリューを取り除く．返り値はキーの有無（取り除けたか否か）を表す``bool``
+=============================    ==========================
+
+
 オブジェクト初期化子（object initializer）
 ==========================================
 
-ディクショナリは **オブジェクト初期化子** を用いることで下記のように初期値を指定することができる．
+ディクショナリは **オブジェクト初期化子** やコレクション初期化子（`前回参照 <./w3.html>`__）を用いることで下記のように初期値を指定することができる．
 
 .. code:: cs
 
@@ -107,6 +129,7 @@ tableOfContents: true
   {
      static void Main()
      {
+         // オブジェクト初期化子を利用した版
          Dictionary<string, int> dict = new Dictionary<string, int>()
          {
              // この{}で囲まれている部分がオブジェクト初期化子（{}を含む）
@@ -116,6 +139,21 @@ tableOfContents: true
          };
 
          foreach ( KeyValuePair<string, int> kv in dict )
+         {
+             Console.WriteLine( kv.Key + " -> " + kv.Value );
+         }
+
+
+         // コレクション初期化子を利用した版 
+         Dictionary<string, int> dict2 = new Dictionary<string, int>()
+         {
+             // 以下の括弧内がAddの引数になる
+             { "Chocolate", 2 }, 
+             { "Chips",     4 }, 
+             { "Candy",     5 }
+         };
+
+         foreach ( KeyValuePair<string, int> kv in dict2 )
          {
              Console.WriteLine( kv.Key + " -> " + kv.Value );
          }
@@ -309,28 +347,38 @@ tableOfContents: true
 
    try
    {
-      // s や dict が適当に定義されているとする
+      // s や dict が適当に（nullでないオブジェクトとして）定義されているとする
       s.Score = dict[s.Name];
       Console.WriteLine(s.Score);
    }
    catch(ArgumentNullException e)
    {
-       // ArgumentNullException が起きたときの処理
        // この具体例においては，s.Name がnullの場合に発生
        // なお，ArgumentNullException は ArgumentException の派生クラス
+
+       // ArgumentNullException が起きたときの処理
+   }
+   catch (KeyNotFoundException e)
+   {
+       // この具体例においては，dictがキーs.Nameを含んでいないときに発生
+       // なお，KeyNotFoundException は Exception の（直接ではないが）派生クラス
+
+       // KeyNotFoundException が起きたときの処理
    }
    catch(ArgumentException e)
    {
-      // ArgumentException が起きたときの処理
       // この具体例においては，dict[s.Name] が0〜100の範囲にないときに発生
       // なお，ArgumentException は Exception の（直接ではないが）派生クラス
+
+      // ArgumentException が起きたときの処理
    }
    catch(Exception e)
    {
-      // Exceptionが起きたときの処理
       // この具体例では一見発生しなさそうに見えるが，WriteLine がIOExceptionを投げる可能性がある．
       // 私は未確認だが，標準出力が/dev/fullにリダイレクトされている場合？
       // （参考： https://blog.sunfishcode.online/bugs-in-hello-world/ ）
+
+      // Exceptionが起きたときの処理
    }
 
 このとき，より特定（より派生側の）の例外に対する catch をより先頭に書く．そうでければ最初のcatchで例外が捕捉されてしまうので，後段のcatchが使われなくなる．
@@ -369,7 +417,7 @@ tableOfContents: true
                Console.WriteLine(txt);
 
                Console.WriteLine("一気に全部読む（結果を文字列の配列に）");
-               // ファイルの内容を一気に，各行のstringの列として読みとる（各行の終端の改行文字は含まれない）
+               // ファイルの内容を一気に，各行のstringの配列として読みとる（各行の終端の改行文字は含まれない）
                // ファイルが小さい，またはどうせ一度は全部読む必要があるのなら．
                string[] lines = File.ReadAllLines(fileToOpen);
                foreach (var s in lines)
@@ -455,6 +503,21 @@ MyText.txt の中身
    バナナ
    みかん
 
+上で使用したメソッドなど
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+============================     ===================================================================
+``File.ReadAllText(string)``     static メソッド．与えられたパスのファイルを開いて読んで閉じ，中身をstringとして返す．
+``File.ReadAllLines(string)``    static メソッド．与えられたパスのファイルを開いて読んで閉じ，中身を各行毎のstringの配列として返す．
+``File.OpenText(string)``        static メソッド．与えられたパスのファイルを開き，そこから読みだすための``StreamReader``オブジェクトを返す
+``StreamReader.ReadLine()``      ストリームから一行読み，その文字列を返す．ファイルの末尾なら ``null`` を返す．
+``StreamReader.Peek()``          ストリームから次に読める文字（``char``の意味で）を表す整数（``int``）を返す．ファイルの末尾なら ``-1``を返す．
+============================     ===================================================================
+
+.. note::
+
+   上記の「パス」は絶対パスでも相対パスでもよい．相対パスは現在の作業ディレクトリ基準．
+   設定 or 取得するには``Environment.CurrentDirectory``プロパティを用いる．
 
 using文
 -------
@@ -533,6 +596,17 @@ usingブロック内で例外が発生した場合にもそうでない場合に
   オレンジ
   バナナ
   みかん
+
+上で使用したメソッドなど
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+===================================       ===================================================================
+``File.WriteAllText(string,string)``      static メソッド．与えられたパスのファイルを開いて，与えられた文字列で上書きして閉じる．パスにファイルが存在してなければ作成する．
+``File.ReadAllLines(string,string[])``    static メソッド．与えられたパスのファイルを開いて，与えられた文字列の配列で上書きして閉じる．パスにファイルが存在してなければ作成する．
+``File.CreateText(string)``               static メソッド．与えられたパスのファイルを上書きモードで開き，そこへ書きこむための``StreamWriter``オブジェクトを返す．パスにファイルが存在してなければ作成する．
+``StreamWriter.WriteLine(string)``        ストリームへ与えられた文字列を出力する．
+=====================================     ===================================================================
+
 
 
 いくつかの文字列操作関数
@@ -646,6 +720,23 @@ usingブロック内で例外が発生した場合にもそうでない場合に
 
    "Hello, World."
    "Hello, World."
+
+
+上で使用した``string``のメソッドなど
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+==========================    ==================================================================
+``Join(string, string[])``    staticメソッド．文字列の配列を与えられた区切りを中に入れて連接する．
+``Split(char)``               文字列を与えられた区切り文字で分割した配列を返す．
+``Split(string)``             文字列を与えられた区切り文字列で分割した配列を返す．
+``Split()``                   文字列を与えられた空白文字文字で分割した配列を返す．
+``StartsWith(string)``        文字列が与えられた文字列で始まっているか判定する．
+``IndexOf(string)``           与えられた文字列が文字列中で最初に出現するインデックスを返す．
+``Substring(int)``            与えられたインデックス以降からなる文字列を返す．
+``Substring(int,int)``        与えられたインデックス以降で指定された長さの文字列を返す．
+``Trim()``                    文字列の先頭および末尾から連続した空白を取り除いた文字列を返す．
+==========================    ==================================================================
+
 
 
 .. note::
