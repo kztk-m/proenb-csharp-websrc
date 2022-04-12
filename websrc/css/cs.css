@@ -712,6 +712,57 @@ td > p, th > p {
     margin-bottom: 0px; 
 }
 
+/* modal img */ 
+
+img.enlargeable {
+    cursor: pointer; 
+}
+
+.modal-pane {
+    display: none; 
+    position: fixed; 
+    z-index: 2; 
+    
+    left: 0;
+    top:  0; 
+
+    width:  100vw; 
+    height: 100vh; 
+
+    cursor: pointer;
+
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-image {
+    margin: auto; 
+    display: block; 
+    margin-top:  2vh;
+    max-width:  96vw;
+    max-height: 96vh;
+}
+
+/* .modal-image { */
+/*     animation-name: zoom;  */
+/*     animation-duration: 0.3s; */
+/* } */
+
+/* @keyframes zoom { */
+/*     from {transform:scale(0)} */
+/*     to   {transform:scale(1)} */
+/* } */
+
+.close-button {
+    position: absolute; 
+    top:   1rem;
+    right: 2rem;
+    color: #f1f1f1;
+    font-size:   2rem;
+    font-weight: bold;
+    /* transition: 0.3s; */
+}
+
+
 /*
   Here, .directorylist part is just an straightforward adaptation of 
   https://codepen.io/khoama/pen/AoPeMM.
