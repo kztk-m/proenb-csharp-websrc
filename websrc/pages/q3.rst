@@ -22,6 +22,13 @@ title: 第3回 課題
          Price = p;
       }
 
+      // デバッグ用．課題で直接は使用しない．
+      public override string ToString()
+      {
+         // {Name = Chocolate, Price = 250} みたいな文字列に
+         return "{Name = " + Name + ", Price = " + Price + "}";
+      }
+
       // 以下はItemオブジェクト同士の等価性検査を行えるようにするためのもの．
       // 本課題を進める上で理解する必要はない．
       // 
@@ -33,10 +40,11 @@ title: 第3回 課題
       public override bool Equals(object o)
       {
          // e as T は (T) e に近いが， (T) eと異なり T へのキャストが失敗したらnullとなる．
+         // null はどこも指していない参照．
          return Equals(o as Item);
       }
 
-      // System.IEquatable<Item>.Equals の定義（オーバライドでなく定義であることの詳細は次回）
+      // インタフェース System.IEquatable<Item> のメソッド Equals の定義
       // List<Item>やLinkedList<Item>のRemove等はこっちを使う
       public bool Equals(Item o)
       {
@@ -67,20 +75,14 @@ title: 第3回 課題
       {
          return (Name, Price).GetHashCode();
       }
-
-      public override string ToString()
-      {
-         // {Name = Chocolate, Price = 250} みたいな文字列に
-         return "{Name = " + Name + ", Price = " + Price + "}";
-      }
    }
 
 そのとき``Item``で表される商品を扱うためのショッピングカートを表すクラス ``Cart`` を作成せよ．
 
 カートは以下の2種類の情報を管理する．
 
-  - カート内の商品：ユーザは商品（``Item``）を追加したり削除したりできる
-  - 予算：作成時に指定し，予算を超えるときは商品をカートに追加することはできない
+- カート内の商品：ユーザは商品（``Item``）を追加したり削除したりできる
+- 予算：作成時に指定し，予算を超えるときは商品をカートに追加することはできない
 
 また，以下のpublicなコンストラクタやメソッドを持つ．
 
@@ -90,7 +92,7 @@ title: 第3回 課題
 ``Cart(int budget)``       予算が``budget``であるような空のショッピングカートを作成するコンストラクタ．
 ``void Add(Item i)``       商品``i``のカートへの追加を試みる．ただし，``i``を追加することでカート内の商品の金額の合計が予算を超えるのならば追加しない．
 ``void Remove(Item i)``    商品``i``をカートから一つ取り除く．
-``void Report()``          カート内の全商品，合計金額，購入した場合の予算の残りを標準出力に出力する．ただし，``for``文や``while``文（``do``文も）を使ってはならない（``foreach``文を使う？）
+``void Report()``          カート内の全商品，合計金額，購入した場合の予算の残りを標準出力に出力する．ただし，``for``文や``while``文（資料で紹介していないが``do``文も）を使ってはならない（``foreach``文を使う？）
 ``int Budget``             予算を確認するためのread-onlyなフィールド
 ========================   =============================================================
 
@@ -224,7 +226,7 @@ title: 第3回 課題
    数えるとよいう方法で実装できる．与えられた要素がリストに含まれているかの検査を ``foreach`` で書くのは難しくないが，``List<T>.Contains(T)`` メソッドを
    使うことができる（`当該メソッドの詳細 <https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.contains?view=net-6.0#system-collections-generic-list-1-contains(-0)>`__）．
 
-   ただ，今回分では紹介しなかったが連想配列を表すクラス``Dictionary<Item, int>``を使うのが自然か．このクラスがどのようなコンストラクタかメソッドを知るには `.NET API リファレンスの当該クラスのページ <https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2?view=net-6.0>`__ を見るとよい．次回の演習でも少し紹介する．
+   ただ，今回分では紹介しなかったが連想配列を表すクラス``Dictionary<Item, int>``を使うのがより自然だろう．このクラスがどのようなコンストラクタかメソッドを知るには `.NET API リファレンスの当該クラスのページ <https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2?view=net-6.0>`__ を見るとよい．次回の演習でも少し紹介する．
 
 
 
