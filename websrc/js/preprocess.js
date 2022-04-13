@@ -32,14 +32,16 @@ function addModalImageViewPane() {
 
     const closeButton = document.createElement("span");
     closeButton.setAttribute("class", "close-button");
-    closeButton.appendChild( document.createTextNode("×") );
+    closeButton.appendChild( document.createTextNode("") );
     closeButton.onclick = function () {
         div.style.display = "none";
     };
 
-    div.onclick = function () {
-        div.style.display = "none"; 
-    };
+    div.addEventListener('click', function(event) {
+        if ( !img.contains( event.target ) ) {
+            div.style.display = "none"; 
+        }        
+    });
     
     div.appendChild( closeButton ); 
     div.appendChild( img ); 

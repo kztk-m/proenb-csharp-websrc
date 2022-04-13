@@ -737,9 +737,17 @@ img.enlargeable {
 .modal-image {
     margin: auto; 
     display: block; 
-    margin-top:  2vh;
-    max-width:  96vw;
-    max-height: 96vh;
+    position: absolute; 
+    max-width:  100vw;
+    max-height: 100vh;
+
+    cursor: default;
+
+    background-color: rgba(255, 255, 255, 0.2); 
+
+    top:  50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* .modal-image { */
@@ -756,10 +764,45 @@ img.enlargeable {
     position: absolute; 
     top:   1rem;
     right: 2rem;
-    color: #f1f1f1;
-    font-size:   2rem;
-    font-weight: bold;
+
+    display: block; 
+
+    width:  3rem;
+    height: 3rem;
+    padding: auto; 
+    
+    background-color: rgba(160, 160, 160, 0.6); 
+    border-radius:    4rem;
+
+    z-index: 3; 
+    transform: rotate(45deg);
     /* transition: 0.3s; */
+}
+
+.close-button::before {
+    content: '';
+    position: absolute; 
+
+    background-color: #f1f1f1;
+
+    top:  0.5rem; 
+    left: 1.4rem; 
+
+    width:  0.2rem; 
+    height: 2rem;     
+}
+
+.close-button::after {
+    content: '';
+    position: absolute; 
+
+    background-color: #f1f1f1;
+
+    top:  1.4rem;
+    left: 0.5rem;
+
+    width:  2rem; 
+    height: 0.2rem;     
 }
 
 
