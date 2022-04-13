@@ -43,7 +43,7 @@ Visual Studio 2019を用いる．Eto.Formsの拡張機能は令和4年3月24日(
       .. image::images/ss_eto/win3.png
 
 
-#. すると，「変更内容がスケージュールされます。すべての Microsoft Visual Studio ウィンドウを閉じると変更が開始されます。」と
+#. すると，「変更内容がスケジュールされます。すべての Microsoft Visual Studio ウィンドウを閉じると変更が開始されます。」と
    表示されるので，一旦Visual Studioを終了させる．
 
 #. その後，以下のウィンドウが表示されるので，「Modify」を選択する．
