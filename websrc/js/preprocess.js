@@ -59,9 +59,28 @@ function addModalImageViewPane() {
     });
 }
 
+function addTouchEventHadnlingToDD() {
+    const dds = document.querySelectorAll('.dd');
+
+    dds.forEach( elem => {
+        elem.addEventListener('touchstart', function(event) {
+            if ( elem.classList.contains('touched') ) {
+                elem.classList.remove('touched');
+            }
+            else {
+                dds.forEach( elem => {
+                    elem.classList.remove('touched');
+                });
+                elem.classList.add('touched');
+            }
+        });        
+    });
+}
+
 window.onload = function () {
     addClassToCurrentPageLinks();
     addModalImageViewPane();
+    addTouchEventHadnlingToDD();
 };
 
 
