@@ -55,6 +55,12 @@ Visual Studio 2019を用いる．Eto.Formsの拡張機能は令和4年3月24日(
 
    .. image::images/ss_eto/win6.png
 
+   .. note::
+
+      Visual Studio 2019 を既にインストールしてあった場合に，そのバージョンが古いままだとこのステップでエラーが出るようである．
+      その場合はメニューの「ヘルプ」から「更新プログラムの確認」を確認して更新を実施する．
+      
+
 #. 動作確認ついでに「続行」からプロジェクトを作成してみよう．例のごとくプロジェクト名とソリューション名は適当でよい（``HelloEto``とする）．
 
    .. image::images/ss_eto/win7.png
@@ -70,6 +76,10 @@ Visual Studio 2019を用いる．Eto.Formsの拡張機能は令和4年3月24日(
 
    .. image::images/ss_eto/win9.png
 
+   .. note::
+      
+      ここから先のステップは，Visual Studio 2022でも実行可能である（作成したソリューションを開けばよい）．
+      ただし，以下のMac版と同様にターゲットフレームワークの問題が生じる場合がある．
 
 #. ▶ボタンの左の枠から「HelloEto.Wpf」を選ぶ．選択後，右のソリューションエクプローラーで同プロジェクトが太字になる．
 
@@ -123,6 +133,20 @@ Mac編
       .. image::images/ss_eto/mac4.png
 
 #. 動作確認ついでに「続行」からプロジェクトを作成してみよう．例のごとくプロジェクト名とソリューション名は適当でよい（``HelloEto``とする）．
+   **ターゲットフレームワークは".NET 6.0"を選択する．**
+   
+   .. note:: 
+
+      "Eto Application"テンプレートを選んだ際に，ターゲットフレームワークの選択画面…というより，
+      Windowsの実行例にあったようなEto.Forms特有の項目の選択画面が出てこないことがあるようである．
+      その場合の対処法はいくつかの選択肢がある．
+
+      - 手動でターゲットフレームワークを .NET 6.0 にする．具体的には，実行したいプロジェクトをダブルクリックして出てくるウィンドウにて，
+        「ビルド」>「全般」の「Target framework」を「.NET 6.0」にする．
+
+      - .NET 5.0 Runtimeあるいは.NET 5.0 SDKをインストールする．これらは，`<https://dotnet.microsoft.com/ja-jp/download/dotnet/5.0>`_
+        から入手できる．ただし， `.NET 5.0のサポートは2022/05/08に終了予定であり，それ以降はセキュリティアップデートも提供されなくなる <https://devblogs.microsoft.com/dotnet/dotnet-5-end-of-support-update/>`_．
+
 
 #. 作成すると，``HelloEto`` の他に ``HelloEto.Mac``，``HelloEto.Gtk``，``HelloEto.Wpf``というプロジェクトが作成されていることがわかる．
    演習では``HelloEto``（に相当するフォルダ）以下の``MainForm.cs``を編集することになる．
@@ -323,7 +347,7 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
 
       .. code:: 
    
-          dotnet new etoapp 
+          dotnet new etoapp -f net6.0 
 
       その後``ls``してみると以下のようなディレクトリが生成されたのがわかる（Windowsだと``ls``は``dir``の別名なので表示は異なる）．
 
@@ -387,6 +411,45 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
 
           dotnet run --project HelloEto.Gtk
 
+
+     .. note::
+
+        Visual Studio 2019 で作成したプロジェクトを実行するときなど，ターゲットフレームワークが .NET 5.0 になっている
+        にもかかわらず，.NET 5 のランタイムがインストールされていない場合はいかのいずれかを実行する．
+
+        - ターゲットフレームワークを .NET 6.0 に変更する．具体的には各プロジェクトファイル（拡張子：.csproj）の
+
+          .. code:: xml
+
+             <TargetFramework>net5.0</TargetFramework>
+
+          となっている部分を
+
+          .. code:: xml 
+
+             <TargetFramework>net6.0</TargetFramework>
+
+          に書き換える．
+
+        - ``roll-forward``を設定する．
+
+          - 各プロジェクトファイルの``<PropertyGroup>…</PropertyGroup>``内に``<RollForward>Major</RollForward>`` を追加する．
+            
+          - あるいは実行時に引数として``--roll-forward Major``を渡す．
+
+            - ``PROJECT.Gtk``や``PROJECT.Wpf``を実行する場合は
+              ``dotnet run --project PROJECT.Gtk --roll-forward Major``や``dotnet run --project PROJECT.Wpf --roll-forward Major``などとする．
+              
+            - ``PROJECT.Mac``の場合は
+
+              .. code:: 
+
+                 open bin/Debug/net5.0/PROJECT.Mac.app --args --roll-forward Major
+
+              などとするか，あるいは .app 内の実行ファイルに``--roll-forward Major``を引数として渡す．
+
+        - .NET 5のランタイムをインストールする．`<https://dotnet.microsoft.com/ja-jp/download/dotnet/5.0>`_から入手可能．
+          ただし， **.NET 5.0のサポートは2022/05/08に終了予定．**
 
 
 
