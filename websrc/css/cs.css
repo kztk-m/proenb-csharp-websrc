@@ -276,7 +276,7 @@ header nav li {
     margin:  0px; 
 }
 
-header nav a:hover, header nav .dd:hover, header nav .touched {
+header nav a:hover, header nav .dd:hover {
     background-color: var(--header-nav-bg-highlight-color);
 }
 
@@ -315,11 +315,11 @@ header nav > ul {
     position: relative;     
 }
 
-.dd:hover ul, .dd:focus ul, .touched ul {
+.dd:hover ul, .dd:focus ul {
     display: block;
 }
 
-.dd:hover ul li, .dd:focus ul li, .touched ul li {
+.dd:hover ul li, .dd:focus ul li {
     display: block; 
 }
 
