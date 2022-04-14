@@ -134,7 +134,7 @@ title: 第1回 課題
            Console.WriteLine("transfer failed"); 
        }
 
-       ec2.charge(1000);
+       ec2.Charge(1000);
        ec1.Print();
        ec2.Print();
        if (ec1.TransferFrom(ec2, 300)) 
