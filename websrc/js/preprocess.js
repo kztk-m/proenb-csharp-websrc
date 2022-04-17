@@ -61,7 +61,7 @@ function addModalImageViewPane() {
 
 function addTouchEventHadnlingToDD() {
     const dds = document.querySelectorAll('.dd');
-
+    // FIXME: Just adding 'touchstart' would be enough for iPad 
     dds.forEach( elem => {
         elem.addEventListener('touchstart', function(event) {
             if ( elem.classList.contains('touched') ) {
@@ -77,10 +77,65 @@ function addTouchEventHadnlingToDD() {
     });
 }
 
+function addCopyButtons() {
+    /*
+      This relies on the fact that pandoc generates
+
+      <div class="sourceCode"><pre class="sourceCode langName"><code class="sourceCode langName">...</code></pre></div>
+      
+      for code blocks.       
+
+     */    
+    const codeBlocks = document.querySelectorAll('pre.sourceCode'); 
+
+    
+    /*
+      <pre class="sourceCode">...</pre>
+
+      -->
+
+      <pre class="sourceCode">...
+        <span class="copyButton"></span>
+      </pre>      
+     */
+
+    codeBlocks.forEach (elem => {
+        // const cs = elem.querySelectorAll('code');
+        
+        // if ( cs.length != 1 ) { return true; }
+        // const code = cs[0]; 
+
+        const copyButton = document.createElement("span");
+        copyButton.classList.add('copy-button');        
+
+        copyButton.addEventListener('click', function(e) {
+            navigator.permissions.query({name: "clipboard-write"}).then(result => {
+                if (result.state == "granted" || result.state == "prompt") {
+                    navigator.clipboard.writeText( elem.innerText ).then( function () {                        
+                        // copyButton.classList.add('copied');                        
+                        // setTimeout(function () {
+                        //     copyButton.classList.remove('copied');
+                        // }, 3000); 
+                    }).catch( function(error) {
+                        copyButton.classList.add('copy-failed');
+                        setTimeout(function () {
+                            copyButton.classList.remove('copy-failed');
+                        }, 3000);                         
+                    });
+                }
+            });
+        });        
+
+        elem.appendChild( copyButton ); 
+    });
+}
+
+
 window.onload = function () {
     addClassToCurrentPageLinks();
     addModalImageViewPane();
     addTouchEventHadnlingToDD();
+    addCopyButtons();
 };
 
 

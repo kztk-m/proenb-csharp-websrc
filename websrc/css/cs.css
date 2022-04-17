@@ -805,9 +805,92 @@ img.enlargeable {
     height: 0.2rem;     
 }
 
+/* copy button */
+
+pre.sourceCode {
+    position: relative; 
+}
+
+span.copy-button::before {
+    content: '\01F4CB Copy'; 
+}
+
+span.copy-button.failed::before {
+    content: '!'; 
+}
+
+span.copy-button::after {
+    content: '\02713'; 
+    position: absolute; 
+    display: inline-block; 
+
+    left:  0px;
+    right: 0px;
+
+    width: 100%;
+    height: 100%; 
+
+    background-color: green; 
+    color: white;
+   
+    z-index: 1; 
+
+    transition-delay:    1s;
+    transition-duration: 1s; 
+
+    opacity: 0; 
+}
+
+span.copy-button:active::after {
+    opacity: 1;
+    transition: 0s; 
+
+    z-index: 1; 
+}
+
+span.copy-button.failed::after {
+    content: 'failed'; 
+    background-color: red; 
+    color: white;
+}
+
+
+pre.sourceCode:hover .copy-button {
+    display: inline-block;
+}
+
+.copy-button {
+    position: absolute; 
+    display:  none; 
+    top:   0.5rem; 
+    right: 0.5rem; 
+
+    color: #999;
+    background-color: #CCC; 
+    min-width:  3rem; 
+    height:     1.5rem;
+    padding:   0rem 0.3rem; 
+    line-height: 1.5rem; 
+
+    text-align: center;
+    /* border-radius: 0.5em; */
+
+    transition: 1s; 
+}
+
+.copy-button:active {
+    transition: 0s;
+}
+
+.copy-button.failed {
+    background-color: red; 
+    color:            white; 
+}
+
+
 
 /*
-  Here, .directorylist part is just an straightforward adaptation of 
+  Here, .directorylist part is just a straightforward adaptation of 
   https://codepen.io/khoama/pen/AoPeMM.
 
   Here is the original license of the original code. 
@@ -882,8 +965,6 @@ img.enlargeable {
 /*
   End of the .directorylist part        
 */
-
-
 
 @media print {
     #TOC { 
