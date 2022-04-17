@@ -11,16 +11,19 @@
     --code-bg-color:     hsl(240, 30%, 96%); /* #f8f8fc */
     --code-border-color: #e2e2e2; 
 
+    --code-meta-bg-color: hsl(240, 30%, 92%);
+
     --footer-color: #999;
     --border-color: #AAA;
 
     --figure-fg-color: white;
     --figure-border-color: #AAA;
 
-    --tip-bg-color:         hsl(60, 100%, 80%);
+    --tip-bg-color:         hsl(60,  80%, 90%);
     --example-bg-color:     hsl(205, 40%, 99%);
     --example-border-color: hsl(205, 10%, 58%);
-    --note-bg-color:        hsl(155, 40%, 94%);
+    --note-bg-color:        hsl(155, 40%, 95%);
+    /* --note-bg-color:        hsl(205, 65%, 94%); */
     --hint-bg-color:        hsl(36, 90%, 95%);
     --caution-bg-color:     hsl(0, 90%, 95%);
 
@@ -82,9 +85,9 @@ pre {
     /* border-width: 0.08em; */
     border-color: var(--code-border-color);
 
-    border-radius: 1rem;
+    border-radius: 0.3rem;
 
-/*    box-shadow:4px 4px 13px 0px rgba(0,0,0,0.19); */
+   /* box-shadow:4px 4px 13px 0px rgba(0,0,0,0.19); */
 }
 
 code {
@@ -117,6 +120,14 @@ pre code {
     border-width: 0px;
     padding: 0px; 
     margin:  0px;
+}
+
+pre.sourceCode {
+    padding:       0rem;
+}
+
+pre.sourceCode code { 
+    padding:       1rem;
 }
 
 pre {
@@ -805,14 +816,57 @@ img.enlargeable {
     height: 0.2rem;     
 }
 
-/* copy button */
+/* 
+   copy  button 
+*/
+
+.code-control {
+    font-size:   85%; 
+    font-family: initial; 
+    /* color:     #777; */
+
+    padding: 0.2rem 0.5rem;
+
+    background-color: var(--code-meta-bg-color);
+
+    /* border-bottom: max(0.05rem, 1px) solid var(--border-color); */
+}
 
 pre.sourceCode {
     position: relative; 
 }
 
+pre.sourceCode.cs .code-control::before {
+    content: 'C#'; 
+    display: inline-block;
+}
+
+pre.sourceCode.xml .code-control::before {
+    content: 'XML'; 
+    display: inline-block;
+}
+
+
+
+/* .code-control::after { */
+/*     content: '';  */
+/*     display: block;  */
+/*     width:   100%;  */
+/*     height:  max(0.05rem, 1px);  */
+
+/*     clear: both;  */
+
+/*     /\* background: linear-gradient(to right, #00000000, #999 5% 95%,  #00000000);  *\/ */
+
+
+/*     margin-top:    0.3em; */
+/*     margin-bottom: 0.3em; */
+/* } */
+
+
 span.copy-button::before {
-    content: '\01F4CB Copy'; 
+    /* content: '\01F4CB Copy';  */
+    content: 'Copy';
 }
 
 span.copy-button.failed::before {
@@ -820,18 +874,21 @@ span.copy-button.failed::before {
 }
 
 span.copy-button::after {
-    content: '\02713'; 
+    content: '\02713'; /* Check Mark */
+    /* content: 'Copied!'; */
     position: absolute; 
     display: inline-block; 
 
-    left:  0px;
-    right: 0px;
+    left: 0px;
+    top:  0px;
 
-    width: 100%;
-    height: 100%; 
+    /* left:  0px; */
+    /* right: 0px; */
 
-    background-color: green; 
-    color: white;
+    width:  100%;
+    height: 100%;
+
+    background-color: var(--code-meta-bg-color);
    
     z-index: 1; 
 
@@ -855,27 +912,25 @@ span.copy-button.failed::after {
 }
 
 
-pre.sourceCode:hover .copy-button {
-    display: inline-block;
-}
-
 .copy-button {
-    position: absolute; 
-    display:  none; 
-    top:   0.5rem; 
-    right: 0.5rem; 
+    position: relative; 
+    float: right; 
 
-    color: #999;
-    background-color: #CCC; 
-    min-width:  3rem; 
-    height:     1.5rem;
-    padding:   0rem 0.3rem; 
-    line-height: 1.5rem; 
+    display:  inline-block;
+    /* top:   0.5rem;  */
+    /* right: 0.5rem;  */
+
+    /* color: #999; */
+    /* min-width:  3rem;  */
+    /* height:     1.5rem; */
+    /* padding:   0rem 0.5rem; */
+    /* line-height: 1.5rem;  */
 
     text-align: center;
     /* border-radius: 0.5em; */
 
     transition: 1s; 
+    cursor: pointer;
 }
 
 .copy-button:active {
