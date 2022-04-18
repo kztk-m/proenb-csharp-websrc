@@ -59,7 +59,7 @@ title: 第5回 課題
 ただし，以下を満たすこと．
 
 - "File:"，"Ready"の部分は``Label``を用いて実現
-- "File:"の右のテキストボックスは``TextBox``を用いて実現
+- "File:" の右のテキストボックスは``TextBox``を用いて実現
 - "(Load)"の部分は``Button``を用いて実現
 - 中央のテキストエリアは``TextArea``を用いて実現
 - ウィンドウのサイズは十分に大きい（たとえば400x300程）
@@ -77,11 +77,13 @@ title: 第5回 課題
 
 - "Load"ボタンが押されたら，テキストボックスに入力されたテキストファイルを開き，
   その内容を中央のテキストボックスに表示する．
-  - ただし，もしファイルが見付からなければ，中央のテキストボックスには何もせず，
+  - もしテキストボックスが空だったば，ステータス行にその旨を表示（たとえば，"Error: empty path"など）．
+  - もしファイルが見付からなければ，中央のテキストボックスには何もせず，
     ステータス行にその旨を表示（たとえば"Error: File not found"など）
   - ``PathTooLongException``，``DirectoryNotFoundException``，``NotSupportedException``のいずれかが発生したら，
     ステータス行に"Invalid path"などと表示．
-  - ``UnauthorizedAccessException``か``SecurityException``が発生したら，ステータス行にその旨を表示（たとえば，"Permission denied"など）    
+  - ``UnauthorizedAccessException``か``System.Security.SecurityException``が発生したら，ステータス行にその旨を表示（たとえば，"Permission denied"など）    
+    - 入力されたパスがファイルでなくディレクトリを指している場合も``UnauthorizedAccessException``が発生する
   - ``IOException``が発生した場合の処理は規定しない
   - 読み込みに成功したら，ステータス行に"Load ok"と表示する．
 
@@ -91,6 +93,15 @@ title: 第5回 課題
    当該オブジェクトの``Text``を用いる．
 
    例外処理については `前回 <./w4.html>`__ 参照．
+
+.. hint::
+
+   ``File.ReadAllText(string)`` に渡すパスは相対パスでも可能であるが，この相対パスは作業ディレクトリ基準となる．
+   陽に設定等を行わない限り基本的にプログラムを起動した場所（たとえば，``dotnet run``を実行した場所）が，作業ディレクトリとなる．
+   ただし，Visual Studioの三角ボタンから実行するときはその実行ファイルがある場所，そしてMacにて``open``で``.app``バンドルを開く
+   ときは``/``が作業ディレクトリとなるようであった．
+   この演習では絶対パス（Windowsだと``C:\``など，Macだと``/``から始まるもの）を使うのがよいだろう．
+
 
 --------
 発展課題
@@ -116,6 +127,7 @@ title: 第5回 課題
 
 ただし，
 
+- もしテキストボックス内が空であれば，ステータス行にその旨を表示する．
 - もしファイルが見付からなければそのファイルを作成するようにし，
   ファイルが見付かったならばそのファイルを上書きするようにする．
 - ``PathTooLongException``，``DirectoryNotFoundException``，``NotSupportedException``のいずれかが発生したら，
