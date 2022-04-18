@@ -87,8 +87,10 @@ Visual Studioでプロジェクト/ソリューションを作成した場合
    そこで，たとえば下記のようにして，一番外側のフォルダをzip形式で圧縮し，
    「:raw-html:`<span class="metaname">提出物ベース名</span>`.zip」というzipファイルを作成する．
 
-   - Windowsの場合．まず，当該フォルダはデフォルトだと ``%HOMEPATH%\source\repos`` 以下にある．
-     Visual Studioの起動後の画面で *「ローカルフォルダを開く」* を選んだのでも場所がわかる．
+   - Windowsの場合．まず，当該フォルダはデフォルトだと，ユーザフォルダの``source\repos``以下にある．
+     なお，ユーザフォルダはデフォルトだと :raw-html:`<code>C:\Users\<span class="metaname">ユーザ名</span></code>` であり，
+     エクスプローラーのアドレスバーに``%HOMEPATH``を入力すれば移動できる．
+     また，Visual Studioの起動後の画面で *「ローカルフォルダを開く」* を選んだのでも場所がわかる．
      エクスプローラーにて当該フォルダを右クリックして *「送る」*  から  *「圧縮（zip形式）フォルダー」*  を選択する．
      すると，「:raw-html:`<span class="metaname">提出物ベース名</span>`.zip」というzipファイルが作成される．
 
