@@ -31,16 +31,30 @@ conf = defaultConfiguration
          tmpDirectory         = "../_cache/tmp"
        }
 
+myReaderOptions :: ReaderOptions
+myReaderOptions =
+  defaultHakyllReaderOptions
+  {
+    -- No smart quotes
+    readerExtensions = Text.Pandoc.disableExtension Text.Pandoc.Ext_smart (readerExtensions defaultHakyllReaderOptions)
+  }
+
+myWriterOptions :: WriterOptions
+myWriterOptions =
+  defaultHakyllWriterOptions
+  {
+    writerExtensions = Text.Pandoc.disableExtension Text.Pandoc.Ext_smart (writerExtensions defaultHakyllWriterOptions)
+  }
 
 -- from: https://svejcar.dev/posts/2019/11/27/table-of-contents-in-hakyll/
 withTOC :: WriterOptions
-withTOC = defaultHakyllWriterOptions
+withTOC = myWriterOptions
           { -- writerNumberSections  = True
           -- ,
             writerTableOfContents = True,
             writerTOCDepth        = 3,
             writerTemplate        = Just tocTemplate
-        }
+          }
 
 tocTemplate :: Text.Pandoc.Template Text
 tocTemplate = either error id . runIdentity . Text.Pandoc.compileTemplate "" $ T.unlines
@@ -64,7 +78,7 @@ rstCompilingRule = do
   toc        <- getMetadataField underlying "tableOfContents"
   let wopt = case toc of
                Just "true" -> withTOC
-               _           -> defaultHakyllWriterOptions
+               _           -> myWriterOptions
 
   fp <- getResourceFilePath
   mt <- getItemModificationTime underlying
@@ -91,7 +105,7 @@ rstCompilingRule = do
             constField "number"      (show i) <>
             ctxt
 
-      pandocCompilerWithTransform defaultHakyllReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
+      pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
         >>= loadAndApplyTemplate "templates/defaultQ.html" ctxt'
         >>= relativizeUrls
 
@@ -100,7 +114,7 @@ rstCompilingRule = do
             constField "number"      (show i) <>
             ctxt
 
-      pandocCompilerWithTransform defaultHakyllReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
+      pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
         >>= loadAndApplyTemplate "templates/defaultW.html" ctxt'
         >>= relativizeUrls
 
@@ -111,7 +125,7 @@ rstCompilingRule = do
               "templates/defaultSetup.html"
             else
               "templates/default.html"
-      pandocCompilerWithTransform defaultHakyllReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
+      pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
         >>= loadAndApplyTemplate tmpl ctxt
         >>= relativizeUrls
   where
@@ -147,7 +161,7 @@ main = hakyllWith conf $ do
         templateBodyCompiler
 
     match "questions/*" $ do
-      compile $ pandocCompilerWithTransform defaultHakyllReaderOptions defaultHakyllWriterOptions (Text.Pandoc.Shared.headerShift 1)
+      compile $ pandocCompilerWithTransform myReaderOptions myWriterOptions (Text.Pandoc.Shared.headerShift 1)
 
 
     match "pages/*.md" $ do
