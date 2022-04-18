@@ -6,6 +6,7 @@ DEPLOY=./deploy
 # Commit Message 
 COMMIT=$(git log -1 HEAD --pretty=format:%H)
 
+
 if test -e $DEPLOY;
 then
     echo "$DEPLOY exists. Remove or rename it beforehand."
@@ -14,8 +15,11 @@ fi
 
 rm -rf $DEPLOY
 
+CURRENTDIR=`pwd`
+
 # Use rebuild not to keep removed files. 
-cabal run site rebuild
+sh ./site.sh rebuild 
+cd $CURRENTDIR
 
 git clone --depth 1 $REPO $DEPLOY
 
@@ -30,8 +34,6 @@ rsync -a _site/* $DEPLOY
 touch $DEPLOY/.nojekyll
 
 set -x 
-
-CURRENTDIR=`pwd`
 
 echo "Deploying"
 cd $DEPLOY && git checkout main \
