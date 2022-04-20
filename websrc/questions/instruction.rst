@@ -75,7 +75,8 @@ Visual Studioでプロジェクト/ソリューションを作成した場合
      - :raw-html:`<span class="metaname">提出物ベース名</span>/` 
        - :raw-html:`<span class="metaname">提出物ベース名</span>.csproj`
        - MainForm.cs
-       - obj
+       - obj/
+         - …         
 
    そこで，たとえば下記のようにして，一番外側のフォルダをzip形式で圧縮し，
    「:raw-html:`<span class="metaname">提出物ベース名</span>`.zip」というzipファイルを作成する．
@@ -104,7 +105,8 @@ Visual Studioでプロジェクト/ソリューションを作成した場合
    - :raw-html:`<span class="metaname">提出物ベース名</span>/` 
      - :raw-html:`<span class="metaname">提出物ベース名</span>.csproj`
      - MainForm.cs
-     - obj
+     - obj/  
+       - …
 
 
 #. 以下を実行する．

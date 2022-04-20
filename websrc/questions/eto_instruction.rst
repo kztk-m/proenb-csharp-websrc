@@ -76,7 +76,8 @@ Visual Studioでプロジェクト/ソリューションを作成した場合
        - :raw-html:`<span class="metaname">提出物ベース名</span>/` 
          - :raw-html:`<span class="metaname">提出物ベース名</span>.csproj`
          - MainForm.cs
-         - obj
+         - obj/
+           - …
        - :raw-html:`<span class="metaname">提出物ベース名</span>.Gtk`
          - … 
        - :raw-html:`<span class="metaname">提出物ベース名</span>.Mac`
@@ -115,7 +116,8 @@ Visual Studioでプロジェクト/ソリューションを作成した場合
      - :raw-html:`<span class="metaname">提出物ベース名</span>/` 
        - :raw-html:`<span class="metaname">提出物ベース名</span>.csproj`
        - MainForm.cs
-       - obj
+       - obj/
+         - … 
      - :raw-html:`<span class="metaname">提出物ベース名</span>.Gtk`
        - … 
      - :raw-html:`<span class="metaname">提出物ベース名</span>.Mac`

@@ -978,6 +978,7 @@ span.copy-button.failed::after {
 
 .directorylist ul {
     list-style: none;
+    padding-left: 2em; 
 }
 .directorylist li {
     position: relative; 
@@ -986,19 +987,19 @@ span.copy-button.failed::after {
 }
 .directorylist li::before {
     position: absolute;
-    left:  -1.2rem;
+    left:  -1.3rem;
     top:   -.5rem;
     content: '';
     display: block;
     border-left:   0.1rem solid #ddd;
     height: 1rem;
     border-bottom: 0.1rem solid #ddd;
-    width:  1rem;    
+    width:  1.2rem;    
 }
 
 .directorylist li::after{
     position: absolute;
-    left:   -1.2rem;
+    left:   -1.3rem;
     bottom: -0.5rem;
     content: '';
     display: block;
