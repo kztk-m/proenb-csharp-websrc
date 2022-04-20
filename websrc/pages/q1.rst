@@ -14,6 +14,7 @@ title: 第1回 課題
    // あなたの名前
    using System; 
 
+   // 電子マネーカード
    class EmoneyCard 
    {
        // 残高
@@ -24,6 +25,8 @@ title: 第1回 課題
        public EmoneyCard(String n) 
        {
           // この中身を実装する
+          //
+          // 名前がnで残高が0のEmoneyCardを作成する
        }
 
        public void Charge(int b) 
@@ -155,13 +158,13 @@ title: 第1回 課題
 
 .. code::
 
-   Card1:100 
-   Card2:100 
+   Card1: 100 
+   Card2: 100 
    transfer failed 
-   Card1:100 
-   Card2:1100 
+   Card1: 100 
+   Card2: 1100 
    transfer succeeded 
-   Card1:400 
-   Card2:800
+   Card1: 400 
+   Card2: 800
 
 
