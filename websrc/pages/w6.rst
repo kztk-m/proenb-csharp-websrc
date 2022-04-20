@@ -1,0 +1,380 @@
+-----
+title: 第5回 C#でお絵描き
+tableOfContents: true
+-----
+
+========================
+``Drawable``コントロール
+========================
+
+
+Eto.Forms の ``Drawable`` コントロールを利用することで，直線，矩形，楕円，文字列等いろんなものを
+コントロールに自由に描画できる．
+
+そのためには，以下のように``Drawable``の``Paint``イベントを購読（ハンドラを登録）するとよい．
+
+.. code:: cs 
+
+   // MainForm.cs 
+   using System;
+   using Eto.Forms;
+   using Eto.Drawing;
+
+   namespace DrawableDemo
+   {
+       public class MainForm : Form
+       {
+           public MainForm()
+           {
+               Title = "Drawable Demo";
+               ClientSize = new Size(320, 420);
+
+               Drawable drawable = new Drawable();
+               // Paintを購読
+               drawable.Paint += (s, pe) =>
+               {
+                   Graphics g = pe.Graphics;
+
+
+                   Console.WriteLine(Size);
+                   g.Clear(Colors.White);
+
+                   // 50 px 幅の格子を描く
+                   for (int x = 0; x < this.Size.Width; x += 50)
+                   {
+                       g.DrawLine(Colors.LightGrey, new Point(x, 0), new Point(x, drawable.Size.Height));
+                   }
+                   for (int y = 0; y < this.Size.Height; y += 50)
+                   {
+                       g.DrawLine(Colors.LightGrey, new Point(0, y), new Point(drawable.Size.Width, y));
+                   }
+
+                   for (int i = 0; i < 300; i += 10)
+                   {
+                       // 指定のペン，始点，終点で線を描く
+                       g.DrawLine(new Pen(Colors.Blue), new Point(0, 0), new Point(i, 100));
+                   }
+
+                   // 矩形のアウトラインを描く
+                   g.DrawRectangle(Colors.Red, new RectangleF(new PointF(0, 100), new SizeF(300, 50)));
+                   // Colors.Red と書くかわりに Color.FromRgb(0xFF0000) で陽にRGBAを指定できる
+                   g.FillRectangle(Color.FromRgb(0xFF0000), new RectangleF(new PointF(0, 150), new SizeF(300, 50)));
+
+                   // 楕円のアウトラインを描く．Colors.Lime は Color.FromRgb(0x00FF00) と同じ色
+                   g.DrawEllipse(new Pen(Colors.Lime, 2F), new RectangleF(new PointF(0, 200), new SizeF(300, 50)));
+                   // 内部が塗られた楕円を描く．Colors.Green は暗めの緑
+                   g.FillEllipse(Colors.Green, new RectangleF(new PointF(0, 250), new SizeF(300, 50)));
+
+                   // システムのデフォルトフォント，サイズ 50pt
+                   Font f = new Font(SystemFont.Default, 50);
+                   // テキストを指定フォントで指定座標（左上点）に描く．
+                   g.DrawText(f, Color.FromArgb(0, 0x80, 0xff, 0x80), new Point(100, 0), "文字列");
+
+                   // PointFやRectangleFのFはfloatのF．以下はどのように表示されるかな？
+                   // ディスプレイ（Retinaとか）によってはアンチエイリアスもかからない．
+                   for (int i = 0; i < 5; i++)
+                   {
+                       PointF start = new PointF(25F + 0.5F * i, 300 + 20 * i);
+                       PointF end = start + new PointF(0, 20);
+                       g.DrawLine(new Pen(Colors.Black, 1F), start, end);
+                   }
+               };
+
+               // Mac環境のワークアラウンド．MacだとコントロールのSizeが決まる前に Paintイベント が発生してしまう？
+               //
+               // Gtkでも，Sizeがワンテンポ遅れて変化したりする（https://github.com/picoe/Eto/issues/1752）ので，
+               // 現状ではSizeに依存するコードはかかないほうがよいかもしれない
+               drawable.SizeChanged += (s, e) => drawable.Invalidate();
+
+               Content = drawable;
+
+               Menu = new MenuBar();
+           }
+       }
+   }
+
+上記のMac（非Retinaディスプレイでの表示）での実行例（DPIの違いからWindowsだと「文字列」の部分の大きさが変わる）．
+
+.. image:: images/eto/drawable_example.png
+   
+
+上で使用した``Graphics``のメソッドとその関連メソッド．
+
+=====================================   ====================================================
+``Clear(Color)``                        描画領域を指定された色でクリアする．
+``DrawLine(Color,PointF,PointF)``       指定された色で，与えられた始点から終点まで線を引く．なお，``Point``は``PointF``へ暗黙に型変換可能．
+``DrawLine(Pen,PointF,PointF)``         指定されたペンで，与えられた始点から終点まで線を引く．``Pen``は色の他にたとえば太さの情報を持つ．
+``DrawRectangle(Color, RectangleF)``    指定された色で，与えられた矩形のアウトラインを描く．
+``DrawRectangle(Pen, RectangleF)``      上のペン版．
+``DrawEllipse(Color, RectangleF)``      指定された色で，与えられた矩形に内接する楕円のアウトラインを描く．
+``DrawEllipse(Pen, RectangleF)``        上のペン版．
+``FillRectangle(Color, RectangleF)``    指定された色で与えられた矩形の内部を塗る．
+``FillEllipse(Color, RectangleF)``      指定された色で与えられた矩形に内接する楕円の内部を塗る．
+``DrawText(Font,Color,PointF,string)``  指定されたフォント，色，位置（左上）に与えられた文字列を描く．
+=====================================   ====================================================
+
+また，新たな型のコンストラクタ．
+
+=============================     =================================
+``RectagnleF(PointF, SizeF)``     指定された位置，サイズの``RectangleF``を作成するコンストラクタ．
+``Point(int, int)``               位置を表す型，``Point``のコンストラクタ．x/y座標にはプロパティ``X``と``Y``からアクセス可．
+``PointF(float, float)``          上の``float``版．
+``SizeF(float, float)``           ``Size``の``float``版，``SizeF``のコンストラクタ．幅と高さにはプロパティ``Height``と``Width``からアクセス可．
+``Pen(Color, float)``             指定された色と太さの``Pen``を作成するコンストラクタ．
+``Font(SystemFont,float)``        指定されたシステムフォント，サイズ (pt)の``Font``を作成するコンストラクタ．システムフォントには ``SystemFont.Default``のほか，``SystemFont.Bold``や ``SystemFont.TitleBar`` などがある．
+=============================     ==================================
+
+そして，色を操作するのに以下のstatic メソッドやフィールド等を用いた．
+
+==============================        ===========
+``Color.FromRgb(int)``                ``0xFF0000``（赤）などのような整数から色を作成．
+``Color.FromArgb(int)``               ``0xFFFF0000``（不透明な赤）などのような整数から色を作成．
+``Color.FromArgb(int,int,int,int)``   R, G, B, Aのそれぞれの要素（0-255）から色を作成（メソッドの名前に反して順番はRGBAなのに注意）．Aは255が不透明．0は透明．
+``Colors.Blue``など                   規定の色を表す定数．        
+==============================        ===========
+
+
+なお，上記はあくまで一部である．より詳細は `Eto.FormsのドキュメンテーションのGraphicsのページ <http://pages.picoe.ca/docs/api/html/T_Eto_Drawing_Graphics.htm>`__ を見るとよい．
+
+
+========
+フォント
+========
+
+``Font(FontFamily,float)``コンストラクタを使うことで，システムにインストールされたフォントから``Font``オブジェクトを作成できる．
+``FontFamily``はフォント名をとるコンストラクタ``FontFamily(string)``を用いてもよいが，システムによってインストールされているフォントは違うので，``Fonts.AvailableFontFamilies``を使うのがよいかもしれない．たとえば，``Fonts.AvailableFontFamilies``は以下のように``List<FontFamily>``に変換することができる．
+
+.. code:: cs 
+
+   // システムにインストールされているフォントを取得し，List<FontFamily>に変換する
+   List<FontFamily> fontfamilies = new List<T>( Font.AvailableFontFamilies ); 
+
+折角なので，いままで紹介していないコントロールを使って，フォントファミリとサイズを指定して，文字列を描画するプログラムを作ってみよう．
+具体的には ``DropDown`` と ``NumericStepper`` を使用する．
+
+以下のようにすることで，``Fonts.AvailableFontFamilies`` が中身となるようなドロップダウンを作成できる．
+
+.. code:: cs
+
+   DropDown fontfamilyChooser = new DropDown();
+   // ドロップダウンの「中身」を Fonts.AvailableFontFamilies にセットする
+   fontfamilyChooser.DataStore = Fonts.AvailableFontFamilies;
+   // ドロップダウンの要素をどのようにして表示するための文字列にするかを規定する（詳細は説明しない）
+   fontfamilyChooser.ItemTextBinding = Binding.Delegate((object o) => o.ToString());   
+
+また，フォントのサイズの選択には，``NumericStepper`` を使う．
+これは，数値を選択するためのコントロールであり，数字の横に上三角形と下三角形が表示されている．きっとよく見るようなものであると思われる．
+注意事項としては選択される数字等は``double``型であるという点である．
+
+.. code:: cs 
+
+   NumericStepper sizeSelector = new NumericStepper
+   {
+       MinValue = 5,   // 最小値
+       MaxValue = 150, // 最大値
+       Increment = 1,  // 増分
+       Value = 25      // 今の値
+   };
+
+また，描画するテキストもユーザが入力できるようにする．これはこれまでも出てきた``TextBox``を使う．
+
+.. code:: cs
+
+   TextBox textToDraw = new TextBox { PlaceholderText = "Text to Draw" };
+
+
+そして，テキストを描画するための``Drawable``を準備する．
+
+.. code:: cs
+
+   Drawable d = new Drawable();
+
+   d.Paint += (s, pe) =>
+   {
+       pe.Graphics.Clear(Colors.White);
+       FontFamily ff = (FontFamily) fontfamilyChooser.SelectedValue; 
+       if (ff != null)
+       {
+           pe.Graphics.DrawText(new Font(ff, (int)sizeSelector.Value), Colors.Black, new PointF(0, 0), textToDraw.Text);
+       }
+   };
+
+最後に``fontfamilyChooser``，``sizeSelector``，``textToDraw`` の内容に変更があったときに，``d`` を再描画するようにする．
+そうでなければ，リサイズ等の他に更新すべき理由がない限り描画領域は更新されない．
+
+.. code:: cs
+
+   fontfamilyChooser.SelectedIndexChanged += (s, e) => d.Invalidate();
+   sizeSelector.ValueChanged += (s, e) => d.Invalidate();
+   textToDraw.TextChanged += (s, e) => d.Invalidate();
+
+あとは適当にこれらのコンポーネントは配置すればよい．まとめると``MainForm.cs``への変更は以下のようになる．
+
+.. code:: cs
+
+   using System;
+   using Eto.Forms;
+   using Eto.Drawing;
+
+   namespace FontDemo
+   {
+       public partial class MainForm : Form
+       {
+           public MainForm()
+           {
+               Title = "Font Demo";
+               MinimumSize = new Size(200, 200);
+
+               DropDown fontfamilyChooser = new DropDown { };
+               fontfamilyChooser.DataStore = Fonts.AvailableFontFamilies;
+               fontfamilyChooser.ItemTextBinding = Binding.Delegate((object o) => o.ToString());
+
+               NumericStepper sizeSelector = new NumericStepper
+               {
+                   MinValue = 5,
+                   MaxValue = 150,
+                   Increment = 1,
+                   Value = 25
+               };
+
+               TextBox textToDraw = new TextBox { PlaceholderText = "Text to Draw" };
+
+               Drawable d = new Drawable();
+               d.Paint += (s, pe) =>
+               {
+                   pe.Graphics.Clear(Colors.White);
+                   FontFamily ff = (FontFamily)fontfamilyChooser.SelectedValue;
+                   if (ff != null)
+                   {
+                       pe.Graphics.DrawText(new Font(ff, (int)sizeSelector.Value), Colors.Black, new PointF(0, 0), textToDraw.Text);
+                   }
+               };
+
+               fontfamilyChooser.SelectedIndexChanged += (s, e) => d.Invalidate();
+               sizeSelector.ValueChanged += (s, e) => d.Invalidate();
+               textToDraw.TextChanged += (s, e) => d.Invalidate();
+
+               Content = new StackLayout
+               {
+                   Padding = 10,
+                   Spacing = 5,
+                   HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                   Items =
+                   {
+                       new StackLayout
+                       {
+                           Orientation = Orientation.Horizontal,
+                           Items = {
+                               fontfamilyChooser, sizeSelector
+                           }
+                       },
+                       textToDraw,
+                       new StackLayoutItem (d, true)
+                   }
+               };
+               Menu = new MenuBar();
+           }
+       }
+   }
+
+上記のMac（非Retinaディスプレイでの表示）での実行例は以下となる（起動直後ではなく，リサイズやテキストの変更などを行った状態）．
+
+.. image:: ./images/eto/font_demo.png 
+
+==============
+マウスイベント
+==============
+
+マウスイベントを購読するには，``MouseDown``等にハンドラを登録すればよい．
+
+==================    ==================================
+イベント              説明
+==================    ==================================
+``MouseDown``         マウスボタンの押下．
+``MouseUp``           マウスボタンを押したのを離す．クリックを取りたいなら，これか上のを使う（実際のアプリケーションでも，押下時に反応するボタンと，離したときに反応するボタンがあるようである）．
+``MouseEnter``        マウスポインタがそのコントロールの領域に入る．
+``MouseLeave``        マウスポインタがそのコントロールの領域から出る．
+``MouseWheel``        ホイールを回す．縦とは限らない．
+``MouseMove``         マウスポインタがそのコントロールの領域内で動く．
+``MouseDoubleClick``  ダブルクリック．
+==================    ==================================
+
+これらに渡すハンドラの第2引数は``MouseEventArgs``になる．たとえば以下のプロパティを通じて，
+イベント発生時のマウスの状態を取得できる．
+
+==================    ==================================
+``Buttons``           マウスのボタン（``Buttons.Primary``や``Buttons.Alternate``など．同時押しもOK）
+``Delta``             ``SizeF``型．ホイールの増分
+``Location``          ``PointF``型．ポインタの位置．
+``Modifiers``         修飾キー．（``Keys.Control``や``Keys.Alt``など）
+==================    ==================================
+
+なお，押されたボタンがどれかは``HasFlag``を使えばよい．たとえば，以下のように．
+
+.. code:: cs 
+
+   MouseUp += (s, me) => {
+      if ( me.Buttons.HasFlag(Buttons.Primary) ) 
+      {
+          // 左クリック（左利き用設定をしていない場合）のときの処理
+      }
+      else if ( me.Buttons.HasFlag(Buttons.Alternate) 
+              || me.Buttons.HasFlag(Buttons.Primary) && me.Modifiers.HasFlag(Keys.Control))
+      {
+          // 右クリックのときの処理
+      }
+   }
+
+では，マウスイベントのハンドリングの例として，マウスのクリック位置に円を描くプログラムを作ってみよう．
+``Drawable``もコントロールなので，その``MouseDown``イベントを購読すればよい．たとえば，以下のように．
+
+.. code:: cs 
+
+   using System;
+   using Eto.Forms;
+   using Eto.Drawing;
+
+   namespace MouseDemo
+   {
+       public partial class MainForm : Form
+       {
+           public MainForm()
+           {
+               Title = "Mouse Demo";
+               MinimumSize = new Size(200, 200);
+
+               PointF clicked = new PointF(0, 0);
+               SizeF circleSize = new SizeF(10, 10);
+
+               Drawable d = new Drawable();
+               d.Paint += (s, pe) =>
+               {
+                   // 演算子のオーバローディングにより，floatをSizeFに掛けることもできるし，PointFにSizeFを加減算可能．
+                   pe.Graphics.FillEllipse(Colors.Black, new RectangleF(clicked - 0.5F * circleSize, clicked + 0.5F * circleSize));
+               };
+               d.MouseDown += (s, me) =>
+               {
+                   clicked = me.Location;
+                   d.Invalidate();
+               };
+
+               Content = d;
+               Menu = new MenuBar();
+           }
+       }
+   }
+
+たとえばMacにおける，上（を含むプログラム）の実行例は以下となる．
+
+.. image:: ./images/eto/mouse_demo.png
+
+``ColorPicker``
+===============
+
+（執筆中）
+
+
+ラスタかベクタか
+================
+
+（執筆中）
