@@ -176,7 +176,7 @@ Mac編
    
         .. note::
 
-           少なくとも私（松田）の環境においてVisual Studio 2019 for Macのバージョン 8.10.21 (build 4)ではそもそもビルドに失敗する．
+            *Visual Studio 2019 for Mac* のバージョン 8.10.21 (build 4)では，少なくとも私（松田）の環境においてそもそもビルドに失敗する．
            この問題の一番簡単なワークアラウンドは，Visual Studio 2022 for Mac PreviewやVSCode等を使うことだが，
            `プロジェクトファイルを修正することでもVisual Studio 2019 for Macでもプロジェクトをビルドできるようになる（Thanks, Curtis Wensley氏）． <https://github.com/picoe/Eto/issues/2180#issuecomment-1088189064>`__
 
@@ -223,11 +223,11 @@ Mac編
            この点は ``dotnet`` を用いる場合でも同様である．
 
      #. 左の「ソリューション」の ``HelloEto.Mac`` の部分をダブルクリックすると，プロジェクトオプション編集用ウィンドウが表示される．
-        「実行」>「構成」>「Default」の項目から，「開始アクション」の「外部プログラムの開始」に以下を入力する（.appの中身なので，「...」ボタンからは選択できない）．
+        「実行」>「構成」>「Default」の項目から，「開始アクション」の「外部プログラムの開始」に以下を入力する（.appの中身なので，「...」ボタンからは選択できない）．"HelloEto"の部分は自分で設定したプロジェクト名とする．
 
         .. code:: 
             
-            bin/Debug/net5.0/HelloEto.Mac.app/Contents/MacOS/HelloEto.Mac
+            bin/Debug/net6.0/HelloEto.Mac.app/Contents/MacOS/HelloEto.Mac
 
         .. image::images/ss_eto/mac_mac2.png
 
@@ -451,6 +451,42 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
         - .NET 5のランタイムをインストールする．`<https://dotnet.microsoft.com/ja-jp/download/dotnet/5.0>`_から入手可能．
           ただし， **.NET 5.0のサポートは2022/05/08に終了予定．**
 
+.. note::
+
+   なお，"Eto.Forms"のVisual Studioの拡張機能によってできることは``dotnet new etoapp``相当である．
+   なので，なんらかの理由で拡張機能が正常に動かない場合にも，コマンドラインでしなければならないのは，
+   ``dotnet new etoapp``（と必要に応じてソリューションの作成と，それへのプロジェクトの追加）のみである．
+
+   たとえば，``HelloEto``の場合を例にとると，Visual Studioで``HelloEto/HelloEto.csproj``というプロジェクトを開き，
+   そこに``HelloEto.Wpf/HelloEto.Wpf.csproj``等のプロジェクトを追加すればよい（メニューからそういう項目が選べる）．
+
+   また，それではまだ面倒くさいという人はソリューションを作成すればよい．今，上記手順で作成したディレクトリに移動したとする．
+   （``ls``すると以下のように表示されるところ）．
+
+   .. code:: 
+
+      $ ls 
+      HelloEto/     HelloEto.Gtk/ HelloEto.Mac/ HelloEto.Wpf/
+
+   すると，その場所で
+
+   .. code::
+
+      dotnet new sln 
+
+   とすると，ソリューションファイル（``HelloEto.sln``という名前になるはず）が作成される．その後
+   以下の各行を実行すれば（正確には自分のプラットフォームに関係ないプロジェクトについてはソリューションに追加しなくてよい），
+   作成したソリューションファイルをVisual Studioで開くことにより，これらのプロジェクトをまとめて開くことができる．
+
+   .. code::
+
+      dotnet sln add HelloEto
+      dotnet sln add HelloEto.Gtk
+      dotnet sln add HelloEto.Mac
+      dotnet sln add HelloEto.Wpf
+   
+   
+   
 
 
 =================
