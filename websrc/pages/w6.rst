@@ -1,5 +1,5 @@
 -----
-title: 第5回 C#でお絵描き
+title: 第6回 C#でお絵描き
 tableOfContents: true
 -----
 
@@ -20,6 +20,8 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
    using Eto.Forms;
    using Eto.Drawing;
 
+   // テンプレート作成時にプロジェクト名を DrawableDemo にしたことを想定（以後同様の説明を省略）
+   // このnamespaceは，「〜.Gtk」等にある Program.cs においても利用されるので変更するとそちら（3箇所）も変更する必要がある．
    namespace DrawableDemo
    {
        public class MainForm : Form
@@ -80,7 +82,8 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
                    }
                };
 
-               // Mac環境のワークアラウンド．MacだとコントロールのSizeが決まる前に Paintイベント が発生してしまう？
+               // Mac環境のワークアラウンド．
+               // Drawableの最初のPaint時にSizeが値が正しくない https://github.com/picoe/Eto/issues/2104 
                //
                // Gtkでも，Sizeがワンテンポ遅れて変化したりする（https://github.com/picoe/Eto/issues/1752）ので，
                // 現状ではSizeに依存するコードはかかないほうがよいかもしれない
@@ -212,6 +215,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 
 .. code:: cs
 
+   // MainForm.cs
    using System;
    using Eto.Forms;
    using Eto.Drawing;
@@ -281,9 +285,9 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 
 .. image:: ./images/eto/font_demo.png 
 
-==============
-マウスイベント
-==============
+================================================
+マウスイベントの処理：クリックした位置に円を描く
+================================================
 
 マウスイベントを購読するには，``MouseDown``等にハンドラを登録すればよい．
 
@@ -318,8 +322,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
       {
           // 左クリック（左利き用設定をしていない場合）のときの処理
       }
-      else if ( me.Buttons.HasFlag(Buttons.Alternate) 
-              || me.Buttons.HasFlag(Buttons.Primary) && me.Modifiers.HasFlag(Keys.Control))
+      else if ( me.Buttons.HasFlag(Buttons.Alternate) )
       {
           // 右クリックのときの処理
       }
@@ -330,6 +333,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 
 .. code:: cs 
 
+   // MainForm.cs
    using System;
    using Eto.Forms;
    using Eto.Drawing;
@@ -368,13 +372,316 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 
 .. image:: ./images/eto/mouse_demo.png
 
-``ColorPicker``
-===============
 
-（執筆中）
+円の色を選択できるように
+------------------------
+
+作成したプログラムを少し拡張して，色を選べるようにしてみよう．この目的には``ColorPicker``というコントロールが利用可能である．
+このコントロールはクリックすると専用のダイアログ（プラットフォーム毎に異なる）を表示し，ユーザに色を選ぶことを可能にする．
+
+より具体的には，``ColorPicker``により *次にクリックしたとき* に表示される円の色を指定できるようする．
+そのためには，中心の座標のみならず，塗るべき色も覚えておけばよい．そのために，以下のクラスを準備する．
+
+.. code:: cs
+
+    // 色と中心点の組
+    class ColoredCircle
+    {
+        // 中心点
+        public PointF Center { get; set; }
+        // 色
+        public Color Color { get; set; }
+
+        public ColoredCircle(PointF center, Color col)
+        {
+            Center = center;
+            Color = col;
+        }
+        // 描画法
+        public void Draw(Graphics g)
+        {
+            SizeF circleSize = new SizeF(10, 10); // サイズは今のところ決め打ち
+            g.FillEllipse(Color, new RectangleF(Center - 0.5F * circleSize, Center + 0.5F * circleSize));
+        }
+    }
+
+``PointF``型の``circled``の代わりに，``ColoredCircle``型の変数を用意し，``Drawable``の``Paint``イベントのハンドラは，
+その変数がnullでなければ，指しているインスタンスの``Draw``を呼ぶようにする．
+
+.. code:: cs
+
+   ColoredCircle cc = null;
+   Drawable d = new Drawable();
+   d.Paint += (s, pe) =>
+   {
+       if (cc != null) { cc.Draw(pe.Graphics); }
+   };
+
+``ColorPicker``の作成はとても簡単である．たとえば，初期カラーが赤であるようなカラーピッカーは以下のようにして作成できる．
+
+.. code:: cs
+
+    ColorPicker colorPicker = new ColorPicker { Value = Colors.Red };
+
+あとは，描画領域がクリックされたときに，クリックされた座標とカラーピッカーの色から``ColoredCircle``を生成するようにすればよい．
+
+.. code:: cs
+
+   d.MouseDown += (s, me) =>
+   {
+       cc = new ColoredCircle(me.Location, colorPicker.Value);
+       d.Invalidate();
+   };
+
+全体ではコード（``MainForm.cs``の部分のみ）は以下となる．
+
+.. code:: cs
+
+   // MainForm.cs
+   using System;
+   using Eto.Forms;
+   using Eto.Drawing;
+
+   namespace MouseDemo2 
+   {
+       class ColoredCircle
+       {
+           public PointF Center { get; set; }
+           public Color Color { get; set; }
+
+           public ColoredCircle(PointF center, Color col)
+           {
+               Center = center;
+               Color = col;
+           }
+           public void Draw(Graphics g)
+           {
+               SizeF circleSize = new SizeF(10, 10);
+               g.FillEllipse(Color, 
+                             new RectangleF(Center - 0.5F * circleSize, Center + 0.5F * circleSize));
+           }
+       }
+
+       public partial class MainForm : Form
+       {
+           public MainForm()
+           {
+               Title = "Mouse Demo 2";
+               MinimumSize = new Size(200, 200);
+
+               ColoredCircle cc = null;
+
+               Drawable d = new Drawable();
+               d.Paint += (s, pe) =>
+               {
+                   if (cc != null) { cc.Draw(pe.Graphics); }
+               };
+
+               ColorPicker colorPicker = new ColorPicker { Value = Colors.Red };
+               d.MouseDown += (s, me) =>
+               {
+                   cc = new ColoredCircle(me.Location, colorPicker.Value);
+                   d.Invalidate();
+               };
+
+               Content = new StackLayout
+               {
+                   Padding = 5,
+                   Spacing = 5,
+                   HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                   Items = {
+                       colorPicker,
+                       new StackLayoutItem( d, true )
+                   }
+               };
+               Menu = new MenuBar();
+           }
+       }
+   }
+
+上のコードのMacでの実行例たとえば以下となる．
 
 
-ラスタかベクタか
-================
 
-（執筆中）
+複数個の円を描く
+----------------
+
+さて，円が一個だけでは寂しいのでもっとたくさん描画できるようしたい．そこで，クリックするたびに円を描くようにしたい．
+この実現方法は2通りある．
+
+- ``ColoredCircle``のリストを覚えておき，``Paint``イベントのハンドラはそれらすべてを描画する．
+- 画像を保持しておきクリックをしたら``ColoredCircle``をそこに描く．``Paint``イベントのハンドラは画像を表示する．
+
+
+円のリストを覚える方法
+~~~~~~~~~~~~~~~~~~~~~~
+
+前者の拡張はとても直截である．一つの``ColoredCircle``でなく，``ColoredCircle``のリストを保持するようにすればよい．
+上のコードに対する変更はわずか5箇所（うち一つはnamespaceの名前）だ．
+
+.. code:: cs
+
+   // MainForm.cs
+   using System;
+   using System.Collections.Generic; // 追加
+   using Eto.Forms;
+   using Eto.Drawing;
+
+   namespace MouseDemo3 // 変更箇所
+   {
+       class ColoredCircle
+       {
+           public PointF Center { get; set; }
+           public Color Color { get; set; }
+
+           public ColoredCircle(PointF center, Color col)
+           {
+               Center = center;
+               Color = col;
+           }
+           public void Draw(Graphics g)
+           {
+               SizeF circleSize = new SizeF(10, 10);
+               g.FillEllipse(Color, new RectangleF(Center - 0.5F * circleSize, Center + 0.5F * circleSize));
+           }
+       }
+
+       public partial class MainForm : Form
+       {
+           public MainForm()
+           {
+               Title = "Mouse Demo 3";
+               MinimumSize = new Size(200, 200);
+
+               List<ColoredCircle> ccs = new List<ColoredCircle>(); // 変更箇所
+
+               Drawable d = new Drawable();
+               d.Paint += (s, pe) =>
+               {
+                   foreach (var cc in ccs) { cc.Draw(pe.Graphics); } // 変更箇所
+               };
+
+               ColorPicker colorPicker = new ColorPicker { Value = Colors.Red };
+               d.MouseDown += (s, me) =>
+               {
+                   ccs.Add(new ColoredCircle(me.Location, colorPicker.Value)); // 変更箇所
+                   d.Invalidate();
+               };
+
+               Content = new StackLayout
+               {
+                   Padding = 5,
+                   Spacing = 5,
+                   HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                   Items = {
+                       colorPicker,
+                       new StackLayoutItem( d, true )
+                   }
+               };
+               Menu = new MenuBar();
+           }
+       }
+   }
+
+上のコードのMacにおける実行例は以下となる．
+
+.. image:: ./images/eto/mouse_demo3.png
+
+画像を保持する方法
+~~~~~~~~~~~~~~~~~~
+
+ビットマップイメージ（``Bitmap``）を保持し，マウスクリック時にはイメージのほうに円を描き，
+``Drawable``の``Paint``ではその画像を単に表示するという方法もある．その場合は，少しプログラムが
+複雑になるので，``Drawable``に関連するイベント処理を，派生クラスのコンストラクタにまとめてしまうのがよいだろう．
+
+
+.. code:: cs
+
+   // MainForm.cs
+   using System;
+   using Eto.Forms;
+   using Eto.Drawing;
+
+   namespace MouseDemo4
+   {
+       class DrawableImage : Drawable
+       {
+           private Bitmap bitmap;
+           public Color CurrentColor { get; set; }
+
+           public DrawableImage()
+           {
+               // 200x200のビットマップを作成．透明度付き
+               bitmap = new Bitmap(200, 200, PixelFormat.Format32bppRgba);
+
+               Paint += (s, pe) =>
+               {
+                   // bitmap を描画するだけ
+                   pe.Graphics.DrawImage(bitmap, new PointF(0, 0));
+               };
+               MouseDown += (s, me) =>
+               {
+                   SizeF circleSize = new SizeF(10, 10);
+                   PointF center = me.Location;
+                   // ビットマップに円を描画する．
+                   using (Graphics g = new Graphics(bitmap))
+                   {
+                       g.FillEllipse(CurrentColor, new RectangleF(center - 0.5F * circleSize, center + 0.5F * circleSize));
+                   }
+                   Invalidate();
+               };
+               SizeChanged += (s, e) =>
+               {
+                   // リサイズ時に適当にビットマップイメージのサイズを拡大する． 
+                   if (bitmap.Height < ClientSize.Height || bitmap.Width < ClientSize.Width)
+                   {
+                       Bitmap oldImg = bitmap;
+                       // 毎回毎回リサイズで描画領域が増えるごとにコピーするのはコストが大きいので，50%分の余裕をもたせる．
+                       // 
+                       Size newSize = Size.Max(ClientSize, oldImg.Size);
+                       newSize += Size.Max(newSize / 2, new Size(1, 1));
+                       Bitmap newImg = new Bitmap(newSize, PixelFormat.Format32bppRgba);
+                       using (Graphics g = new Graphics(newImg))
+                       {
+                           // 古いイメージをコピー
+                           g.DrawImage(oldImg, new PointF(0, 0));
+                       }
+                       bitmap = newImg;
+                       oldImg.Dispose();
+                       Invalidate();
+                   }
+               };
+           }
+
+       }
+       public partial class MainForm : Form
+       {
+           public MainForm()
+           {
+               Title = "Mouse Demo 3";
+               MinimumSize = new Size(200, 200);
+
+               ColorPicker colorPicker = new ColorPicker { Value = Colors.Red };
+               DrawableImage d = new DrawableImage { CurrentColor = colorPicker.Value };
+
+               colorPicker.ValueChanged += (s, e) =>
+               {
+                   d.CurrentColor = colorPicker.Value;
+               };
+
+               Content = new StackLayout
+               {
+                   Padding = 5,
+                   Spacing = 5,
+                   HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                   Items = {
+                       colorPicker,
+                       new StackLayoutItem( d, true )
+                   }
+               };
+               Menu = new MenuBar();
+           }
+       }
+   }
+
+実行例は上と変わらないので割愛．
