@@ -388,7 +388,7 @@ staticメソッドの追加
 
    .. code:: cs
              
-      private int counter; 
+      private int count; 
 
 修飾子
 ~~~~~~
@@ -760,13 +760,13 @@ continue文，break文
  
    .. code:: cs 
              
-       new Counter()
+       new Counter(0)
 
    式なので，他の式の中でも（型が合えば）使うことができる．
 
    .. code:: cs 
 
-       new Counter().GetCount().ToString()
+       new Counter(0).GetCount().ToString()
 
 インクリメント（``++``）とデクリメント（``-``）
 -----------------------------------------------
