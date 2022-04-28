@@ -344,8 +344,8 @@ C#では，数値型をより広い型や浮動小数点数型に変換したり
       
       int  i = 0x1ff;           
       byte b = 0xff;
-      Console.WriteLine((byte)   i); // 255
-      Console.WriteLine((sbyte) bb); // -1
+      Console.WriteLine((byte)  i); // 255
+      Console.WriteLine((sbyte) b); // -1
 
 また，クラスについてはキャスト元がキャスト先の型を持ちえない場合は **例外**（後の回で詳しく紹介する．捕捉しなければ実行時エラーとなる）が発生する．
 
