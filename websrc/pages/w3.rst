@@ -403,7 +403,7 @@ tableOfContents: true
           }
 
           // 要素がintであるようなListを作成．
-          List<int> ms1 = new List<int> {};
+          List<int> ms1 = new List<int> ();
 
           List<int> ms2;
           // 作成時の要素を指定可能
@@ -425,7 +425,7 @@ tableOfContents: true
 ``void Add(T)``         リストの末尾に要素を追加する．
 ``void Remove(T)``      与えられた要素と同じ要素のうちもっとも最初に出現するものを取り除く．
 ``void RemovAt(int)``   与えられたインデックスの要素を取り除く．
-``int Count``           リストの要素数を返す．読み出し専用．
+``int Count``           リストの要素数を返すプロパティ．読み出し専用．
 =====================   ==================================
 
 .. note::
