@@ -38,6 +38,7 @@ title: 第4回 課題
    // あなたの名前
 
    using System;
+   using System.IO; 
    using System.Collections.Generic;
 
    // インベントリ（いわゆる「アイテム欄」）
