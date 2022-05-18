@@ -113,11 +113,9 @@ title: 第4回 課題
 
         <StartWorkingDirectory>.</StartWorkingDirectory>
      
-   - Windows版のVisual Studioを使用している場合は，プロジェクト名を右クリックして出てくるコンテキストメニューから「プロパティ」を
-     選択し，「デバッグ」の「作業ディレクトリ」を当該 .csproj ファイルを直上のディレクトリに設定する．
+   - Windows版のVisual Studioを使用している場合は，プロジェクト名を右クリックして出てくるコンテキストメニューから「プロパティ」を選択し，「デバッグ」の「作業ディレクトリ」を当該 .csproj ファイルの直上のディレクトリに設定する．
 
-   - Mac版のVisual Studioを使用している場合は，プロジェクト名をダブルクリックして出てくるウィンドウの「実行」>「構成」> 「Default」の 
-     「Working directory」（作業ディレクトリ）を当該 .csproj ファイルを直上のディレクトリに設定する．
+   - Mac版のVisual Studioを使用している場合は，プロジェクト名をダブルクリックして出てくるウィンドウの「実行」>「構成」> 「Default」の 「Working directory」（作業ディレクトリ）を当該 .csproj ファイルの直上のディレクトリに設定する．
 
 
 .. hint::

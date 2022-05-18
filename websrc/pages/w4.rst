@@ -22,14 +22,14 @@ tableOfContents: true
          // ディクショナリの作成
          Dictionary<string, int> dict = new Dictionary<string, int>();
 
-         // Dictionary に要素を追加するには Add メソッドを用いる．
+         // 辞書に要素を追加するには Add メソッドを用いる．
          dict.Add( "Chocolate", 2 );
          dict.Add( "Chips",     4 );
          dict.Add( "Candy",     5 );
 
-         // 要素には配列のようにアクセスできる
+         // バリューにはキーが添字である配列のようにアクセスできる
          dict["Chips"] = 7;
-         Console.WriteLine( "dict[\"Chips\"] = " + dict["Chips"] ); // 7
+         Console.WriteLine( "dict[\"Chips\"] = " + dict["Chips"] ); // dict["Chips"] = 7
 
          Console.WriteLine();
          // ContainsKey メソッドにより，キーを含んでいるか否かを検査できる．
@@ -65,7 +65,7 @@ tableOfContents: true
          // 新しいキーは添字アクセスでも追加できる
          dict["Banana"] = 2;
 
-         // キーを指定することで，そのキーと関連づけられているバリューの組を配列から取り除ける．
+         // キーを指定することで，そのキーと関連づけられているバリューの組を辞書から取り除ける．
          dict.Remove("Candy");
 
          Console.WriteLine();
@@ -339,7 +339,7 @@ tableOfContents: true
       at Student.set_Score(Int32 value) in /Users/kztk/prog/cs/Materials/Week4/ExceptionExample3/Program.cs:line 16
       at ExceptionExample3.Main() in /Users/kztk/prog/cs/Materials/Week4/ExceptionExample3/Program.cs:line 29
 
-一般的には例外とは，``System.Exception``を継承しているクラスのオブジェクトである．そのため，``System.Exception``かその派生クラス（上記 ``ArgumentException`` や ``KeyNotFoundException`` など）を継承することでユーザ適宜の例外を作成することもできる．
+一般的には例外とは，``System.Exception``を継承しているクラスのオブジェクトである．そのため，``System.Exception``かその派生クラス（上記 ``ArgumentException`` や ``KeyNotFoundException`` など）を継承することでユーザ定義の例外を作成することもできる．
 
 また，一つの``try``はいくつもの``catch``ブロックを持つことができる．
 
@@ -602,7 +602,7 @@ usingブロック内で例外が発生した場合にもそうでない場合に
 
 ===================================       ===================================================================
 ``File.WriteAllText(string,string)``      static メソッド．与えられたパスのファイルを開いて，与えられた文字列で上書きして閉じる．パスにファイルが存在してなければ作成する．
-``File.ReadAllLines(string,string[])``    static メソッド．与えられたパスのファイルを開いて，与えられた文字列の配列で上書きして閉じる．パスにファイルが存在してなければ作成する．
+``File.WriteAllLines(string,string[])``    static メソッド．与えられたパスのファイルを開いて，与えられた文字列の配列で上書きして閉じる．パスにファイルが存在してなければ作成する．
 ``File.CreateText(string)``               static メソッド．与えられたパスのファイルを上書きモードで開き，そこへ書きこむための``StreamWriter``オブジェクトを返す．パスにファイルが存在してなければ作成する．
 ``StreamWriter.WriteLine(string)``        ストリームへ与えられた文字列を出力する．
 =====================================     ===================================================================
@@ -754,7 +754,7 @@ usingブロック内で例外が発生した場合にもそうでない場合に
 
            Console.WriteLine("😱".Length);              // 2 
            Console.WriteLine("0x{0:X}", (int) "😱"[0]); // 0xD83D 
-           Console.WriteLine("0x{0:X}", (int) "😱"[0]); // 0xDE31
+           Console.WriteLine("0x{0:X}", (int) "😱"[1]); // 0xDE31
         }
       }
 
