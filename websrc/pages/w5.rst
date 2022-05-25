@@ -3,9 +3,7 @@ title: 第5回 GUIプログラミング
 tableOfContents: true
 -----
 
-オープンソースかつクロスプラットフォームのGUIライブラリ `Eto.Forms <https://github.com/picoe/Eto>`__
-を用いて，GUIプログラムを作成してみよう．この演習をすすめる前には `環境構築 (Eto.Forms) <./setup_gui.html>`__ を
-完了させておこう．
+オープンソースかつクロスプラットフォームのGUIライブラリ`Eto.Forms <https://github.com/picoe/Eto>`__を用いて，GUIプログラムを作成してみよう．この演習をすすめる前には`環境構築2<./setup_gui.html>`__を完了させておこう．
 
    
 
@@ -14,8 +12,7 @@ tableOfContents: true
 
 いわゆるウィンドウを表すクラス．
 
-Eto.Formsのテンプレートからデフォルト設定で生成されるコードは，
-以下のように，
+Eto.Formsのテンプレートからデフォルト設定で生成されるコードは，以下のように，
 
 - Formの派生クラスを定義するコードと，
 - そのフォームからなるGUIアプリケーションを実行するコード（バックエンド毎．デフォルトだとMac，Wpf，GTKの3つ）
@@ -85,8 +82,7 @@ Eto.Formsのテンプレートからデフォルト設定で生成されるコ�
 ``public ToolBar ToolBar``    ツールバーを表す
 ==========================    =============================
 
-では，まずは``Title``，``Content``，``ClientSize``のみを使うように，``MainForm.cs``で定義されている``MainForm``クラスのコンストラクタを以下のように
-変更してみよう．
+では，まずは``Title``，``Content``，``ClientSize``のみを使うように，``MainForm.cs``で定義されている``MainForm``クラスのコンストラクタを以下のように変更してみよう．
 
 .. code:: cs
 
@@ -94,7 +90,9 @@ Eto.Formsのテンプレートからデフォルト設定で生成されるコ�
    {
        Title = "Hello World"; 
        ClientSize = new Size(200, 200);
-       Content = new Label() { Text = "Hello, World!" }; // オブジェクト初期化子を利用
+
+       // オブジェクト初期化子を利用
+       Content = new Label() { Text = "Hello, World!" }; 
    }
 
 以下のようなウィンドウが表示されたことだろう（以下はMacにおける例）
@@ -110,7 +108,11 @@ Eto.Formsのテンプレートからデフォルト設定で生成されるコ�
    {
        Title = "Hello World"; 
        ClientSize = new Size(200, 200);
-       Content = new Label() { Text = "Hello, World!" }; // オブジェクト初期化子を利用
+
+       Content = new Label() { Text = "Hello, World!" }; 
+
+       // 「空」のメニューバーを追加する．
+       // すると，Mac環境においてはMenuプロパティのsetterがいろいろなアイテムを追加してくれる．
        Menu = new MenuBar(); 
    }
 
@@ -121,7 +123,7 @@ Eto.Formsのテンプレートからデフォルト設定で生成されるコ�
 
 .. code:: cs 
 
-       Content = new Label { Text = "Hello, World!" }; // オブジェクト初期化子を利用
+       Content = new Label { Text = "Hello, World!" }; 
 
 とも書ける．
 
@@ -129,8 +131,7 @@ Eto.Formsのテンプレートからデフォルト設定で生成されるコ�
 コントロール（GUI部品）
 =======================
 
-さて，上記にあった ``Label`` は単に与えられたテキストを表示するという **コントロール** （GUI部品）である．
-たとえば，よく使うコントロールは ``Label``を含め以下のようなものであろう．
+さて，上記にあった ``Label`` は単に与えられたテキストを表示するという **コントロール** （GUI部品）である．たとえば，よく使うコントロールは ``Label``を含め以下のようなものであろう．
 
 ===========================    =====================
 コントロール（を表すクラス）   説明
@@ -138,7 +139,7 @@ Eto.Formsのテンプレートからデフォルト設定で生成されるコ�
 ``Label``                      テキストを画面に表示する
 ``Button``                     その名の通りボタン
 ``TextBox``                    一行のテキストを入力できる欄
-``TextArea``                   複数のテキストを入力できる欄．スクロールバー付き
+``TextArea``                   複数行のテキストを入力できる欄．スクロールバー付き
 ===========================    =====================
 
 
@@ -224,18 +225,17 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
 プロパティ名                     大雑把な説明
 ============================     ==================================
 ``Padding``                      StackLayout自体とその中身の間のスペース
-``Spacing``                      StackLayoutに含まれる各コンポーネント間のスペース（``int``型）
+``Spacing``                      StackLayoutに含まれる各コントロール間のスペース（``int``型）
 ``Orientation``                  StackLayoutの方向．``Orientation.Vertical``か``Orientation.Horizontal``か．
-``HorizontalContentAlignment``   ``Orientation``が ``Orientation.Vertical``のときの各コンポーネントの水平位置
+``HorizontalContentAlignment``   ``Orientation``が ``Orientation.Vertical``のときの各コントロールの水平位置
                                  ``HorizontalAlignment.Left``，``HorizontalAlignment.Right``，
                                  ``HorizontalAlignment.Center``，``HorizontalAlignment.Stretch``のいずれか
 ``VerticalContentAlignment``     上の縦版．``VerticalAlignment.Top``，``VerticalAlignment.Bottom``，
                                  ``VerticalAlignment.Center``，``VerticalAlignment.Stretch``のいずれか
-``Items``                        保持するコンポーネントのコレクション．読み出し専用（代入できないという意味）
+``Items``                        保持するコントロールのコレクション．読み出し専用（代入できないという意味）
 ============================     ==================================
 
-ここ``Items``は ``StackLayoutItem`` を保持するコレクションである．C#では暗黙の型変換をユーザが定義することができ，各コントロールの基底クラスである``Control``
-から``StackLayoutItem``への型変換が定義されているため，コントロールを直接 ``Items`` へ ``Add``メソッドを使って追加することができる．
+正確には``Items``は``StackLayoutItem``を保持するコレクションである．C#では暗黙の型変換をユーザが定義することができ，各コントロールの基底クラスである``Control``から``StackLayoutItem``への型変換が定義されているため，コントロールを直接``Items``へ``Add``メソッドを使って追加することができる．
 また，``StackLayoutItem``のコンストラクタ``StackLayoutItem(Control, bool)``を使うことにより，そのコントロールが``Orientation``に沿って伸長するかどうかを指定できる．
 
 
@@ -287,8 +287,7 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
 ``TableLayout``の例
 -------------------
 
-``TableLayout``は Eto.Forms の提供するレイアウトのうち基本となるものである（``StackLayout``や``DynamicLayout``も内部でTableLayoutを使用している）．
-表組みのようなレイアウトを実現する．
+``TableLayout``は Eto.Forms の提供するレイアウトのうち基本となるものであり（``StackLayout``や``DynamicLayout``も内部でTableLayoutを使用している），表組みのようなレイアウトを実現する．
 
 .. code:: cs
 
@@ -322,14 +321,14 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
                              new Label { Text = "Bonito" }));
 
             // 以下をアンコメントしたらどうなる？
-            // tableLayout.Raw.Add(null); // 伸長する何もない行の追加
+            // tableLayout.Rows.Add(null); // 伸長する何もない行の追加
 
             Content = tableLayout;
         }
 
 上記の実行例（Macの場合）
 
-.. image:: images/eto/stack_layout.png 
+.. image:: images/eto/table_layout.png 
 
 
 上のプログラムでは下記の``TableLayout``のプロパティを使った．
@@ -338,7 +337,7 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
 プロパティ名                     大雑把な説明
 ============================     ==================================
 ``Padding``                      TableLayout自体とその中身の間のスペース
-``Spacing``                      TableLayoutに含まれる各コンポーネント間のスペース（``Size``型）
+``Spacing``                      TableLayoutに含まれる各コントロール間のスペース（``Size``型）
 ``Rows``                         各要素がTableRowであるコレクション（読み出し専用）
 ============================     ==================================
 
@@ -353,9 +352,7 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
 =============================================     ========================================================
 
 
-``StackLayoutItem``のときと同様に``Control``から``TableCell``への暗黙の型変換が定義されている．そのため，
-それを利用することで，``Control``型の``new Label { Text = "Apple" }``等をそのまま``TableRow``コンストラクタの
-引数に渡すことができる．セルの横幅を伸長可能にしたい場合は上記のようにコンストラクタ``TableCell(Control, bool)``を使用する．
+``StackLayoutItem``のときと同様に``Control``から``TableCell``への暗黙の型変換が定義されている．そのため，それを利用することで，``Control``型の``new Label { Text = "Apple" }``等をそのまま``TableRow``コンストラクタの引数に渡すことができる．セルの横幅を伸長可能にしたい場合は上記のようにコンストラクタ``TableCell(Control, bool)``を使用する．
 
 ``TableLayout.AutoSized`` というstatic メソッドは伸長するセルの中に伸長したくないコントロールを配置するのに使う．
 
@@ -394,7 +391,7 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
    Label
 
 
-というレイアウトは，StackLayoutを組み合わせることにより実現可能である．
+という配置は，StackLayoutを組み合わせることにより実現可能である．
 
 .. code:: cs
 
@@ -431,12 +428,9 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
 ボタンを押したときの動作
 ========================
 
-さて，これまではGUI部品を配置するだけで，GUI部品がなにか面白いことをすることはなかった．
-ここではボタンを押したときの動作を実装してみよう．
+さて，これまではGUI部品を配置するだけで，GUI部品がなにか面白いことをすることはなかった．ここではボタンを押したときの動作を実装してみよう．
 
-まずは非常に単純なアプリケーションを作ってみる．このアプリケーションの画面には一つのボタンと一つのラベルがあるのみである．
-ボタンを押すと，ラベルにボタンを押した回数が表示されるというものである．
-各コントロールの配置は適当でよい．
+まずは非常に単純なアプリケーションを作ってみる．このアプリケーションの画面には一つのボタンと一つのラベルがあるのみである．ボタンを押すと，ラベルにボタンを押した回数が表示されるというものである．各コントロールの配置は適当でよい．
 
 コントロールの配置だけを考えれば以下のようなプログラム（``MainForm``コンストラクタのみ抜粋）が書けるだろう．
 
@@ -468,8 +462,7 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
 イベントハンドラの登録
 ----------------------
 
-ボタン``button``を押したときに，なにかをさせたい場合はイベントハンドラに関数を登録すればよい．これは，
-``button``の``Click``フィールドに以下のようにメソッドを登録すればよい．
+ボタン``button``を押したときに，なにかをさせたい場合はイベントハンドラに関数を登録すればよい．これは，``button``の``Click``フィールドに以下のようにメソッドを登録すればよい．
 
 .. code:: cs
 
@@ -477,9 +470,16 @@ Eto.Formsの提供する代表的なレイアウトに以下のようなもの�
    button.Click += YOUR_METHOD; 
 
 
-C#ではクラスやオブジェクトはイベント（のハンドラを格納するもの）を持つことができる．イベントはフィールドやプロパティとは異なり，
-その当該のクラスからしか発生させる（イベントハンドラを呼び出す）ことができない（なので，派生クラスからイベントを発生させたい場合は，
-基底クラスのほうでイベント発生をラップする protected ないし public なメソッドを用意する必要がある）．
+C#ではクラスやオブジェクトはイベント（のハンドラを格納するもの）を持つことができる．実際に``Click``は
+
+.. code:: cs 
+
+   // EventHandlerについては https://docs.microsoft.com/dotnet/api/system.eventhandler-1 参照
+   public event EventHandler<EventArgs> Click; 
+
+という``Button``の（インスタンス）メンバとして宣言されている．
+
+イベントはフィールドやプロパティとは異なり，その当該のクラスからしか発生させる（イベントハンドラを呼び出す）ことができない（なので，派生クラスからイベントを発生させたい場合は，基底クラスのほうでイベント発生をラップする protected ないし public なメソッドを用意する必要がある）．
 ただし，イベントはそのクラスの外でも購読（イベントハンドラを登録する）ことができる．
 上記の``+=``は``button.Click``というイベントを購読する（あるいは"button.Click"というイベントに対するイベントハンドラを登録する）ための構文である．
 また，イベントの購読解除も行うことができ，対応する構文は``-=``である．
