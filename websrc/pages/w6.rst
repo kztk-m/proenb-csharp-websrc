@@ -8,8 +8,7 @@ tableOfContents: true
 ========================
 
 
-Eto.Forms の ``Drawable`` コントロールを利用することで，直線，矩形，楕円，文字列等いろんなものを
-コントロールに自由に描画できる．
+Eto.Forms の ``Drawable`` コントロールを利用することで，直線，矩形，楕円，文字列等いろんなものをコントロールに自由に描画できる．
 
 そのためには，以下のように``Drawable``の``Paint``イベントを購読（ハンドラを登録）するとよい．
 
@@ -59,7 +58,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 
                    // 矩形のアウトラインを描く
                    g.DrawRectangle(Colors.Red, new RectangleF(new PointF(0, 100), new SizeF(300, 50)));
-                   // Colors.Red と書くかわりに Color.FromRgb(0xFF0000) で陽にRGBAを指定できる
+                   // Colors.Red と書くかわりに Color.FromRgb(0xFF0000) で陽にRGBを指定できる
                    g.FillRectangle(Color.FromRgb(0xFF0000), new RectangleF(new PointF(0, 150), new SizeF(300, 50)));
 
                    // 楕円のアウトラインを描く．Colors.Lime は Color.FromRgb(0x00FF00) と同じ色
@@ -85,10 +84,10 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
                // Mac環境のワークアラウンド．
                // Drawableの最初のPaint時にSizeが値が正しくない https://github.com/picoe/Eto/issues/2104 
                //
-               // Gtkでも，Sizeがワンテンポ遅れて変化したりする（https://github.com/picoe/Eto/issues/1752）ので，
-               // 現状ではSizeに依存するコードはかかないほうがよいかもしれない
+               // Eto.Forms 2.6.1においては，GtkでもSizeがワンテンポ遅れて変化したりする（https://github.com/picoe/Eto/issues/1752）ので
+               // 現状ではSizeに依存するコードはかかないほうがよいかもしれない．
                //
-               // Invalidate()はコントロールに再描画を促す
+               // Invalidate()はコントロールに再描画を促す．
                drawable.SizeChanged += (s, e) => drawable.Invalidate();
 
                Content = drawable;
@@ -147,17 +146,17 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 ========
 
 ``Font(FontFamily,float)``コンストラクタを使うことで，システムにインストールされたフォントから``Font``オブジェクトを作成できる．
-``FontFamily``はフォント名をとるコンストラクタ``FontFamily(string)``を用いてもよいが，システムによってインストールされているフォントは違うので，``Fonts.AvailableFontFamilies``を使うのがよいかもしれない．たとえば，``Fonts.AvailableFontFamilies``は以下のように``List<FontFamily>``に変換することができる．
+
+``FontFamily``インスタンスの作成にはフォント名をとるコンストラクタ``FontFamily(string)``を用いてもよいが，システムによってインストールされているフォントは違うので``Fonts.AvailableFontFamilies``を使うのがよいかもしれない．たとえば，``Fonts.AvailableFontFamilies``は以下のように``List<FontFamily>``に変換することができる．
 
 .. code:: cs 
 
    // システムにインストールされているフォントを取得し，List<FontFamily>に変換する
    List<FontFamily> fontfamilies = new List<T>( Font.AvailableFontFamilies ); 
 
-折角なので，いままで紹介していないコントロールを使って，フォントファミリとサイズを指定して，文字列を描画するプログラムを作ってみよう．
-具体的には ``DropDown`` と ``NumericStepper`` を使用する．
+折角なので，いままで紹介していないコントロールを使って，フォントファミリとサイズを指定して，文字列を描画するプログラムを作ってみよう．具体的には ``DropDown`` と ``NumericStepper`` を使用する．
 
-以下のようにすることで，``Fonts.AvailableFontFamilies`` が中身となるようなドロップダウンを作成できる．
+以下のようにすることで，``Fonts.AvailableFontFamilies``が中身となるようなドロップダウンを作成できる．
 
 .. code:: cs
 
@@ -167,9 +166,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
    // ドロップダウンの要素をどのようにして表示するための文字列にするかを規定する（詳細は説明しない）
    fontfamilyChooser.ItemTextBinding = Binding.Delegate((object o) => o.ToString());   
 
-また，フォントのサイズの選択には，``NumericStepper`` を使う．
-これは，数値を選択するためのコントロールであり，数字の横に上三角形と下三角形が表示されている．きっとよく見るようなものであると思われる．
-注意事項としては選択される数字等は``double``型であるという点である．
+フォントのサイズの選択には``NumericStepper``を使うことにする．これは，数値を選択するためのコントロールであり，数字の横に上三角形と下三角形が表示されている．きっとよく見るようなものであると思われる．注意事項としては選択される数等は``double``型であるという点である．
 
 .. code:: cs 
 
@@ -203,12 +200,12 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
        if (ff != null)
        {
            // sizerSelector.Value は double なので int に丸める．
+           // 注：Fontコンストラクタの第2引数はfloatなので，floatにキャストしたのでも十分ではある．
            pe.Graphics.DrawText(new Font(ff, (int)sizeSelector.Value), Colors.Black, new PointF(0, 0), textToDraw.Text);
        }
    };
 
-最後に``fontfamilyChooser``，``sizeSelector``，``textToDraw`` の内容に変更があったときに，``d`` を再描画するようにする．
-そうでなければ，リサイズ等の他に更新すべき理由がない限り描画領域は更新されない．
+最後に``fontfamilyChooser``，``sizeSelector``，``textToDraw``の内容に変更があったときに，``d``を再描画するようにする．そうでなければ，リサイズ等の他に更新すべき理由がない限り描画領域は更新されない．
 
 .. code:: cs
 
@@ -310,8 +307,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 ``MouseDoubleClick``  ダブルクリック．
 ==================    ==================================
 
-これらに渡すハンドラの第2引数は``MouseEventArgs``になる．たとえば以下のプロパティを通じて，
-イベント発生時のマウスの状態を取得できる．
+これらに渡すハンドラの第2引数は``MouseEventArgs``になる．たとえば以下のプロパティを通じて，イベント発生時のマウスの状態を取得できる．
 
 ==================    ==================================
 ``Buttons``           マウスのボタン（``Buttons.Primary``や``Buttons.Alternate``など．同時押しもOK）
@@ -335,8 +331,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
       }
    }
 
-では，マウスイベントのハンドリングの例として，マウスのクリック位置に円を描くプログラムを作ってみよう．
-``Drawable``もコントロールなので，その``MouseDown``イベントを購読すればよい．たとえば，以下のように．
+では，マウスイベントのハンドリングの例として，マウスのクリック位置に円を描くプログラムを作ってみよう．``Drawable``もコントロールなので，その``MouseDown``イベントを購読すればよい．たとえば，以下のように．
 
 .. code:: cs 
 
@@ -412,8 +407,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
         }
     }
 
-``PointF``型の``circled``の代わりに，``ColoredCircle``型の変数を用意し，``Drawable``の``Paint``イベントのハンドラは，
-その変数がnullでなければ，指しているインスタンスの``Draw``を呼ぶようにする．
+``PointF``型の``clicked``の代わりに，``ColoredCircle``型の変数を用意し，``Drawable``の``Paint``イベントのハンドラは，その変数がnullでなければ，指しているインスタンスの``Draw``を呼ぶようにする．
 
 .. code:: cs
 
@@ -513,8 +507,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 複数個の円を描く
 ----------------
 
-さて，円が一個だけでは寂しいのでもっとたくさん描画できるようしたい．そこで，クリックするたびに円を描くようにしたい．
-この実現方法は2通りある．
+さて，円が一個だけでは寂しいのでもっとたくさん描画できるようしたい．そこで，クリックするたびに円を描くようにしたい．この実現方法は2通りある．
 
 - ``ColoredCircle``のリストを覚えておき，``Paint``イベントのハンドラはそれらすべてを描画する．
 - 画像を保持しておきクリックをしたら``ColoredCircle``をそこに描く．``Paint``イベントのハンドラは画像を表示する．
@@ -523,8 +516,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 円のリストを覚える方法
 ~~~~~~~~~~~~~~~~~~~~~~
 
-前者の拡張はとても直截である．一つの``ColoredCircle``でなく，``ColoredCircle``のリストを保持するようにすればよい．
-上のコードに対する変更はわずか5箇所（うち一つはnamespaceの名前）だ．
+前者の拡張はとても直截である．一つの``ColoredCircle``でなく，``ColoredCircle``のリストを保持するようにすればよい．上のコードに対する変更はわずか5箇所（うち一つはnamespaceの名前）だ．
 
 .. code:: cs
 
@@ -597,9 +589,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 画像を保持する方法
 ~~~~~~~~~~~~~~~~~~
 
-ビットマップイメージ（``Bitmap``）を保持し，マウスクリック時にはイメージのほうに円を描き，
-``Drawable``の``Paint``ではその画像を単に表示するという方法もある．その場合は，少しプログラムが
-複雑になるので，``Drawable``に関連するイベント処理を，派生クラスのコンストラクタにまとめてしまうのがよいだろう．
+ビットマップイメージ（``Bitmap``）を保持し，マウスクリック時にはイメージのほうに円を描き，``Drawable``の``Paint``ではその画像を単に表示するという方法もある．その場合は，少しプログラムが複雑になるので，``Drawable``に関連するイベント処理を，派生クラスのコンストラクタにまとめてしまうのがよいだろう．
 
 
 .. code:: cs
@@ -667,7 +657,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
        {
            public MainForm()
            {
-               Title = "Mouse Demo 3";
+               Title = "Mouse Demo 4";
                MinimumSize = new Size(200, 200);
 
                ColorPicker colorPicker = new ColorPicker { Value = Colors.Red };
