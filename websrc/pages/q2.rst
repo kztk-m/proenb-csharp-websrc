@@ -10,41 +10,41 @@ title: 第2回 課題
 
 .. code:: cs
 
-   using System; 
+   using System;
 
    // 以下のクラスは変更してはならない．
-   class Calc 
+   class Calc
    {
        protected double val;
 
        public Calc()
        {
-          val = 0; 
+          val = 0;
        }
 
-       public virtual void Set(double d) 
+       public virtual void Set(double d)
        {
-          val = d; 
+          val = d;
        }
-       public virtual void Add(double d) 
+       public virtual void Add(double d)
        {
-          val += d; 
+          val += d;
        }
-       public virtual void Sub(double d) 
+       public virtual void Sub(double d)
        {
-          val -= d; 
+          val -= d;
        }
-       public virtual void Mul(double d) 
+       public virtual void Mul(double d)
        {
-          val *= d; 
+          val *= d;
        }
-       public virtual void Div(double d) 
+       public virtual void Div(double d)
        {
-          val /= d; 
+          val /= d;
        }
-       public void Report() 
+       public void Report()
        {
-          Console.WriteLine("Value: " + val); 
+          Console.WriteLine("Value: " + val);
        }
    }
 
@@ -58,8 +58,8 @@ title: 第2回 課題
 ``public void Log()``                  現在の値をそのlogに設定する．
 ``public void SetRadianMode()``        三角関数の角度の単位をラジアンに設定する．
 ``public void SetDegreeMode()``        三角関数の角度の単位を度に設定する．
-``public void Sin()``                  現在の値を角度して，そのsinに現在を値を設定する．
-``public void Cos()``                  現在の値を角度して，そのcosに現在を値を設定する．
+``public void Sin()``                  現在の値を角度（ラジアンか度かは上記メソッドにより指定）として，そのsinに現在を値を設定する．
+``public void Cos()``                  現在の値を角度（ラジアンか度かは上記メソッドにより指定）として，そのcosに現在を値を設定する．
 =============================          ===========================
 
 これらのメソッドを実装するために ``FunCalc``は適当なフィールド（ひとつとは限らない）を持つ必要がある．そうしたフィールドは *publicにはしない* ようにすること．また，度をラジアンに直す等の共通の処理はprivateなメソッドにまとめるとよい．
@@ -68,30 +68,45 @@ title: 第2回 課題
 
 .. code:: cs
 
-   class Program 
+   class Program
    {
-       static void Main(string[] args) 
+       static void Main(string[] args)
        {
-          FunCalc fc = new FunCalc(); 
-          
+          FunCalc fc = new FunCalc();
+
           // sin(30°)の計算
-          fc.SetDegreeMode(); 
+          fc.SetDegreeMode();
           fc.Set(30);
-          fc.Sin(); 
+          fc.Sin();
+          fc.Report();
+
+          // sin(30°)の計算（少し別の方法）
+          fc.Set(30);
+          fc.SetDegreeMode();
+          fc.Sin();
           fc.Report();
 
           // cos(π)の計算
           fc.SetRadianMode();
-          fc.Set(Math.PI); 
+          fc.Set(Math.PI);
           fc.Cos();
           fc.Report();
 
-          // 2^10 
+          // SetDegreeMode()およびSetRadianMode()は「現在の値」には影響しない．
+          fc.Set(10);
+          fc.SetDegreeMode();
+          fc.SetDegreeMode();
+          fc.Report();
+          fc.SetRadianMode();
+          fc.SetRadianMode();
+          fc.Report()
+
+          // 2^10
           fc.Set(2);
           fc.Pow(10);
-          fc.Report(); 
+          fc.Report();
 
-          // log₂(2^10) 
+          // log₂(2^10)
           fc.SetLogBase(2);
           fc.Log();
           fc.Report();
@@ -99,7 +114,7 @@ title: 第2回 課題
           // log₁₀(log₂(2^10))
           fc.SetLogBase(10);
           fc.Log();
-          fc.Report();           
+          fc.Report();
        }
    }
 
@@ -108,13 +123,16 @@ title: 第2回 課題
 ::
 
     Value: 0.49999999999999994
+    Value: 0.49999999999999994
     Value: -1
+    Value: 10
+    Value: 10
     Value: 1024
     Value: 10
     Value: 1
 
 
-.. hint:: 
+.. hint::
 
    sinやcos，logや累乗を計算するのには``Math``クラスのstaticメソッド``Sin(double)``，``Cos(double)``，``Log(double,double)``，``Pow(double,double)``が利用できる．
    πについても``Math.PI``が利用可能である．
@@ -130,8 +148,8 @@ title: 第2回 課題
 発展課題
 --------
 
-.. caution:: 
-   
+.. caution::
+
    本課題を完了できたのならば本課題の解答のみを提出すればよく，基本課題の解答は提出する必要はない．
 
 基本課題で作成した ``FunCalc``の一部の関数を変更し，不正な値が与えらえたときにエラーとして扱い，
@@ -145,37 +163,52 @@ title: 第2回 課題
 ========================   ======================
 ``SetLogBase(double d)``   ``d``が0以下か，1であればエラーとする．
 ``Log()``                  ``val``が0以下であればエラーとする．
-``Div(double d)``          ``d``が0であればエラーとする．         
+``Div(double d)``          ``d``が0であればエラーとする．
 ========================   ======================
 
 また，``Program.Main``にたとえば以下のように動作確認用の記述を追加してよい（既存の処理を削除してはならない）．
 
 .. code:: cs
 
-   class Program 
+   class Program
    {
-       static void Main(string[] args) 
+       static void Main(string[] args)
        {
-          FunCalc fc = new FunCalc(); 
-          
+          FunCalc fc = new FunCalc();
+
           // sin(30°)の計算
-          fc.SetDegreeMode(); 
+          fc.SetDegreeMode();
           fc.Set(30);
-          fc.Sin(); 
+          fc.Sin();
+          fc.Report();
+
+          // sin(30°)の計算（少し別の方法）
+          fc.Set(30);
+          fc.SetDegreeMode();
+          fc.Sin();
           fc.Report();
 
           // cos(π)の計算
           fc.SetRadianMode();
-          fc.Set(Math.PI); 
+          fc.Set(Math.PI);
           fc.Cos();
           fc.Report();
 
-          // 2^10 
+          // SetDegreeMode()およびSetRadianMode()は「現在の値」には影響しない．
+          fc.Set(10);
+          fc.SetDegreeMode();
+          fc.SetDegreeMode();
+          fc.Report();
+          fc.SetRadianMode();
+          fc.SetRadianMode();
+          fc.Report()
+
+          // 2^10
           fc.Set(2);
           fc.Pow(10);
-          fc.Report(); 
+          fc.Report();
 
-          // log₂(2^10) 
+          // log₂(2^10)
           fc.SetLogBase(2);
           fc.Log();
           fc.Report();
@@ -183,7 +216,7 @@ title: 第2回 課題
           // log₁₀(log₂(2^10))
           fc.SetLogBase(10);
           fc.Log();
-          fc.Report();           
+          fc.Report();
 
           // エラー処理の動作確認用
           fc.Div(0);         // Error!
@@ -191,7 +224,7 @@ title: 第2回 課題
           fc.Set(0);
           fc.Log();          // Error!
           fc.Report();       // Value: 0
-          fc.SetLogBase(-1); // Error! 
+          fc.SetLogBase(-1); // Error!
           fc.SetLogBase(1);  // Error!
        }
    }
