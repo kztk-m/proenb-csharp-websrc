@@ -81,6 +81,16 @@ title: 第1回 課題
                Console.WriteLine("payment failed"); 
            }           
            ec.Print(); 
+
+           if (ec.Pay(600)) 
+           {
+               Console.WriteLine("payment succeeded");
+           }
+           else 
+           {
+               Console.WriteLine("payment failed"); 
+           }           
+           ec.Print(); 
        }
    }
 
@@ -93,6 +103,8 @@ title: 第1回 課題
    MyCard: 1100
    payment succeeded
    MyCard: 600
+   payment succeeded
+   MyCard: 0
 
 
 --------
@@ -140,6 +152,7 @@ title: 第1回 課題
        ec2.Charge(1000);
        ec1.Print();
        ec2.Print();
+
        if (ec1.TransferFrom(ec2, 300)) 
        {
            Console.WriteLine("transfer succeeded"); 
@@ -148,7 +161,17 @@ title: 第1回 課題
        {
            Console.WriteLine("transfer failed"); 
        }
+       ec1.Print();
+       ec2.Print(); 
 
+       if (ec2.TransferFrom(ec1, 400)) 
+       {
+           Console.WriteLine("transfer succeeded"); 
+       } 
+       else 
+       {
+           Console.WriteLine("transfer failed"); 
+       }
        ec1.Print();
        ec2.Print(); 
    }
@@ -166,5 +189,6 @@ title: 第1回 課題
    transfer succeeded 
    Card1: 400 
    Card2: 800
-
-
+   transfer succeeded 
+   Card1: 0 
+   Card2: 1200
