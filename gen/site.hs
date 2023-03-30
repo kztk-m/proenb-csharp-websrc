@@ -12,6 +12,7 @@ import           Text.Pandoc           (ReaderOptions (..), WriterOptions (..))
 import qualified Text.Pandoc
 import qualified Text.Pandoc.Shared
 
+import qualified Data.Char 
 import           Data.Functor.Identity (runIdentity)
 import           Data.String           (fromString)
 import           Data.Text             (Text)
@@ -70,6 +71,44 @@ getWeekNumber :: ParseBN -> Int
 getWeekNumber (W i) = i
 getWeekNumber (Q i) = i
 
+adjustJapaneseSpacing :: Item String -> Compiler (Item String)
+adjustJapaneseSpacing = pure . fmap aj 
+  where 
+    isJpChar :: Char -> Bool 
+    isJpChar c = isJpPunct || isKana || isFWRomanAndHWKana || isKanji     
+      where 
+        cp = Data.Char.ord c 
+        -- see https://stackoverflow.com/questions/19899554/unicode-range-for-japanese
+        isJpPunct = 0x3000 <= cp && cp <= 0x303f 
+        isKana = 0x3040 <= cp && cp <= 0x30ff 
+        isFWRomanAndHWKana = 0xff00 <= cp && cp <= 0xffef 
+        isKanji = 0x4e00 <= cp && cp <= 0x9faf
+
+    aj :: String -> String 
+    aj [] = []
+    aj ('<':'/':'e':'m':'>':sp:c:cs) | Data.Char.isSpace sp && isJpChar c = "</em>" ++ aj (c:cs) 
+    aj ('<':'/':'a':'>':sp:c:cs) | Data.Char.isSpace sp && isJpChar c = "</a>" ++ aj (c:cs) 
+    aj ('<':'/':'s':'t':'r':'o':'n':'g':'>':sp:c:cs) | Data.Char.isSpace sp && isJpChar c = "</strong>" ++ aj (c:cs) 
+    aj (c:cs)
+     | isJpChar c = ajAfterJp c cs 
+     | otherwise  = c:aj cs 
+
+    ajAfterJp :: Char -> String -> String 
+    ajAfterJp jc [] = [jc] 
+    ajAfterJp jc ('\n':cs) | Just rest <- skipTrailingNBSPBeforeJp cs = jc:aj(rest)
+    ajAfterJp jc (' ':'<':cs) | "a " `Data.List.isPrefixOf` cs || "strong" `Data.List.isPrefixOf` cs || "em" `Data.List.isPrefixOf` cs = jc:"<"++aj cs
+    ajAfterJp jc (c:cs) = jc:aj(c:cs) 
+
+    skipTrailingNBSPBeforeJp :: String -> Maybe String 
+    skipTrailingNBSPBeforeJp [] = Just []
+    skipTrailingNBSPBeforeJp ('\n':cs) = Nothing 
+    skipTrailingNBSPBeforeJp ('\r':cs) = Nothing 
+    skipTrailingNBSPBeforeJp (c:cs)
+     | Data.Char.isSpace c = skipTrailingNBSPBeforeJp cs 
+     | isJpChar c = Just (c:cs)
+     | otherwise = Nothing 
+    
+
 rstCompilingRule :: Compiler (Item String)
 rstCompilingRule = do
 --  loadBody "templates/nav.html" :: Compiler Template
@@ -94,6 +133,8 @@ rstCompilingRule = do
         defaultContext
 
   let bn = FP.takeBaseName fp
+  let postProc a = relativizeUrls a >>= adjustJapaneseSpacing
+
   case checkBN bn of
     Just (Q i) -> do
       inst <-
@@ -107,7 +148,7 @@ rstCompilingRule = do
 
       pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
         >>= loadAndApplyTemplate "templates/defaultQ.html" ctxt'
-        >>= relativizeUrls
+        >>= postProc
 
     Just (W i) -> do
       let ctxt' =
@@ -116,7 +157,7 @@ rstCompilingRule = do
 
       pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
         >>= loadAndApplyTemplate "templates/defaultW.html" ctxt'
-        >>= relativizeUrls
+        >>= postProc 
 
 
     Nothing -> do
@@ -127,7 +168,7 @@ rstCompilingRule = do
               "templates/default.html"
       pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
         >>= loadAndApplyTemplate tmpl ctxt
-        >>= relativizeUrls
+        >>= postProc 
   where
     checkBN :: String -> Maybe ParseBN
     checkBN (c:s) =
@@ -176,7 +217,7 @@ main = hakyllWith conf $ do
       route $ gsubRoute "pages/" (const "")
       compile $
         getResourceBody
-        >>= relativizeUrls
+        >>= relativizeUrls >>= adjustJapaneseSpacing
 
 
     -- match (fromList ["about.rst", "contact.markdown"]) $ do
@@ -216,7 +257,7 @@ main = hakyllWith conf $ do
           getResourceBody
             >>= applyAsTemplate indexCtx
             >>= loadAndApplyTemplate "templates/default.html" indexCtx
-            >>= relativizeUrls
+            >>= relativizeUrls >>= adjustJapaneseSpacing
 
 
 
