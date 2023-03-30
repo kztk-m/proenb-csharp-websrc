@@ -107,60 +107,39 @@ Mac編
 
 
 
-1. `Eto.Formsのリリースページ <https://github.com/picoe/Eto/releases>`_ から，``Eto.Addin.VisualStudio.Mac-X.X.X.mpack`` の最新版を入手する． 
-   令和4年3月23日(水)時点での最新版は ``Eto.Addin.VisualStudio.Mac-2.6.1.mpack``．
+1. `Eto.Forms developper extensionsのリリースページ <https://github.com/picoe/Eto.DevExtensions/releases>`_ から，``Eto.DevExtension.VisualStudio.Mac.2022-X.X.X.mpack`` の最新版を入手する． 
+   令和5年3月29日(水)時点での最新版は ``Eto.Addin.VisualStudio.Mac-2.7.1.mpack``．
 
-#. メニューの「Visual Studio」以下の「Extensions...」（または「拡張機能...」）を開く．
+#. メニューの「Visual Studio」以下の「拡張機能...」を開く．
 
-   ..
-      .. image::images/ss_eto/mac1.png
+   
+   .. image::images/ss_eto/vs2022_mac_extension.png 
 
 #. ウィンドウが出てくるので，「ファイルからインストール...」を選び，先程のダウンロードした.mackファイルを選択する．
 
-   ..
-      .. image::images/ss_eto/mac2.png
+#. すると，「次の拡張機能および関連する依存関係がインストールされます」と出てくるので，「インストール」をクリックしインストールする．
 
-#. すると，「次のパッケージがインストールされます」と出てくるので，「install」をクリックしインストールする．
-
-   ..
-      .. image::images/ss_eto/mac3.png
+   .. image::images/ss_eto/vs2022_mac_extension_eto_installation.png 
 
 #. Visual Studio を再起動する．
 
-#. 正しくインストールできていると，「新しいプロジェクト」作成時のテンプレート選択画面で「Multiplatform」（あるいは「マルチプラットフォーム」）以下から「Eto Application」が選べるようになる．
+#. 正しくインストールできていると，「新しいプロジェクト」作成時のテンプレート選択画面で「マルチプラットフォーム」以下から「Eto Application」が選べるようになる．
 
-   ..
-      .. image::images/ss_eto/mac4.png
+   .. image::images/ss_eto/vs2022_mac_template_selection_eto.png
 
 #. 動作確認ついでに「続行」からプロジェクトを作成してみよう．例のごとくプロジェクト名とソリューション名は適当でよい（``HelloEto``とする）．
-   **ターゲットフレームワークは".NET 6.0"を選択する．**
-   
-   .. note:: 
+   以下では"Project"は"Separate per platform"を選択した場合の動作を説明する（"Combined"を選んでも支障はない）．
 
-      "Eto Application"テンプレートを選んだ際に，ターゲットフレームワークの選択画面…というより，
-      Windowsの実行例にあったようなEto.Forms特有の項目の選択画面が出てこないことがあるようである．
-      その場合の対処法はいくつかの選択肢がある．
+   .. image::images/ss_eto/vs2022_mac_etoapp.png 
+   .. image::images/ss_eto/vs2022_mac_etoapp_common_properties.png 
 
-      - 手動でターゲットフレームワークを .NET 6.0 にする．具体的には，実行したいプロジェクトをダブルクリックして出てくるウィンドウにて，
-        「ビルド」>「全般」の「Target framework」を「.NET 6.0」にする．
-
-      - .NET 5.0 Runtimeあるいは.NET 5.0 SDKをインストールする．これらは，`<https://dotnet.microsoft.com/ja-jp/download/dotnet/5.0>`_
-        から入手できる．ただし， `.NET 5.0のサポートは2022/05/08に終了予定であり，それ以降はセキュリティアップデートも提供されなくなる <https://devblogs.microsoft.com/dotnet/dotnet-5-end-of-support-update/>`_．
-
-
-#. 作成すると，``HelloEto`` の他に ``HelloEto.Mac``，``HelloEto.Gtk``，``HelloEto.Wpf``というプロジェクトが作成されていることがわかる．
+#. 作成すると，``HelloEto`` の他に ``HelloEto.Mac``，``HelloEto.Gtk``，``HelloEto.Wpf``というプロジェクトが作成されていることがわかる（"Separate per platform"を選択したため）．
    演習では``HelloEto``（に相当するフォルダ）以下の``MainForm.cs``を編集することになる．
    このうち，``HelloEto.Wpf``はMac版のVisual Studioではビルドできない．ここでは，動作確認のために``HelloEto.Mac``を（GTKをインストールするのであれば``HelloEto.Gtk``も）実行してみよう．
 
+   .. image::images/ss_eto/vs2022_mac_etoapp_structure.png 
 
-    .. caution::
-       
-       `Microsoftの著作物利用のガイドラインを見ると<https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/permissions>`__，
-       Visual Studio 2022 for Macはまだ正式リリース前なのでスクリーンショットを掲載できないようである．
-       このプロジェクトの作成以降は Visual Studio 2019 for Mac を用いたので問題がない…わけではないがなんとかなりはするので，
-       代わりにVisual Studio 2019 for Macのスクリーンショットを用いて説明する．画面の構成に大きく違いがあれば都度述べる．
-
-   .. image::images/ss_eto/mac6.png
+   * "Project"で"combined"を選択すると作成されるプロジェクトはそのプラットフォーム向けのもののみとなる． 
 
    - `HelloEto.Mac`
 
@@ -169,79 +148,25 @@ Mac編
         ..
            .. image::images/ss_eto/mac_mac1.png 
 
-     #. ここで，Visual Studio 2022 for Mac Previewにおいては▶ボタンがかなづちボタンになっていることに気付くかもしれない．
-        これは，Visual Studioはビルドしかせず，実行してくれないことを表している．
-        （Visual Studio 2019 for Macだと「▶」のままだが，同様の問題がある．）
-        実行するには設定が必要になる．
-   
-        .. note::
-
-            *Visual Studio 2019 for Mac* のバージョン 8.10.21 (build 4)では，少なくとも私（松田）の環境においてそもそもビルドに失敗する．
-           この問題の一番簡単なワークアラウンドは，Visual Studio 2022 for Mac PreviewやVSCode等を使うことだが，
-           `プロジェクトファイルを修正することでもVisual Studio 2019 for Macでもプロジェクトをビルドできるようになる（Thanks, Curtis Wensley氏）． <https://github.com/picoe/Eto/issues/2180#issuecomment-1088189064>`__
-
-           具体的には ``プロジェクト名.Mac`` 以下にある ``プロジェクト名.Mac.csproj`` を以下に述べる通りに編集する（Visual Studio上では，プロジェクトを
-           右クリックして，コンテキストメニューから「プロジェクト ファイルの編集」を選ぶことで編集できる）．
-
-           おそらく行頭にある
-
-           .. code:: xml
-                     
-              <Project Sdk="Microsoft.NET.Sdk">
-            
-           を
-
-           .. code:: xml 
-
-              <Project Sdk="Microsoft.NET.Sdk" TreatAsLocalProperty="UseAppHost">
-
-           のように変更し，その直下にある
-
-           .. code:: xml
-
-                <PropertyGroup>
-                  <OutputType>Exe</OutputType>
-                  <!-- 中略 --> 
-                </PropertyGroup>
-                  
-           の部分に
-
-           .. code:: xml
-
-                <PropertyGroup>
-                  <OutputType>Exe</OutputType>
-                  <!-- 中略 --> 
-                  <UseAppHost>True</UseAppHost>
-                </PropertyGroup>
-
-           と``<UseAppHost>True</UseAppHost>``を追加する．
-
-           
+     #. ここで「▶」を押したくなるのだが，このままでは実行に失敗するため設定が必要になる．
+             
         .. note:: 
 
            `生成された実行形式を起動するには，生成された.appファイルをopenするか，その中の実行ファイルを実行する必要がある <https://github.com/picoe/Eto/wiki/Quick-Start#visual-studio-for-mac-86>`_ ．
            この点は ``dotnet`` を用いる場合でも同様である．
 
      #. 左の「ソリューション」の ``HelloEto.Mac`` の部分をダブルクリックすると，プロジェクトオプション編集用ウィンドウが表示される．
-        「実行」>「構成」>「Default」の項目から，「開始アクション」の「外部プログラムの開始」に以下を入力する（.appの中身なので，「...」ボタンからは選択できない）．"HelloEto"の部分は自分で設定したプロジェクト名とする．
+        「実行」>「構成」>「Default」の項目から，「開始アクション」の「外部プログラムの開始」を選択し入力欄に以下を入力する（.appの中身なので，「...」ボタンからは選択できない）
 
         .. code:: 
             
-            bin/Debug/net6.0/HelloEto.Mac.app/Contents/MacOS/HelloEto.Mac
+            ~/Projects/HelloEto/HelloEto/HelloEto.Mac/bin/Debug/net6.0/HelloEto.Mac.app/Contents/MacOS/HelloEto.Mac
 
-        .. image::images/ss_eto/mac_mac2.png
+        ここで，``~/Projects/HelloEto/HelloEto/HelloEto.Mac``の部分は``HelloEto.Mac``フォルダへの絶対パスとする．"HelloEto"の部分は自分で設定したプロジェクト名とする（ソリューション名をプロジェクト名と別にした場合は外側の``HelloEto``の部分が自分で設定したソリューション名）．
 
-        （スクリーンショットはVisual Studio 2019 for Macのもの．Visual Studio 2022 for Mac Previewだとこのパネルのデザインが多少異なる．）
-        この変更は一回行うのみでよい．
+        .. image::images/ss_eto/vs2022_mac_path_to_program.png
 
-        .. note::
-
-           Visual Studio 2019 for Macだと絶対パスでないとうまくいかないようだったが，
-           上記のように相対パスを入力してもVisual Studio 2022 for Mac Previewで一度実行に成功してからは，
-           Visual Studio 2019 for Mac上でも実行に成功するようになった．
-
-           詳しい情報がわかれば追記するが，Visual Studio 2022 for Macの正式版が出るほうが先になるかもしれない．
-           
+        この変更は``HelloEto.Mac.csproj.user``ファイルに書き込まれるため，プロジェクトにつき一回行うのみでよい．           
 
      #. しばらく待つと，Eto.Formsのアイコン（テンプレート選択画面で表示される円の中に菱形のもの）のアプケーションが起動していることが確認できるので，
         アイコンをクリックするなりしてフォーカスをそのアプリケーションに写す．
@@ -384,15 +309,25 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
 
            dotnet build HelloEto.Mac
 
-       その後以下のコマンドでビルドしたプログラムを実行する（net5.0の部分は対象のフレームワークによって異なる）．
+       その後，``HelloEto.Mac``に移動して，以下のコマンドでビルドしたプログラムを実行する．
 
        .. code::
 
-           open HelloEto.Mac/bin/Debug/net5.0/HelloEto.Mac.app
+           dotnet run 
 
        .. caution:: 
 
           ``dotnet run --project HelloEto.Mac`` では実行に失敗する．
+
+       .. note::
+
+         以下のコマンドでもプログラムを実行可能．
+
+         .. code::
+
+             open HelloEto.Mac/bin/Debug/net6.0/HelloEto.Mac.app
+
+         ``.net6.0``の部分はターゲットフレームワークによって変わる．
 
        .. note::
           
@@ -412,44 +347,44 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
           dotnet run --project HelloEto.Gtk
 
 
-     .. note::
+   ..   .. note::
 
-        Visual Studio 2019 で作成したプロジェクトを実行するときなど，ターゲットフレームワークが .NET 5.0 になっている
-        にもかかわらず，.NET 5 のランタイムがインストールされていない場合はいかのいずれかを実行する．
+   ..      Visual Studio 2019 で作成したプロジェクトを実行するときなど，ターゲットフレームワークが .NET 5.0 になっている
+   ..      にもかかわらず，.NET 5 のランタイムがインストールされていない場合はいかのいずれかを実行する．
 
-        - ターゲットフレームワークを .NET 6.0 に変更する．具体的には各プロジェクトファイル（拡張子：.csproj）の
+   ..      - ターゲットフレームワークを .NET 6.0 に変更する．具体的には各プロジェクトファイル（拡張子：.csproj）の
 
-          .. code:: xml
+   ..        .. code:: xml
 
-             <TargetFramework>net5.0</TargetFramework>
+   ..           <TargetFramework>net5.0</TargetFramework>
 
-          となっている部分を
+   ..        となっている部分を
 
-          .. code:: xml 
+   ..        .. code:: xml 
 
-             <TargetFramework>net6.0</TargetFramework>
+   ..           <TargetFramework>net6.0</TargetFramework>
 
-          に書き換える．
+   ..        に書き換える．
 
-        - ``roll-forward``を設定する．
+   ..      - ``roll-forward``を設定する．
 
-          - 各プロジェクトファイルの``<PropertyGroup>…</PropertyGroup>``内に``<RollForward>Major</RollForward>`` を追加する．
+   ..        - 各プロジェクトファイルの``<PropertyGroup>…</PropertyGroup>``内に``<RollForward>Major</RollForward>`` を追加する．
             
-          - あるいは実行時に引数として``--roll-forward Major``を渡す．
+   ..        - あるいは実行時に引数として``--roll-forward Major``を渡す．
 
-            - ``PROJECT.Gtk``や``PROJECT.Wpf``を実行する場合は
-              ``dotnet run --project PROJECT.Gtk --roll-forward Major``や``dotnet run --project PROJECT.Wpf --roll-forward Major``などとする．
+   ..          - ``PROJECT.Gtk``や``PROJECT.Wpf``を実行する場合は
+   ..            ``dotnet run --project PROJECT.Gtk --roll-forward Major``や``dotnet run --project PROJECT.Wpf --roll-forward Major``などとする．
               
-            - ``PROJECT.Mac``の場合は
+   ..          - ``PROJECT.Mac``の場合は
 
-              .. code:: 
+   ..            .. code:: 
 
-                 open bin/Debug/net5.0/PROJECT.Mac.app --args --roll-forward Major
+   ..               open bin/Debug/net5.0/PROJECT.Mac.app --args --roll-forward Major
 
-              などとするか，あるいは .app 内の実行ファイルに``--roll-forward Major``を引数として渡す．
+   ..            などとするか，あるいは .app 内の実行ファイルに``--roll-forward Major``を引数として渡す．
 
-        - .NET 5のランタイムをインストールする．`<https://dotnet.microsoft.com/ja-jp/download/dotnet/5.0>`_から入手可能．
-          ただし， **.NET 5.0のサポートは2022/05/08に終了予定．**
+   ..      - .NET 5のランタイムをインストールする．`<https://dotnet.microsoft.com/ja-jp/download/dotnet/5.0>`_から入手可能．
+   ..        ただし， **.NET 5.0のサポートは2022/05/08に終了予定．**
 
 .. note::
 
@@ -493,7 +428,7 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
 GTKのインストール
 =================
 
-オプショナル．Macだと``dotnet run``で実行できないのが面倒だし，遅かれ早かれ``brew``は入れることになると思うので，インストールするのがよいかもしれない．
+オプショナル．MacだとVisual Studio上での実行に設定が必要になるのは面倒だし，インストールするのもよいかもしれない．遅かれ早かれ``brew``は入れることになると思うので，そう手間は大きくないはず．
 
 Windows環境については情報収集中．
 

@@ -127,82 +127,66 @@ WindowsではVisual Studio Community 2019 （ *最新版ではない* ）を用�
 Mac編
 -----
 
-C#演習ではVisual Studio 2019 for Macではなく，Visual Studio 2022 for Mac Previewの使用を推奨する．
+.. C#演習ではVisual Studio 2019 for Macではなく，Visual Studio 2022 for Mac Previewの使用を推奨する．
 
-.. note:: 
+.. .. note:: 
 
-   Visual Studio 2019 for Macだと，少くとも私の環境において，第5回および第6回の講義で利用予定である `Eto.Forms <https://github.com/picoe/Eto>`__ の利用に問題が生じためである．
-   より具体的には，私の環境だと `指示 <https://github.com/picoe/Eto/wiki/Quick-Start>`__ の通りに Eto.Addin.MonoDevelop.mpack の最新版を `Release <https://github.com/picoe/Eto/releases>`__ ページからダウンロードし，拡張機能としてインストールした後で，テンプレート選択画面で `Eto.Forms` を選んでプロジェクトを作成しようとするとソリューション名入力画面でVisual Studioが高い割合で落ちる．
+..    Visual Studio 2019 for Macだと，少くとも私の環境において，第5回および第6回の講義で利用予定である `Eto.Forms <https://github.com/picoe/Eto>`__ の利用に問題が生じためである．
+..    より具体的には，私の環境だと `指示 <https://github.com/picoe/Eto/wiki/Quick-Start>`__ の通りに Eto.Addin.MonoDevelop.mpack の最新版を `Release <https://github.com/picoe/Eto/releases>`__ ページからダウンロードし，拡張機能としてインストールした後で，テンプレート選択画面で `Eto.Forms` を選んでプロジェクトを作成しようとするとソリューション名入力画面でVisual Studioが高い割合で落ちる．
 
-   プロジェクトやソリューションの作成をコマンドラインで実行した後で，Visual Studioを使うことも可能であるので，Visual Studio 2019 for Macでも演習を進めること自体は可能である．
-   あるいは，ディスク容量とインストール時間さえ気にしなければ，Visual Studio 2019 for Macをまずはインストールし，
-   C#の演習の第5・6回目の内容をすすめるときだけ，Visual Studio 2022 for Macを使うという手もある．
+..    プロジェクトやソリューションの作成をコマンドラインで実行した後で，Visual Studioを使うことも可能であるので，Visual Studio 2019 for Macでも演習を進めること自体は可能である．
+..    あるいは，ディスク容量とインストール時間さえ気にしなければ，Visual Studio 2019 for Macをまずはインストールし，
+..    C#の演習の第5・6回目の内容をすすめるときだけ，Visual Studio 2022 for Macを使うという手もある．
    
 **インストール中はネットワーク接続が必要なことに注意する．**
 
-#. `Visual Studio 2022 for Mac プレビューのダウンロードページ <https://visualstudio.microsoft.com/ja/vs/mac/preview/>`_ より，
-   Visual Studio 2022 for Macをダウンロードする．
+#. `Visual Studio 2022のページ <https://visualstudio.microsoft.com/ja/>`_ より「Visual Studio for Macをダウンロード」をたどり，Visual Studio 2022 for Macをダウンロードする．
 
-   ..
-      .. image::images/ss_dl_mac.png 
 
-   すると ``visualstudioformacpreviewinstaller-17.0.0.191.dmg``みたいな名前のファイルがダウンロードされる（数字の部分はダウンロードするタイミングによって違うかもしれない）．
+   すると ``visualstudioformacpreviewinstaller-17.5.0.124.dmg``みたいな名前のファイルがダウンロードされる（数字の部分はダウンロードするタイミングによって違うかもしれない）．
 
-   ..
-      .. image::images/ss_dl_mac2.png
 
-#. 「ダウンロード」から上のファイルをクリックする（あるいはFinderでダブルクリックすると），どでかいアイコンが表示されたウィンドウが表示されるので，
+#. Dock上の「ダウンロード」から上のファイルをクリックする（あるいはFinderでダブルクリックすると），どでかいアイコンが表示されたウィンドウが表示されるので，
    アイコンをダブルクリックしてインストールを開始する．   
 
-   ..
-      .. image::images/ss_dl_mac3.png 
 
-#. 「“Install Visual Studio for Mac Preview.app”はインターネットからダウンロードされたアプリケーションです。開いてもよろしいですか?」と聞かれるので，「開く」．
+#. 「“Install Visual Studio for Mac.app”はインターネットからダウンロードされたアプリケーションです。開いてもよろしいですか?」と聞かれるので，「開く」．
 
-#. すると「Visual Studio for Mac Previewをダウンロードしていただき、ありがとうございます」と書かれた画面が表示される．
-   ライセンス条項を確認し問題なければ「続行」を選んでインストールを続ける．
+  #. すると「ダウンロード」以下のファイルにアクセスしてよいか聞かれるが，許可する．
+
+ 
+  #. その後「Visual Studio for Mac をダウンロードしていただき、ありがとうございます」と書かれた画面が表示される．
+     ライセンス条項を確認し問題なければ「続行」を選んでインストールを続ける．
    
-
 #. 「何をインストールしますか？」と聞かれる．「.NET」だけ選べば十分．
 
 #.  あとは，画面に従ってインストールを完了させる（数十分ほど時間がかかるかもしれない）．また，何度かパスワードが聞かれる．
 
-    ..
-       .. image::images/ss_dl_mac6.png 
+    .. image::images/ss_vs2022_mac_installer.png
 
 #.  上で「完了時にVisual Studio Previewを開く」をチェックしていたら（なにもしていなければそうなっているはず），
     インストールが終了すると自動的にVisual Studio 2022 for Macが起動される．
     起動時にいろいろ聞かれるが適当に答えたのでよい（サインインのアカウントも好きなものでよいし，設定しなくてもよい）．
     最終的に「Visual Studio 2022 for Mac」と書かれたウィンドウが表示される．
-
     
-    - 2022年3月18日現在ではまだローカライズが完全でないようであり，一部英語の項目等が残っている．
-
-    ..
-       .. image::images/ss_dl_mac7.png
+   .. image::images/ss_vs2022_mac_start.png
 
 #.  動作確認もしておこう．
     
-    .. caution::
-       
-       `ガイドラインを見ると<https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/permissions>`__，
-       Visual Studio 2022 for Macはまだ正式リリース前なのでスクリーンショットを掲載できないようである．
-       よって，代わりにVisual Studio 2019 for Macのものを用いる．画面の構成に大きく違いがあれば都度述べる．
+    i. 上記のウィンドウ（一旦Visual Studioを閉じても，また起動すれば上記が表示される）で「新規」を選択する．
 
-    i. 上記のウィンドウ（一旦Visual Studioを閉じても，また起動すれば上記が表示される）で，「New」あるいは「新規」を選択する．
+    #. テンプレート選択画面で「コンソールアプリケーション」を選ぶ．
 
-    #. テンプレート選択画面で「Console Application」あるいは「コンソールアプリケーション」を選ぶ．
-
-       .. image::images/ss_chk_mac2.png 
+       .. image::images/ss_vs2022_mac_template_selection.png
 
        - C#/F#の部分は使用する言語を選ぶ．両方の言語について動作確認しよう．
 
     #. ターゲットフレームワークを聞かれるので適当に選ぶ．
 
-       .. image::images/ss_chk_mac3.png 
+       .. image::images/ss_vs2022_mac_fw_selection.png
 
-       - Visual Studio 2022 for Macでは「.NET 6.0」も選べる．.NET 6.0を選ぶとテンプレートに含まれるHello Worldのプログラムが，
-         C# 9.0の新機能を利用したものとなる．
+      ..  - Visual Studio 2022 for Macでは「.NET 6.0」も選べる．.NET 6.0を選ぶとテンプレートに含まれるHello Worldのプログラムが，
+      ..    C# 9.0の新機能を利用したものとなる．
 
     #. プロジェクト名とソリューション名を聞かれるので適当に入力する．たとえば，どちらも ``HelloWorldCS`` にしたのでよい（``CS``はC#の気持ち）．
 
@@ -211,17 +195,21 @@ C#演習ではVisual Studio 2019 for Macではなく，Visual Studio 2022 for Ma
          プロジェクトは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものであり，ソリューションは関連するプロジェクトをまとめたもの（参考：`What are solutions and projects in Visual Studio? <https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022>`_）．
 
 
-       .. image::images/ss_chk_mac4.png 
+       .. image::images/ss_vs2022_mac_creating_project.png
 
     #. エディタで ``Program.cs`` が開かれた状態になる．
 
-       .. image::images/ss_chk_mac5.png 
+       .. image::images/ss_vs2022_mac_editor.png 
 
 
     #. コードを実行するには左上のほうにある▶ボタンを押す．すると，ビルドが行われ実行形式が作成された後にその実行形式が実行される．
        ビルド時の出力等がされた後に以下のように「Terminal」/「ターミナル」に ``Hello, World!`` と表示されればOK．
        
-       .. image::images/ss_chk_mac6.png 
+       .. image::images/ss_vs2022_mac_output.png 
+
+       * 右下の「ターミナル - HelloWorldCS」（``HelloWorldCS``の部分は具体的なプロジェクト名に置き換える）の上にマウスカーソルを合わせる必要があるかもしれない．いちいちマウスオーバーするのが面倒臭いのであれば右上の📌の形のボタンを押して（あるいは，ドロップダウンメニューから「ドッキング」を選択して）位置を固定しておくとよい．
+
+         * 元のマウスオーバすると「枠」がポップアップする設定に戻すには📌を再び押すか，ドロップダウンメニューから「自動的に隠す」（「ドッキング解除」ではない）を選択する．
 
     #. 上記の動作確認はC#/F#の両方について行おう．
 
@@ -273,13 +261,13 @@ Visual Studioに含まれているので，上記を行っている場合は以�
 
       .. code:: 
           
-          dotnet new console -o HelloWorldCS --langVersion 8.0
+          dotnet new console -o HelloWorldCS 
 
-      .. note::
+      .. .. note::
 
-         ``--langVersion 8.0``の部分は必須ではない．単に，Visual Studio 2019 にて C#の「コンソール アプリケーション」テンプレートと
-         生成されるHello Worldのコードを一致させたかったためである．なお，上述のように Visual Studio 2022 を使用した場合は，
-         下記とは異なるHello Worldのコード（C# 9.0の機能を利用したもの）が出力される．
+      ..    ``--langVersion 8.0``の部分は必須ではない．単に，Visual Studio 2019 にて C#の「コンソール アプリケーション」テンプレートと
+      ..    生成されるHello Worldのコードを一致させたかったためである．なお，上述のように Visual Studio 2022 を使用した場合は，
+      ..    下記とは異なるHello Worldのコード（C# 9.0の機能を利用したもの）が出力される．
          
 
    #. ``HelloWorldCS`` というディレクトリができているので，そこに移動する．  
@@ -298,18 +286,8 @@ Visual Studioに含まれているので，上記を行っている場合は以�
 
       .. code:: cs 
       
-          using System;
-          
-          namespace HelloWorldCS
-          {
-              class Program
-              {
-                  static void Main(string[] args)
-                  {
-                      Console.WriteLine("Hello, World!");
-                  }
-              }
-          }
+         // See https://aka.ms/new-console-template for more information
+         Console.WriteLine("Hello, World!");
 
 
    #. 以下をを実行してビルドする．
@@ -329,7 +307,7 @@ Visual Studioに含まれているので，上記を行っている場合は以�
    #. F#でも同様であることを確認しておこう（``dotnet new``を実行する場面で，``dotnet new console -o HelloWorldCS`` の代わりに ``dotnet new console -lang "F#" -o HelloWorldFS`` とする．また，このコマンドだと``HelloWorldCS``ではなく``HelloWorldFS``というディレクトリが作成される）
 
 
-      .. note::
+      .. .. note::
 
-         F#でもターゲットフレームワークが .NET 5.0 のときと .NET 6.0 のときで出力される Hello World のコードが変わる．
+      ..    F#でもターゲットフレームワークが .NET 5.0 のときと .NET 6.0 のときで出力される Hello World のコードが変わる．
 
