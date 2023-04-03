@@ -24,20 +24,18 @@ Visual Studioの設定
 Windows編
 ---------
 
-Visual Studio 2019を用いる．Eto.Formsの拡張機能は令和4年3月24日(木)時点ではまだVisual Studio 2022に対応していない．
-
 1. Visual Studioを起動し，メニューバーが表示されている状態にする（たとえば，スタート画面から「コードなしで続行」する）．
 
-   .. image::images/ss_eto/win1.png
+   .. image::images/ss_eto/vs2022_win_start_without_initial_code.png 
 
 #. メニューの「拡張機能」以下の「拡張機能の管理」を開く．
 
-   .. image::images/ss_eto/win2.png
+   .. image::images/ss_eto/vs2022_win_menu_extension.png
    
-   すると拡張機能の管理ウィンドウが表示されるので，右上の検索窓から"Eto.Forms"を検索する．すると，"Eto.Forms Visual Studio Addin"がリストされるので，
+   すると拡張機能の管理ウィンドウが表示されるので，右上の検索窓から"Eto.Forms"を検索する．すると，"Eto.Forms. Templates and Previewer"がリストされるので，
    「ダウンロード」する．
 
-   .. image::images/ss_eto/win4.png
+   .. image::images/ss_eto/vs2022_win_search_eto_in_extension.png
 
    ..
       .. image::images/ss_eto/win3.png
@@ -48,12 +46,12 @@ Visual Studio 2019を用いる．Eto.Formsの拡張機能は令和4年3月24日(
 
 #. その後，以下のウィンドウが表示されるので，「Modify」を選択する．
 
-   .. image::images/ss_eto/win5.png
+   .. image::images/ss_eto/vs2022_win_VSIX_installer.png
 
 
 #. Visual Studioを再度立ち上げる．正しくインストールできていると，「新しいプロジェクト」作成時のテンプレート選択画面で「Eto.Forms Application」が選べるようになる．
 
-   .. image::images/ss_eto/win6.png
+   .. image::images/ss_eto/vs2022_win_template_selection_eto.png
 
    .. note::
 
@@ -63,37 +61,33 @@ Visual Studio 2019を用いる．Eto.Formsの拡張機能は令和4年3月24日(
 
 #. 動作確認ついでに「続行」からプロジェクトを作成してみよう．例のごとくプロジェクト名とソリューション名は適当でよい（``HelloEto``とする）．
 
-   .. image::images/ss_eto/win7.png
+   .. image::images/ss_eto/vs2022_win_creating_etoapp_project.png
 
-   プロジェクト名とソリューション名を入力後，以下のウィンドウが表示されるがこれは何も変更しなくてよい．
+   プロジェクト名とソリューション名を入力後，以下のウィンドウが表示される．ここでは，"Project"で"Separate per platform"を選択した場合の動作を説明する（"Combined"を選んでも支障はない）．
 
-   .. image::images/ss_eto/win8.png
+   .. image::images/ss_eto/vs2022_win_etoapp_properties.png
 
 
 #. 作成すると，``HelloEto`` の他に ``HelloEto.Mac``，``HelloEto.Gtk``，``HelloEto.Wpf``というプロジェクトが作成されていることがわかる．
    演習では``HelloEto``（に相当するフォルダ）以下の``MainForm.cs``を編集することになる．
    ここでは，``HelloEto.Wpf``をビルド・実行する．（``HelloEto.Mac``はビルドできるがWindowsで実行できない．``HelloEto.Gtk``もビルドできるが実行にGTKのインストールが必要）．
 
-   .. image::images/ss_eto/win9.png
+   .. image::images/ss_eto/vs2022_win_etoapp_structure.png
 
-   .. note::
-      
-      ここから先のステップは，Visual Studio 2022でも実行可能である（作成したソリューションを開けばよい）．
-      ただし，以下のMac版と同様にターゲットフレームワークの問題が生じる場合がある．
+#. ▶ボタンの左の枠から「HelloEto.Wpf」を選ぶ．
 
-#. ▶ボタンの左の枠から「HelloEto.Wpf」を選ぶ．選択後，右のソリューションエクプローラーで同プロジェクトが太字になる．
+   .. image::images/ss_eto/vs2022_win_selecting_wpf_project.png
 
-   .. image::images/ss_eto/win_wpf1.png
-
+   選択後，右のソリューションエクプローラーで同プロジェクトが太字になる．
 
 #. ▶ボタンを押すと，以下のウィンドウが表示される．
 
-   .. image::images/ss_eto/win_wpf2.png
+   .. image::images/ss_eto/vs2022_win_etoapp_window.png
 
 #. いつものようなウィンドウタイトルや閉じるボタンが表示されていないように見えるかもしれないが，
-   ウィンドウを拡大したら隠れていただけであったことがわかる．黒いパネルはVisual Studio由来であり，実際にコマンドラインからビルド・実行すると表示されない．
+   ウィンドウを拡大したらこれは隠れていただけであったことがわかる．黒いパネルはVisual Studio由来であり，実際にコマンドラインからビルド・実行すると表示されない．
 
-   .. image::images/ss_eto/win_wpf3.png
+   .. image::images/ss_eto/vs2022_win_etoapp_window_expanded.png
 
 #. "Click Me!"と書かれた部分をクリックするとダイアログが表示される．
 
@@ -236,12 +230,12 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
 
    .. code:: 
 
-       dotnet new -l eto
+       dotnet new list eto
 
 
    .. note::
 
-      ``dotnet``のバージョンによっては，``dotnet new eto -l``のように書かなけれならないかもしれない．
+      ``dotnet``のバージョンによっては，``dotnet new -l eto``や``dotnet new eto -l``のように書かなけれならないかもしれない．
 
    たとえば，以下のように表示されるはず．
 
@@ -272,7 +266,7 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
 
       .. code:: 
    
-          dotnet new etoapp -f net6.0 
+          dotnet new etoapp 
 
       その後``ls``してみると以下のようなディレクトリが生成されたのがわかる（Windowsだと``ls``は``dir``の別名なので表示は異なる）．
 
@@ -280,6 +274,9 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
 
           $ ls 
           HelloEto/     HelloEto.Gtk/ HelloEto.Mac/ HelloEto.Wpf/
+
+      * ソリューションも作成したい場合は``dotnet new etoapp -sln``とする．
+      * プラットフォーム毎にプロジェクトを作成したくない場合は代わりに``dotnet new etoapp -c``とする．
 
   #. buildおよび実行してみる．
 
@@ -309,15 +306,24 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
 
            dotnet build HelloEto.Mac
 
-       その後，``HelloEto.Mac``に移動して，以下のコマンドでビルドしたプログラムを実行する．
+       その後，以下のコマンドでビルドしたプログラムを実行する．
 
        .. code::
 
-           dotnet run 
-
+           (cd HelloEto.Mac && dotnet run)
+      
        .. caution:: 
 
-          ``dotnet run --project HelloEto.Mac`` では実行に失敗する．
+          ``dotnet run --project HelloEto.Mac`` では実行に失敗する．どうやら作業ディレクトリが``HelloEto.Mac``であることが重要である模様．
+
+       .. caution::
+
+         括弧は大事．以下のコマンドでは実行後に現在のディレクトリが``HelloEto.Mac``に変わってしまう．
+
+         .. code::
+
+            cd HelloEto.Mac && dotnet run
+
 
        .. note::
 
@@ -328,6 +334,10 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
              open HelloEto.Mac/bin/Debug/net6.0/HelloEto.Mac.app
 
          ``.net6.0``の部分はターゲットフレームワークによって変わる．
+
+       .. note:: 
+
+         ``dotnet new etoapp -c``でプラットフォーム共通のプロジェクトを作成した場合は，``dotnet build``でビルドでき``dotnet run``で作成したプログラムを実行できる．コマンドラインから直接ビルド・実行を行う場合はこちらのほうが楽かもしれない．
 
        .. note::
           
