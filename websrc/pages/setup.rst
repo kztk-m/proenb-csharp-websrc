@@ -38,45 +38,31 @@ Visual Studioのインストール
 ---------
 Windows編
 ---------
-
-WindowsではVisual Studio Community 2019 （ *最新版ではない* ）を用いる．
-
-.. note:: 
-     
-     最新版はVisual Studio Community 2022だが，C#演習の第5週・第6週目の課題で使用するライブラリを使用するためのVisual Studio拡張がVisual Studio 2019向けであるためである．プロジェクトやソリューションの作成をコマンドラインで実行した後で，Visual Studioを使うことも可能であるので，Visual Studio Community 2022でも演習を進めること自体は可能である．あるいは，ディスク容量とインストール時間さえ気にしなければ，Visual Studio Community 2022をまずはインストールし，C#演習の第5週・第6週目の課題を進めるときだけ Visual Studio Community 2019を用いることも可能である．
      
 **インストール中はネットワーク接続が必要なことに注意する．**
 
-#. `Visual Studio 2019のリリースノート <https://docs.microsoft.com/ja-jp/visualstudio/releases/2019/release-notes>`_ より，
-   "Download Community 2019 :underline:`↓`"と書かれた青いボタンを押し，Visual Studio Community 2019をダウンロードする．
+#.  `Visual Studio 2022のページ <https://visualstudio.microsoft.com/ja/>`_ において「Visual Studioのダウンロード」にマウスポインタを合わせるといくつかの項目が表示される．その中の「Community 2022」を選択し，Visual Studio Community 2022をダウンロードする．
 
-   ..
-      .. image::images/ss_dl_win1.png
+   すると ``VisualStudioSetup.exe`` というファイルがダウンロードされる．
 
-   すると ``vs_community__英数字の列.exe`` というファイルがダウンロードされる．
 
-   ..
-      .. image::images/ss_dl_win2.png 
-
-#. ダウンロードしたファイルを実行する．ライセンス条項には目を通しておこう．
+#. ダウンロードしたファイルを実行する．「続行」を押す前にライセンス条項には目を通しておこう．
   
-   ..
-      .. image::images/ss_dl_win3.png    
 
    #. 途中でインストールする項目が聞かれるので，「ワークロード」タブにある *「.NETデスクトップ開発」* をチェックし，その「インストール詳細」から
-      *「F# デスクトップ言語のサポート」* にもチェックを入れる．6 GB強のディスク容量が必要となる．
+      *「F# デスクトップ言語のサポート」* にもチェックを入れる．7.8 GB弱のディスク容量が必要となる．
  
-   .. image::images/ss_dl_win4.png 
+   .. image::images/ss_vs2022_win_installer.png 
 
-#. 「インストール」ボタンを押してインストールを完了させる．1.5 GBほどのダウンロードが生じるので高速なネット回線が利用可能なところで行おう．
+#. 「インストール」ボタンを押してインストールを完了させる．2.2 GBほどのダウンロードが生じるので高速なネット回線が利用可能なところで行おう．
 
    ..
       .. image::images/ss_dl_win5.png 
 
 #. 起動時にいろいろ聞かれるが適当に答えたのでよい（サインインのアカウントも好きなものでよいし，設定しなくてもよい）．
-   インストールが終了すると自動的にVisual Studio 2019が起動され，以下の画面が表示される．インストーラのウィンドウのほうは閉じてOK．
+   インストールが終了すると自動的にVisual Studio Community 2022が起動され，以下の画面が表示される．インストーラのウィンドウのほうは閉じてOK．
 
-   .. image::images/ss_dl_win7.png 
+   .. image::images/ss_vs2022_win_startup.png 
 
 #. 動作確認もしておこう．
   
@@ -84,7 +70,7 @@ WindowsではVisual Studio Community 2019 （ *最新版ではない* ）を用�
 
    #. テンプレート選択画面で，C#の「コンソール アプリケーション」を選ぶ．
 
-      .. image::images/ss_chk_win2.png 
+      .. image::images/ss_vs2022_win_template_selection.png 
 
    #. プロジェクト名とソリューション名を聞かれるので適当に入力する．たとえば，どちらも ``HelloWorldCS`` にしたのでよい（``CS``はC#の気持ち）．
 
@@ -93,21 +79,21 @@ WindowsではVisual Studio Community 2019 （ *最新版ではない* ）を用�
         プロジェクトは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものであり，ソリューションは関連するプロジェクトをまとめたもの（参考：`What are solutions and projects in Visual Studio? <https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022>`_）．
         あえて英語版にリンクしたのは，日本語版だと"a project contains all files that are compiled into an executable, library, or website"の"a"や"an"がうまく訳出されていないように感じたため．
 
-      .. image::images/ss_chk_win3.png 
+      .. image::images/ss_vs2022_win_creating_project.png 
 
    #. フレームワークを選んで「作成」する．ここではデフォルトのままでよい．
 
-      .. image::images/ss_chk_win4.png 
+      .. image::images/ss_vs2022_win_fw_selection.png 
 
    #. エディタで ``Program.cs`` が開かれた状態になる．
 
-      .. image::images/ss_chk_win5.png 
+      .. image::images/ss_vs2022_win_editor.png 
 
    #. コードを実行するには上のツールバーの真ん中あたりにある「▶ HelloWorldCS」と書かれたボタンを押す．
       すると，ビルドが行われ実行形式が作成された後にその実行形式が実行される．
       ビルド時の出力等が表示された後に，「Microsoft Visual Studio デバッグコンソール」に ``Hello, World!`` と表示されればOK．
 
-      .. image::images/ss_chk_win6.png 
+      .. image::images/ss_vs2022_win_output.png 
 
    #. F#でも同様であることを確認しておこう（新しいプロジェクトを作成する際のテンプレートを選ぶ場面で，「すべての言語」を「F#」に変更し，「コンソール アプリケーション」を選べばよい）．
 
@@ -235,11 +221,11 @@ Visual Studioに含まれているので，上記を行っている場合は以�
 
 1. `.NET SDKのダウンロードページ <https://dotnet.microsoft.com/ja-jp/download>`_ より，software development kit (SDK)をダウンロードする．
    - Windowsの人はWindows版のSDKをダウンロードする．
-   - Mac版についてはいわゆるintel MacとM1 Macではダウンロードするものが違うので注意．前者はx64版を後者はArm64版をダウンロードしよう．
+   - Mac版についてはいわゆるintel MacとM1 Macではダウンロードすべきものが違うので注意．前者はx64版を後者はArm64版をダウンロードしよう．
 
 #. ダウンロードしたインストーラを実行し，指示に従ってインストールを完了する．
-   - Windows版なら``dotnet-sdk-6.0.201-win-x64.exe``みたいな名前
-   - Macのx64版なら``dotnet-sdk-6.0.201-osx-x64.pkg`` みたいな名前
+   - Windows版なら``dotnet-sdk-6.0.407-win-x64.exe``みたいな名前
+   - Macのx64版なら``dotnet-sdk-6.0.407-osx-x64.pkg`` みたいな名前
 
 #. ターミナル（WindowsだとPowerShellか「コマンド プロンプト」，MacだとTerminal.appやiTerm.app）を開き，以下を実行する．
 
@@ -251,9 +237,9 @@ Visual Studioに含まれているので，上記を行っている場合は以�
     
    .. code:: 
 
-      3.1.417 [/usr/local/share/dotnet/sdk]
-      5.0.406 [/usr/local/share/dotnet/sdk]
-      6.0.201 [/usr/local/share/dotnet/sdk]
+      6.0.400 [/usr/local/share/dotnet/sdk]
+      6.0.407 [/usr/local/share/dotnet/sdk]
+      7.0.202 [/usr/local/share/dotnet/sdk]
 
 #. 動作確認もしておこう．
    
