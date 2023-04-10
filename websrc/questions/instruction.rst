@@ -2,6 +2,10 @@
 課題の進め方
 ============
 
+.. caution::
+
+   下記の「課題の進め方」は2022年度版．2023年度は準備中だが``Main.cs``（および関連リソース）をGoogle Classroomから提出してもらう予定．
+
 .. role:: raw-html(raw)
    :format: html
 
