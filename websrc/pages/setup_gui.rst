@@ -4,6 +4,9 @@ date:  2022-03-24
 tableOfContents: true
 -----
 
+.. role:: raw-html(raw)
+   :format: html
+
 C#演習第5・6回課題ではクロスプラットフォームGUIフレームワーク`Eto.Forms <https://github.com/picoe/Eto>`__を用いるので，その環境をセットアップする．
 `環境設定1 <./setup.html>`__で「Visual Studioのインストール」を選んだ人は，`Visual Studioの設定`_を，
 「.NET SDKのインストール （Windows/Mac ほぼ共通）」を選んだ人は「`コマンドライン環境の設定`_」を参照する．
@@ -314,7 +317,7 @@ WindowsだとPowerShell，Macだと適当な仮想端末アプリケーション
       
        .. caution:: 
 
-          ``dotnet run --project HelloEto.Mac`` では実行に失敗する．どうやら作業ディレクトリが``HelloEto.Mac``であることが重要である模様．
+          ``dotnet run --project HelloEto.Mac`` では実行に失敗する．:raw-html:`<del>どうやら作業ディレクトリがHelloEto.Macであることが重要である模様．</del><ins>2022-04-22追記：.csprojにてRunWorkingDirectoryをセットしてもうまくいなかいので，原因はそう単純じゃなさそう．</ins>`
 
        .. caution::
 
