@@ -103,19 +103,23 @@ title: 第4回 課題
    Chips × 14
    Candy × 5
 
-**./items.txtも提出物に含めること．** ただし，items.txt は .csproj ファイルと同じディレクトリに置くものとし，その状態でプログラムから相対パス``./items.txt``で当該ファイルにアクセスできるようにするために，以下のいずれかを実施せよ．
+**./items.txtも提出物に含めること．** 
 
-   - ``dotnet run`` で実行している場合は特になにもする必要はない．
+.. note:: 
 
-   - .csproj の ``<PropertyGroup>...</PropertyGroup>`` 内に以下の行を追加する．
+   .csprojファイルと同じフォルダにある``items.txt``を相対パス``./items.txt``でアクセスできるようにするためには以下のいずれかの設定が必要になる．
 
-     .. code:: xml
+      - ``dotnet run`` で実行している場合は特になにもする必要はない．
 
-        <StartWorkingDirectory>.</StartWorkingDirectory>
-     
-   - Windows版のVisual Studioを使用している場合は，プロジェクト名を右クリックして出てくるコンテキストメニューから「プロパティ」を選択し，「デバッグ」の「作業ディレクトリ」を当該 .csproj ファイルの直上のディレクトリに設定する．
+      - .csprojの``<PropertyGroup>...</PropertyGroup>``内に以下の行を追加する．
 
-   - Mac版のVisual Studioを使用している場合は，プロジェクト名をダブルクリックして出てくるウィンドウの「実行」>「構成」> 「Default」の 「Working directory」（作業ディレクトリ）を当該 .csproj ファイルの直上のディレクトリに設定する．
+         .. code:: xml
+
+            <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
+      
+      - Windows版のVisual Studioを使用している場合は，プロジェクト名を右クリックして出てくるコンテキストメニューから「プロパティ」を選択し，「デバッグ」の「作業ディレクトリ」を当該 .csproj ファイルの直上のディレクトリに設定する．
+
+      - Mac版のVisual Studioを使用している場合は，プロジェクト名をダブルクリックして出てくるウィンドウの「実行」>「構成」> 「Default」の 「作業ディレクトリ」を当該 .csproj ファイルの直上のディレクトリに設定する．
 
 
 .. hint::
