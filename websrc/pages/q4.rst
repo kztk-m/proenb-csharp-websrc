@@ -91,7 +91,7 @@ title: 第4回 課題
    }
 
 
-./items.txtの中身の例::
+items.txtの中身の例::
 
    Chocolate,2
    Chips,14
@@ -103,23 +103,23 @@ title: 第4回 課題
    Chips × 14
    Candy × 5
 
-**./items.txtも提出物に含めること．** 
+**items.txtも提出物に含めること．** 
 
 .. note:: 
 
    .csprojファイルと同じフォルダにある``items.txt``を相対パス``./items.txt``でアクセスできるようにするためには以下のいずれかの設定が必要になる．
 
-      - ``dotnet run`` で実行している場合は特になにもする必要はない．
+   - ``dotnet run`` で実行している場合は特になにもする必要はない．
 
-      - .csprojの``<PropertyGroup>...</PropertyGroup>``内に以下の行を追加する．
+   - .csprojの``<PropertyGroup>...</PropertyGroup>``内に以下の行を追加する．
 
-         .. code:: xml
+     .. code:: xml
 
-            <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
+        <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
       
-      - Windows版のVisual Studioを使用している場合は，プロジェクト名を右クリックして出てくるコンテキストメニューから「プロパティ」を選択し，「デバッグ」の「作業ディレクトリ」を当該 .csproj ファイルの直上のディレクトリに設定する．
+   - Windows版のVisual Studioを使用している場合は，プロジェクト名を右クリックして出てくるコンテキストメニューから「プロパティ」を選択し，「デバッグ」の「作業ディレクトリ」を当該 .csproj ファイルの直上のディレクトリに設定する．
 
-      - Mac版のVisual Studioを使用している場合は，プロジェクト名をダブルクリックして出てくるウィンドウの「実行」>「構成」> 「Default」の 「作業ディレクトリ」を当該 .csproj ファイルの直上のディレクトリに設定する．
+   - Mac版のVisual Studioを使用している場合は，プロジェクト名をダブルクリックして出てくるウィンドウの「実行」>「構成」> 「Default」の 「作業ディレクトリ」を当該 .csproj ファイルの直上のディレクトリに設定する．
 
 
 .. hint::
@@ -187,7 +187,7 @@ title: 第4回 課題
 基本課題で作成した``AddItemsFromFile(string)``を拡張し，
 入力したテキストファイルに同じアイテム名が複数含まれていた場合にそれらの個数を合計するようにせよ．
 
-./items.txtの中身の例::
+items.txtの中身の例::
 
    Chocolate,2
    Chips,14
@@ -226,7 +226,7 @@ title: 第4回 課題
 また，ある行において指定されたフォーマットで解釈することに失敗した場合には，``Items``は
 その行以前までの行を読み取った結果で更新されるようにせよ．
 
-./items.txtの中身の例::
+items.txtの中身の例::
 
    #コメント行
    Chocolate,  2
@@ -241,7 +241,7 @@ title: 第4回 課題
    Chips × 14
    Candy × 5
 
-./items.txtの中身の例::
+items.txtの中身の例::
 
    # コメント行
    Chocolate,  2
