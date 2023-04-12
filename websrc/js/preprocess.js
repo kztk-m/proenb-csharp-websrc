@@ -43,6 +43,12 @@ function addModalImageViewPane() {
             div.style.display = "none";
         }
     });
+    window.addEventListener('keydown', function (event) {
+        console.log(event.key);
+        if (event.key == 'Escape') {
+            div.style.display = "none";
+        }
+    });
 
     div.appendChild(closeButton);
     div.appendChild(img);

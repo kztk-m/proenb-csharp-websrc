@@ -1,6 +1,7 @@
 :root {
     --header-nav-bg-color: hsl(275, 80%, 33%);
     --header-nav-bg-highlight-color: hsl(275, 60%, 48%);
+    --header-nav-border-color: hsl(275, 45%, 45%);
     --header-bg-color: hsl(275, 80%, 95%);
     --header-nav-fg-color: white;
     --header-nav-current-link-color: hsl(40, 90%, 55%);
@@ -168,6 +169,10 @@ h2 {
     padding: 0.1rem 0px;
 
     font-size: 145%;
+}
+
+h2:first-child {
+    margin-top: 0rem;
 }
 
 
@@ -370,7 +375,7 @@ header nav .dd li {
     margin: 0px;
 
     /* white-space: nowrap;  */
-    border-top: 0.05em solid var(--header-nav-bg-highlight-color);
+    border-top: 0.05em solid var(--header-nav-border-color);
 }
 
 header nav .dd ul li:first-child {
@@ -459,25 +464,59 @@ header p {
 
 
 @media only screen and (min-width: 800px) {
+    :root {
+        --toc-width: 17.5rem;
+        --toc-gap: 1rem;
+    }
+
+    .with-right-nav {
+        position: relative;
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        /* align-items: flex-start; */
+        column-gap: var(--toc-gap);
+        /* display: grid;
+        grid-template-columns: 1fr 17.5rem; */
+    }
+
     .toc {
+        /* grid-row: 1;
+        grid-column: 2; */
+
         display: block;
-        position: absolute;
+        position: sticky;
 
         font-size: 90%;
-        width: 17.5rem;
+        width: var(--toc-width);
 
-        left: calc(100% - 17.5rem);
+        flex-shrink: 0;
+        top: 0;
+
+        /* height: fit-content;
+        -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 3rem calc(100% - 3rem), transparent);
+        mask-image: linear-gradient(180deg, transparent 0, #000 3rem calc(100% - 3rem), transparent); */
+        max-height: 100vh;
+
+        /* left: calc(100% - 17.5rem); */
 
         /* top:    5vh;  */
         /* bottom: 5vh; */
 
-        /* overflow-y: auto;  */
+        overflow-y: auto;
 
 
         /* float: right;  */
         /* background-color: hsl(55, 23%, 92%); */
         /* border-radius: 1em;  */
         /* margin: 0.5em; */
+    }
+
+    .mainbody {
+        flex-shrink: 1;
+        width: calc(100% - var(--toc-gap) - var(--toc-width));
+        /* grid-row: 1;
+        grid-column: 1; */
     }
 
     .toc li {
@@ -500,11 +539,11 @@ header p {
     }
 
 
-
+    /* 
     main.with-right-nav {
         position: relative;
-        padding-right: 18rem;
-    }
+        padding-right: 18rem; 
+    } */
 
 
     body {

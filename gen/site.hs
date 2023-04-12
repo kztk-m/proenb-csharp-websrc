@@ -59,10 +59,10 @@ withTOC = myWriterOptions
 
 tocTemplate :: Text.Pandoc.Template Text
 tocTemplate = either error id . runIdentity . Text.Pandoc.compileTemplate "" $ T.unlines
-  [ "<div class=\"toc\">"
+  [ "<nav class=\"toc\">"
   , "$toc$"
-  , "</div>"
-  , "$body$"
+  , "</nav>"
+  , "<section class=\"mainbody\">$body$</section>"
   ]
 
 data ParseBN = W Int | Q Int
