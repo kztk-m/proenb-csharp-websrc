@@ -105,7 +105,7 @@ Mac編
 
 
 1. `Eto.Forms developper extensionsのリリースページ <https://github.com/picoe/Eto.DevExtensions/releases>`_ から，``Eto.DevExtension.VisualStudio.Mac.2022-X.X.X.mpack`` の最新版を入手する． 
-   令和5年3月29日(水)時点での最新版は ``Eto.Addin.VisualStudio.Mac-2.7.1.mpack``．
+   令和5年3月29日(水)時点での最新版は ``Eto.DevExtension.VisualStudio.Mac-2.7.1.mpack``．
 
 #. メニューの「Visual Studio」以下の「拡張機能...」を開く．
 
