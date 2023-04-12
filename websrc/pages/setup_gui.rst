@@ -105,7 +105,7 @@ Mac編
 
 
 1. `Eto.Forms developper extensionsのリリースページ <https://github.com/picoe/Eto.DevExtensions/releases>`_ から，``Eto.DevExtension.VisualStudio.Mac.2022-X.X.X.mpack`` の最新版を入手する． 
-   令和5年3月29日(水)時点での最新版は ``Eto.DevExtension.VisualStudio.Mac-2.7.1.mpack``．
+   令和5年3月29日(水)時点での最新版は ``Eto.DevExtension.VisualStudio.Mac.2022-2.7.1.mpack``．
 
 #. メニューの「Visual Studio」以下の「拡張機能...」を開く．
 
@@ -123,6 +123,7 @@ Mac編
 #. 正しくインストールできていると，「新しいプロジェクト」作成時のテンプレート選択画面で「マルチプラットフォーム」以下から「Eto Application」が選べるようになる．
 
    .. image::images/ss_eto/vs2022_mac_template_selection_eto.png
+
 
 #. 動作確認ついでに「続行」からプロジェクトを作成してみよう．例のごとくプロジェクト名とソリューション名は適当でよい（``HelloEto``とする）．
    以下では"Project"は"Separate per platform"を選択した場合の動作を説明する（"Combined"を選んでも支障はない）．
