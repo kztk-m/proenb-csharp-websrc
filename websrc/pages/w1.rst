@@ -9,8 +9,7 @@ C#プログラムの基本的な構造
 ==========================
 
 
-さて，``dotnet new console -o HelloWorld -f net6.0 --langVersion 8.0``で作成されるテンプレートに含まれている，
-以下のHello Worldプログラムについて考えてみよう．
+さて，``dotnet new console -o HelloWorld -f net6.0 --langVersion 8.0``で作成されるテンプレートに含まれている，``Program.cs``の中身について見てみよう．
 
 .. code:: cs 
     
@@ -140,6 +139,7 @@ C#プログラムの基本的な構造
        {
           Counter c = new Counter(0); 
           // c.count.ToString()はオブジェクトcのフィールドcountに対し，ToString()メソッドを呼ぶの意
+          // Console.WriteLine(s)は文字列sを標準出力に改行付きで出力する
           Console.WriteLine(c.count.ToString()); // エラー
        }
    }
@@ -189,6 +189,7 @@ C#プログラムの基本的な構造
         {
             count = c0; 
         }
+
         // メソッド
         public void Inc() 
         {
@@ -205,6 +206,7 @@ C#プログラムの基本的な構造
     }
 
 上の実装が示すように，``Inc()``はカウントを1増加させ，``Reset()``はカウントを0にリセットし，``GetCount()``は現在のカウントを返す．
+
 public修飾子が示すように，これらはpublicメソッドとして実装されてるため，``Counter``クラスの外側でも用いることができる．
 
 .. code:: cs
@@ -236,6 +238,11 @@ public修飾子が示すように，これらはpublicメソッドとして実�
        static void Main(string[] args) 
        {
           Counter c = new Counter(0); 
+          // ここで，"c.GetCount() = " + c.GetCount().ToString() は
+          // 文字列"c.GetCount() = "と文字列c.GetCount().ToString()を連接した文字列
+          // を表す．
+          // C#では+演算子は文字列の連接にも用いられる．
+          // たとえば，"Hello" + "World"の結果は"HelloWorld"である．
           Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
           c.Inc(); 
           c.Inc(); 
@@ -257,6 +264,7 @@ public修飾子が示すように，これらはpublicメソッドとして実�
     c.GetCount() = 0
     c.GetCount() = 1
 
+メソッド``Inc()``等が，``obj.Inc()``の形で呼び出されていることを確認しよう．また，（インスタンス）メソッド``Inc()``の定義において（インスタンス）フィールド``count``が参照されていることにも注意する．大雑把には，この``count``は，メソッド``Inc()``が属するインスタンスの同名のフィールドを差している．
 
 .. note::
 
@@ -268,7 +276,7 @@ staticメソッドの追加
 さらに``Counter``を便利なものにするために，``"12"``や``"-34"``といった文字列を構文解析してカウンターを作成することを考えてみよう．
 
 このような処理はコンストラクタとしても実装可能であるが，カウンターオブジェクトの生成という関心事からいささか複雑すぎるので避けたい．
-一方で，このような処理を``Counter``クラスの（インスタンス）メソッドとして実装することはできない．これは， *インタンスメソッドはインタンスを操作する* 
+一方で，このような処理を``Counter``クラスの（インスタンス）メソッドとして実装することはできない．これは， *インタンスメソッドはインタンスに属する* 
 ものであるが，行いたい処理の時点では *インスタンスはまだ生成されていない* ためである．実際に，構文上においても，
 インスタンス``o``に対するインスタンスメソッド``Method``の呼出しは``o.Method(arg1, arg2)``となっていて，インスタンスが与えられなければインスタンスメソッドを
 呼び出すことができない．
@@ -574,7 +582,7 @@ return文
 
    .. code:: cs 
       
-      public int GetValue() 
+      public int GetCount() 
       { 
           return count; 
       }
@@ -746,7 +754,7 @@ continue文，break文
 
    .. code:: cs
 
-      c.GetValue().ToString() 
+      c.GetCount().ToString() 
 
 
 
