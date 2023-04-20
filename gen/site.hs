@@ -122,14 +122,14 @@ rstCompilingRule = do
   fp <- getResourceFilePath
   mt <- getItemModificationTime underlying
 
-  let lastModified =
+  let formatTimeAsJST utc = 
         Time.formatTime
           Time.defaultTimeLocale
           "%Y-%m-%d %H:%M:%S"
-          (Time.utcToLocalTime (Time.TimeZone (9 * 60) False "JST") mt)
+          (Time.utcToLocalTime (Time.TimeZone (9 * 60) False "JST") utc)
 
   let ctxt =
-        constField "lastModified" lastModified <>
+        constField "lastModified" (formatTimeAsJST mt) <>
         defaultContext
 
   let bn = FP.takeBaseName fp
@@ -138,12 +138,15 @@ rstCompilingRule = do
   case checkBN bn of
     Just (Q i) -> do
       inst <-
-        if i <= 4 then loadBody "questions/instruction.rst"
-        else           loadBody "questions/eto_instruction.rst"
+        if i <= 4 then load "questions/instruction.rst"
+        else           load "questions/eto_instruction.rst"
+
+      mti <- getItemModificationTime (itemIdentifier inst)
 
       let ctxt' =
-            constField "instruction" inst     <>
+            constField "instruction" (itemBody inst) <>
             constField "number"      (show i) <>
+            constField "lastModified" (formatTimeAsJST $ max mt mti) <> -- update lastModified
             ctxt
 
       pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
