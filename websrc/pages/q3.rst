@@ -145,16 +145,17 @@ title: 第3回 課題
          sc.Add(candy);
          sc.Add(candy);
          sc.Add(candy);
-         if ( sc.Budget >= popCorn.Price ) // 予算の残額が充分にあるなら popCorn を追加
-         {
-            sc.Add(popCorn);
-         }
+         sc.Add(popCorn);      
 
          Console.WriteLine();
          sc.Report();
 
          // 以下をアンコメントするとエラーになる（ようにする）
          // sc.Budget += 1000 
+
+         // 予算はいくらだったかな
+         Console.WriteLine();
+         Console.WriteLine("予算：" + sc.Budget); 
       }
    }
 
@@ -197,6 +198,8 @@ title: 第3回 課題
    合計: 300
    残額: 0
 
+   予算：300
+
 --------
 発展課題
 --------
@@ -232,10 +235,18 @@ title: 第3回 課題
    合計: 130
    残額: 170
 
+   キャンディ: 20 x 1
+   ポップコーン: 110 x 1
+   合計: 130
+   残額: 170
+
    キャンディ: 20 x 4
    ポップコーン: 110 x 2
    合計: 300
    残額: 0
+
+   予算：300
+
 
 
 .. hint:: 
