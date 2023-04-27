@@ -65,7 +65,7 @@ C#のようなクラスべースのオブジェクト指向言語の利点であ
    仮想メソッドはインスタンスによってどのような動作をするかが異なる．たとえば，
 
    .. code:: cs
-      
+
       class C { public virtual void f() { ... } }
       class P { 
         public static void C g() { ... } 
@@ -118,9 +118,9 @@ C#では継承は，クラス定義の際にクラス名の横に``: 基底ク�
        protected string email; 
 
        // ": base(n)" の部分は基底クラスのコンストラクタを呼ぶ．
-       // ここでは Phone(n) 省略は ": base()" と同じ意味である．
+       // ": base(n)"の省略は ": base()" と同じ意味である．
        // そのため，もしここで当該部分を省略するとエラーになる．
-       // （Phone()は定義されていないため．）
+       // （Phone()というコンストラクタは定義されていないため．）
        public MobilePhone(string n, string e) : base(n) 
        {
           email = e; 
@@ -137,7 +137,7 @@ C#では継承は，クラス定義の際にクラス名の横に``: 基底ク�
        {
           // 基底クラスの Info() を呼ぶ
           base.Info();
-
+          
           Console.WriteLine("EMail: " + email); 
        }       
    }
