@@ -4,162 +4,82 @@
 
 .. caution::
 
-   下記の「課題の進め方」は2022年度版．2023年度は準備中だが``MainForm.cs``（および関連リソース）をGoogle Classroomから提出してもらう予定．
+   下記の「課題の進め方」はまだ修正中の版です．
 
 
 .. role:: raw-html(raw)
    :format: html
 
-大雑把には，以下の名前のプロジェクト/ソリューションを作って，zipにまとめて提出する．
+基本的には適当なプロジェクト/ソリューションを作って課題を進めた上で，``MainForm.cs``を提出する．
 
-.. raw:: html 
+採点はコマンドラインから``dotnet new etoapp``を実行した上で``MainForm.cs``を提出されたもの上書きすることで行う予定である．
+*採点者は基本的に採点者自身の環境で動作確認を行うことに注意する．*
 
-   <pre><span class="metaname">学籍番号</span>_Q<span class="metaname">出題回</span></pre>
+第6回課題において``MainForm.cs``以外に提出に含めたいものがある場合（たとえば画像ファイル等）は事前にメール（メールアドレスはClassroom内「受講者用案内」を参照）で相談のこと．
 
-上記の「:raw-html:`<span class="metaname">学籍番号</span>_Q<span class="metaname">出題回</span>`」を以下では， *提出物ベース名* と呼ぶことにする．
-たとえば，Z0TB9999さんの第5回課題の提出であれば，提出物ベース名は``Z0TB9999_Q5``である．
+**公開の場所に解答を置かないようお願いします．**githubやbitbucket等は使える人は使えばよいと思いますが， **privateレポジトリにする** ようにお願いします．
 
-**公開の場所に解答を置かないようお願いします．**
-githubやbitbucket等は使える人は使えばよいと思いますが，private レポジトリにするようにお願いします．
 
 ---------------------------------
 プロジェクト/ソリューションの作成
 ---------------------------------
 
+.. note::
+
+   再掲：プロジェクトは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものであり，ソリューションは関連するプロジェクトをまとめたもの（参考：`What are solutions and projects in Visual Studio? <https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022>`_）．   
+
+
 Visual Studioの場合
 ~~~~~~~~~~~~~~~~~~~
 
-「新しいプロジェクトの作成」（Windows）や「新規」/「New」（Mac）から，C#の「Eto.Forms Application」あるいは「Eto Application」テンプレートを
-選び，プロジェクト名とソリューション名を :raw-html:`<span class="metaname">提出物ベース名</span>` とする．
-たとえば，Z0TB9999さんの第5回課題の提出であれば，プロジェクト名とソリューション名はともに``Z0TB9999_Q5``とする．
-プロジェクト名とソリューション名以外の選択項目は（あれば）デフォルトのままとする．
+
+「新しいプロジェクトの作成」（Windows）や「新規」（Mac）から，C#の「Eto.Forms Application」あるいは「Eto Application」テンプレートを
+選び，プロジェクト名とソリューション名を適当（たとえば課題5の解答なので``Q5``とするなど）に設定する．
+
 
 コマンドラインの場合
 ~~~~~~~~~~~~~~~~~~~~
 
-適当な場所に「:raw-html:`<span class="metaname">提出物ベース名</span>`」という名のディレクトリを作成した後に，そこに移動し
+適当な場所（たとえばで課題5の解答なので``Q5``というフォルダを作成し，そこに移動した上で）で
 
-.. code::
+.. code:: 
 
    dotnet new etoapp
 
-でプロジェクト（共通のもの，GTK用，Mac用，Wpf用）を作成する．自分の環境に不要なものも消さない（採点の際に困るので）．
+を実行する．
 
 ----------
 課題の実施
 ----------
 
-.cs ファイルを問題文の指示の通りに作成する（``MainForm.cs``を変更すればよい）．``….Gtk``，``….Mac``，``….Wpf``の中に含まれているファイルは **変更しない．**
-**作成した** .csファイルには先頭部分に **学籍番号と名前をコメントとして含める** こと．なので，たとえば学籍番号Z0TB9999の東北 大学さんの提出ファイルは
+``MainForm.cs`` を問題文の指示の通りに編集する（ **提出・採点手続きの簡略化のため提出する.csファイルは一つのみ** ）．作成した.csファイルには先頭部分に **学籍番号と名前をコメントとして含める** こと．また，自身のプログラムの動作確認を行ったプラットフォームの情報（Mac, Gtk, Wpfの別．複数可．わからないならOS名）も含めるものとする．こちらの情報はあくまで念のためであり，基本的には採点者は自身の環境で動作を確認を行う．なので，たとえば学籍番号Z0TB9999の東北 大学さんの提出ファイルは，もし当人が動作確認を :raw-html:`<code><span class="metaname">プロジェクト名</span>.Mac</code>` を用いて行ったのであれば
 
 .. code:: cs
 
    // Z0TB9999
    // 東北 大学
+   // 動作確認：Mac 
 
 という行から始まる． 
-
------------------
-提出するzipの準備
------------------
-
-Visual Studioでプロジェクト/ソリューションを作成した場合
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-1. まず，Visual Studio でソリューション「:raw-html:`<span class="metaname">提出物ベース名</span>.sln` 」を開いた後，ソリューション エクスプローラーから，4つのプロジェクト名（「:raw-html:`<span class="metaname">提出物ベース名</span>`」，「:raw-html:`<span class="metaname">提出物ベース名</span>.Gtk`」 ，「:raw-html:`<span class="metaname">提出物ベース名</span>.Mac`」 ，「:raw-html:`<span class="metaname">提出物ベース名</span>.Wpf`」 ）について，それぞれプロジェクト名を右クリックして出てくるコンテキストメニューから *「〜をクリーン」* を（選択できれば）選択する．あるいは，以下の手順を実行する前に``obj``フォルダと``bin``フォルダを消したのでもよい．
-
-   - Macだと「:raw-html:`<span class="metaname">提出物ベース名</span>.Wpf`」については「〜をクリーン」が選択できないが，それでよい．
-
-#. 当該ソリューションが含まれているフォルダは以下の構造をしている．
-   
-
-   .. class:: directorylist
-   
-   - :raw-html:`<span class="metaname">提出物ベース名</span>/` 
-     - :raw-html:`<span class="metaname">提出物ベース名</span>.sln` 
-     - :raw-html:`<span class="metaname">提出物ベース名</span>/` 
-       - :raw-html:`<span class="metaname">提出物ベース名</span>/` 
-         - :raw-html:`<span class="metaname">提出物ベース名</span>.csproj`
-         - MainForm.cs
-         - obj/
-           - …
-       - :raw-html:`<span class="metaname">提出物ベース名</span>.Gtk`
-         - … 
-       - :raw-html:`<span class="metaname">提出物ベース名</span>.Mac`
-         - … 
-       - :raw-html:`<span class="metaname">提出物ベース名</span>.Wpf`
-         - … 
-
-   そこで，たとえば下記のようにして，一番外側のフォルダをzip形式で圧縮し，
-   「:raw-html:`<span class="metaname">提出物ベース名</span>`.zip」というzipファイルを作成する．
-
-   - Windowsの場合．まず，当該フォルダはデフォルトだと，ユーザフォルダの``source\repos``以下にある．
-     なお，ユーザフォルダはデフォルトだと :raw-html:`<code>C:\Users\<span class="metaname">ユーザ名</span></code>` であり，
-     エクスプローラーのアドレスバーに``%HOMEPATH``を入力すれば移動できる．
-     また，Visual Studioの起動後の画面で *「ローカルフォルダを開く」* を選んだのでも場所がわかる．
-     エクスプローラーにて当該フォルダを右クリックして *「送る」*  から  *「圧縮（zip形式）フォルダー」*  を選択する．
-     すると，「:raw-html:`<span class="metaname">提出物ベース名</span>`.zip」というzipファイルが作成される．
-
-   - Macの場合．当該フォルダの場所はデフォルトだと，``~/Projects/``以下にある．
-     Finder.appで当該フォルダをCtrl + クリック（あるいは右クリック）し， *「"〜"を圧縮」* を選ぶ．
-     すると，「:raw-html:`<span class="metaname">提出物ベース名</span>`.zip」というzipファイルが作成される．
-     
-
-
-
-
-コマンドラインでプロジェクトを作成した場合
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-1. `プロジェクト/ソリューションの作成`_ で作成したディレクトリの親ディレクトリに移動する．
-
-#. 作成したディレクトリは以下のような構造になっている．
-
-   .. class:: directorylist
-
-   - :raw-html:`<span class="metaname">提出物ベース名</span>/` 
-     - :raw-html:`<span class="metaname">提出物ベース名</span>/` 
-       - :raw-html:`<span class="metaname">提出物ベース名</span>.csproj`
-       - MainForm.cs
-       - obj/
-         - … 
-     - :raw-html:`<span class="metaname">提出物ベース名</span>.Gtk`
-       - … 
-     - :raw-html:`<span class="metaname">提出物ベース名</span>.Mac`
-       - … 
-     - :raw-html:`<span class="metaname">提出物ベース名</span>.Wpf`
-       - … 
-
-
-#. 以下のそれぞれの行を順に実行する（``$``はプロンプトを表す）．
-
-   .. raw:: html 
-      
-      <pre style="line-height: 1.3">
-      <span class="with-prompt">cd <span class="metaname">提出物ベース名</span></span>
-      <span class="with-prompt">dotnet clean <span class="metaname">提出物ベース名</span></span>
-      <span class="with-prompt">dotnet clean <span class="metaname">提出物ベース名.Gtk</span></span>
-      <span class="with-prompt">dotnet clean <span class="metaname">提出物ベース名.Mac</span></span>
-      <span class="with-prompt">dotnet clean <span class="metaname">提出物ベース名.Wpf</span></span>
-      <span class="with-prompt">cd ..</span>      
-      </pre>
-
-#. 「:raw-html:`<span class="metaname">提出物ベース名</span>`.zip」 を作成する．エクスプローラーやFinder.app経由で作成してもよいし，
-   コマンドラインから以下を実行してもよい．
-
-   .. raw:: html
-
-      <pre>
-      zip -r <span class="metaname">提出物ベース名</span>.zip  <span class="metaname">提出物ベース名</span>/
-      </pre>
 
 ----
 提出
 ----
 
-できあがった「:raw-html:`<span class="metaname">提出物ベース名</span>`.zip」をClassroom内の当該回の「課題」より提出する．
-たとえば，Z0TB9999さんの第5回課題の提出であれば，提出するファイルの名前は``Z0TB9999_Q5.zip``になる．
+できあがった ``MainForm.cs``をClassroom内の当該回の「課題」より提出する． Visual Studioを使用した場合は，``MainForm.cs`` は「作成したプロジェクト名」のフォルダ以下に含まれているが，当該フォルダは下記の場所にある．
+
+* Windowsの場合．まず，当該フォルダはデフォルトだと，ユーザフォルダの``source\repos``以下にある．
+  なお，ユーザフォルダはデフォルトだと :raw-html:`<code>C:\Users\<span class="metaname">ユーザ名</span></code>` であり，
+  エクスプローラーのアドレスバーに``%HOMEPATH%``を入力すれば移動できるはず．
+  また，Visual Studioの起動後の画面で *「ローカルフォルダを開く」* を選んだのでも場所がわかる（ダイアログが開くのでアドレスをコピーする）．
+
+* Macの場合．当該フォルダの場所はデフォルトだと，``~/Projects/``以下にある．  
 
 
+また問題文に指示がある場合はそのファイル（例：課題6で提出物に含めたいリソースがある場合）も提出する．提出前には以下を確認しよう．
 
-   
+* 提出プログラムコードのファイル名は``MainForm.cs``になっているか
+* 提出するファイルに *学籍番号と名前* がコメントとして含まれているか
+* 文献やWebサイトを参考にした場合は *文献の情報やURLおよびアクセス日* に加えて *元文献のどの部分を参考にしたのか* が *コードの当該箇所* 付近のコメントとして記述されているか
+* 友人と相談した・された場合はその *友人の名前* および *大雑把な相談の内容* がコメントとして書かれているか
+  - ただし，友人の解答を見ない，そして友人に解答を見せないようお願いします
