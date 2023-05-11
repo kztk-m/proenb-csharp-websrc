@@ -46,7 +46,7 @@ tableOfContents: true
           int[] nums2 = new int[] { 1, 2, 3, 4, 5 };
 
           // 要素について繰り返しを行いたければ foreach 文 を使用可能
-          foreach (var n in nums2)
+          foreach (int n in nums2)
           {
              Console.WriteLine(n);
           }
@@ -179,7 +179,7 @@ tableOfContents: true
 上で ``nums.Length`` や ``nums.Rank`` は一見フィールドに見える．が，実際には
 これらは **プロパティ** と呼ばれるものである．
 
-インスタンス ``o``のプロパティ ``P`` はフィールドのように``o.P``で読み出したり``o.P = e``で書き込んだりできる．
+インスタンス``o``のプロパティ``P``はフィールドのように``o.P``で読み出したり``o.P = e``で書き込んだりできる．
 しかし，フィールドと異なるのはプロパティは読み出し専用（read-only）は書き込み専用（write-only）にでき，
 またメソッドのように読み出しや書き込みの際に処理を実行できる．
 
@@ -367,7 +367,7 @@ tableOfContents: true
           ns.Add("banana");
 
           // 要素を先頭から走査するにはforeach文を利用可能
-          foreach (var n in ns) {
+          foreach (string n in ns) {
              Console.WriteLine(n);
           }
 
@@ -497,7 +497,7 @@ tableOfContents: true
 ========
 
 プレイリストを管理するためのクラス ``PlayList`` を作成しなさい．
-このクラスは曲名のリストを管理し，以下のpublicなコンストラクタ・メソッドを持つ．
+このクラスは曲名のリスト（``List<T>``を用いて実装する必要はないが，してもよい）を管理し，以下のpublicなコンストラクタ・メソッドを持つ．
 
 =============================   ===================================
 ``PlayList(string[] titles)``   曲目が``titles``で与えらるようなプレイリストを作成するコンストラクタ．
@@ -528,7 +528,7 @@ tableOfContents: true
 foreach文
 =========
 
-配列や ``List<T>``等のコレクションにはforeach文が利用可能である．
+上でも出てきていたが，配列や ``List<T>``等のコレクションにはforeach文が利用可能である．
 
 
 .. raw:: html 
@@ -537,8 +537,27 @@ foreach文
    <span class="kw">foreach</span> (<span class="metaname">型あるいはvar</span> <span class="metaname">変数</span> in <span class="metaname">コレクションオブジェクト</span>) <span class="metaname">繰り返される文（ループ本体）</span> 
    </pre>
 
-正確には，``foreach``を使用するには``in``の右に書くオブジェクトが，``System.Collections.Generics.IEnumerable<T>`` インタフェース （か，その非ジェネリック版の``System.Collections.IEnumerable``）を
-実装している型である必要がある．
+上では
+
+.. code:: cs 
+
+   foreach (string n in ns) {
+     Console.WriteLine(n);
+   }   
+
+のような形で出てきていたが，要素の型は多くの場合はコレクションオブジェクトの型から定まると思われるので，
+
+.. code:: cs 
+
+   foreach (var n in ns) {
+     Console.WriteLine(n);
+   }   
+
+のように``var``を使うのが楽であろう．
+
+直感的には``foreach (var x in xs) { ... }``はコレクション``xs``の各要素を``x``として``...``内の処理を繰り返す．
+
+より正確な言い方をすれば，``foreach``を使用するには``in``の右に書くオブジェクトが，``System.Collections.Generics.IEnumerable<T>`` インタフェース （か，その非ジェネリック版の``System.Collections.IEnumerable``）を実装している型である必要がある．
 
 ==============
 インタフェース
