@@ -109,7 +109,7 @@ items.txtの中身の例::
 
    .csprojファイルと同じフォルダにある``items.txt``を相対パス``./items.txt``でアクセスできるようにするためには以下のいずれかの設定が必要になる．
 
-   - ``dotnet run`` で実行している場合は特になにもする必要はない．
+   - ``dotnet run`` で実行している場合は.csprojファイルと同じフォルダで同コマンドを実行すればよい．
 
    - .csprojの``<PropertyGroup>...</PropertyGroup>``内に以下の行を追加する．
 
