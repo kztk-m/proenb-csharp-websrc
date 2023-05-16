@@ -222,7 +222,7 @@ tableOfContents: true
       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
       at ExceptionExample.Main() in /Users/kztk/prog/cs/Materials/Week4/ExceptionExample/Program.cs:line 12
 
-もちろん，このようなエラーは``ContainsKey(TKey)`` メソッド等を使って逐一検査すれば防ぐことができる．
+もちろん，このようなエラーは``ContainsKey(TKey)``メソッド等を使って逐一検査すれば防ぐことができる．
 しかしながら，そうした逐一の検査は *煩雑でありなおかつコードの見通しを悪く* する．
 また，問題が起きてしまった場合の処理も共通であることもしばしばである．
 たとえば，対話的アプリケーションだとエラーを報告しユーザの入力を再度促すことになるだろうし，
@@ -339,7 +339,7 @@ tableOfContents: true
       at Student.set_Score(Int32 value) in /Users/kztk/prog/cs/Materials/Week4/ExceptionExample3/Program.cs:line 16
       at ExceptionExample3.Main() in /Users/kztk/prog/cs/Materials/Week4/ExceptionExample3/Program.cs:line 29
 
-一般的には例外とは，``System.Exception``を継承しているクラスのオブジェクトである．そのため，``System.Exception``かその派生クラス（上記 ``ArgumentException`` や ``KeyNotFoundException`` など）を継承することでユーザ定義の例外を作成することもできる．
+一般的には例外とは，``System.Exception``を継承しているクラスのオブジェクトである．そのため，``System.Exception``かその派生クラス（上記``ArgumentException``や``KeyNotFoundException``など）を継承することでユーザ定義の例外を作成することもできる．
 
 また，一つの``try``はいくつもの``catch``ブロックを持つことができる．
 
@@ -392,8 +392,7 @@ tableOfContents: true
 ファイルからの入力
 ------------------
 
-``System.IO.File``のstaticメソッド ``ReadAllText`` や ``ReadAllLines`` を利用したり，
-``OpenText``して得られる``System.IO.StreamReader``オブジェクトを利用したりする方法がある（他にもある）．
+``System.IO.File``のstaticメソッド``ReadAllText``や``ReadAllLines``を利用したり，``OpenText``して得られる``System.IO.StreamReader``オブジェクトを利用したりする方法がある（他にもある）．
 
 .. code:: cs
 
@@ -550,8 +549,7 @@ usingブロック内で例外が発生した場合にもそうでない場合に
 ファイルへの出力
 ----------------
 
-``System.IO.File``のstaticメソッド ``WriteAllText`` や ``WriteAllLines`` を利用したり，
-``CreateText``して得られる``System.IO.StreamWriter``オブジェクトを利用したりする方法がある（他にもある）．
+``System.IO.File``のstaticメソッド``WriteAllText``や``WriteAllLines``を利用したり，``CreateText``して得られる``System.IO.StreamWriter``オブジェクトを利用したりする方法がある（他にもある）．
 
 
 .. code:: cs
@@ -602,7 +600,7 @@ usingブロック内で例外が発生した場合にもそうでない場合に
 
 ===================================       ===================================================================
 ``File.WriteAllText(string,string)``      static メソッド．与えられたパスのファイルを開いて，与えられた文字列で上書きして閉じる．パスにファイルが存在してなければ作成する．
-``File.WriteAllLines(string,string[])``    static メソッド．与えられたパスのファイルを開いて，与えられた文字列の配列で上書きして閉じる．パスにファイルが存在してなければ作成する．
+``File.WriteAllLines(string,string[])``   static メソッド．与えられたパスのファイルを開いて，与えられた文字列の配列で上書きして閉じる．パスにファイルが存在してなければ作成する．
 ``File.CreateText(string)``               static メソッド．与えられたパスのファイルを上書きモードで開き，そこへ書きこむための``StreamWriter``オブジェクトを返す．パスにファイルが存在してなければ作成する．
 ``StreamWriter.WriteLine(string)``        ストリームへ与えられた文字列を出力する．
 =====================================     ===================================================================
