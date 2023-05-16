@@ -8,11 +8,11 @@ import qualified Data.Time             as Time
 
 import qualified System.Directory      as Dir
 import qualified System.FilePath       as FP
-import           Text.Pandoc           (ReaderOptions (..), WriterOptions (..))
 import qualified Text.Pandoc
+import           Text.Pandoc           (ReaderOptions (..), WriterOptions (..))
 import qualified Text.Pandoc.Shared
 
-import qualified Data.Char 
+import qualified Data.Char
 import           Data.Functor.Identity (runIdentity)
 import           Data.String           (fromString)
 import           Data.Text             (Text)
@@ -72,42 +72,47 @@ getWeekNumber (W i) = i
 getWeekNumber (Q i) = i
 
 adjustJapaneseSpacing :: Item String -> Compiler (Item String)
-adjustJapaneseSpacing = pure . fmap aj 
-  where 
-    isJpChar :: Char -> Bool 
-    isJpChar c = isJpPunct || isKana || isFWRomanAndHWKana || isKanji     
-      where 
-        cp = Data.Char.ord c 
+adjustJapaneseSpacing = pure . fmap aj
+  where
+    isJpChar :: Char -> Bool
+    isJpChar c = isJpPunct || isKana || isFWRomanAndHWKana || isKanji
+      where
+        cp = Data.Char.ord c
         -- see https://stackoverflow.com/questions/19899554/unicode-range-for-japanese
-        isJpPunct = 0x3000 <= cp && cp <= 0x303f 
-        isKana = 0x3040 <= cp && cp <= 0x30ff 
-        isFWRomanAndHWKana = 0xff00 <= cp && cp <= 0xffef 
+        isJpPunct = 0x3000 <= cp && cp <= 0x303f
+        isKana = 0x3040 <= cp && cp <= 0x30ff
+        isFWRomanAndHWKana = 0xff00 <= cp && cp <= 0xffef
         isKanji = 0x4e00 <= cp && cp <= 0x9faf
 
-    aj :: String -> String 
+    aj :: String -> String
     aj [] = []
-    aj ('<':'/':'e':'m':'>':sp:c:cs) | Data.Char.isSpace sp && isJpChar c = "</em>" ++ aj (c:cs) 
-    aj ('<':'/':'a':'>':sp:c:cs) | Data.Char.isSpace sp && isJpChar c = "</a>" ++ aj (c:cs) 
-    aj ('<':'/':'s':'t':'r':'o':'n':'g':'>':sp:c:cs) | Data.Char.isSpace sp && isJpChar c = "</strong>" ++ aj (c:cs) 
+    aj ('<':'/':'e':'m':'>':sp:c:cs) | Data.Char.isSpace sp && isJpChar c = "</em>" ++ aj (c:cs)
+    aj ('<':'/':'a':'>':sp:c:cs) | Data.Char.isSpace sp && isJpChar c = "</a>" ++ aj (c:cs)
+    aj ('<':'/':'s':'t':'r':'o':'n':'g':'>':sp:c:cs) | Data.Char.isSpace sp && isJpChar c = "</strong>" ++ aj (c:cs)
+    aj ('<':'p':'r':'e':cs) = "<pre" ++ ajPre cs
     aj (c:cs)
-     | isJpChar c = ajAfterJp c cs 
-     | otherwise  = c:aj cs 
+     | isJpChar c = ajAfterJp c cs
+     | otherwise  = c:aj cs
 
-    ajAfterJp :: Char -> String -> String 
-    ajAfterJp jc [] = [jc] 
+    ajPre []                           = []
+    ajPre ('<':'/':'p':'r':'e':'>':cs) = "</pre>" ++ aj cs
+    ajPre (c:cs)                       = c:ajPre cs
+
+    ajAfterJp :: Char -> String -> String
+    ajAfterJp jc [] = [jc]
     ajAfterJp jc ('\n':cs) | Just rest <- skipTrailingNBSPBeforeJp cs = jc:aj(rest)
     ajAfterJp jc (' ':'<':cs) | "a " `Data.List.isPrefixOf` cs || "strong" `Data.List.isPrefixOf` cs || "em" `Data.List.isPrefixOf` cs = jc:"<"++aj cs
-    ajAfterJp jc (c:cs) = jc:aj(c:cs) 
+    ajAfterJp jc (c:cs) = jc:aj(c:cs)
 
-    skipTrailingNBSPBeforeJp :: String -> Maybe String 
+    skipTrailingNBSPBeforeJp :: String -> Maybe String
     skipTrailingNBSPBeforeJp [] = Just []
-    skipTrailingNBSPBeforeJp ('\n':cs) = Nothing 
-    skipTrailingNBSPBeforeJp ('\r':cs) = Nothing 
+    skipTrailingNBSPBeforeJp ('\n':cs) = Nothing
+    skipTrailingNBSPBeforeJp ('\r':cs) = Nothing
     skipTrailingNBSPBeforeJp (c:cs)
-     | Data.Char.isSpace c = skipTrailingNBSPBeforeJp cs 
+     | Data.Char.isSpace c = skipTrailingNBSPBeforeJp cs
      | isJpChar c = Just (c:cs)
-     | otherwise = Nothing 
-    
+     | otherwise = Nothing
+
 
 rstCompilingRule :: Compiler (Item String)
 rstCompilingRule = do
@@ -122,7 +127,7 @@ rstCompilingRule = do
   fp <- getResourceFilePath
   mt <- getItemModificationTime underlying
 
-  let formatTimeAsJST utc = 
+  let formatTimeAsJST utc =
         Time.formatTime
           Time.defaultTimeLocale
           "%Y-%m-%d %H:%M:%S"
@@ -160,7 +165,7 @@ rstCompilingRule = do
 
       pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
         >>= loadAndApplyTemplate "templates/defaultW.html" ctxt'
-        >>= postProc 
+        >>= postProc
 
 
     Nothing -> do
@@ -171,7 +176,7 @@ rstCompilingRule = do
               "templates/default.html"
       pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
         >>= loadAndApplyTemplate tmpl ctxt
-        >>= postProc 
+        >>= postProc
   where
     checkBN :: String -> Maybe ParseBN
     checkBN (c:s) =
