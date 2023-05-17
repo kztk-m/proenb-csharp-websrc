@@ -115,7 +115,7 @@ items.txtの中身の例::
 
      .. code:: xml
 
-        <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
+        <StartWorkingDirectory>$(MSBuildProjectDirectory)</StartWorkingDirectory>
       
    - Windows版のVisual Studioを使用している場合は，プロジェクト名を右クリックして出てくるコンテキストメニューから「プロパティ」を選択し，「デバッグ」の「作業ディレクトリ」を当該 .csproj ファイルの直上のディレクトリに設定する．
 

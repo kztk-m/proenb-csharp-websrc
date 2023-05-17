@@ -393,7 +393,7 @@ tableOfContents: true
 
 .. caution::
 
-   以下の``./MyText.txt``等は作業フォルダからの相対パスである．作業フォルダは，特に何も設定しなければ
+   以下の``./MyText.txt``等は **作業フォルダ（作業ディレクトリ）** からの相対パスである．作業フォルダは，特に何も設定しなければ
 
    * コマンドラインの場合は``dotnet run``を実行したフォルダ
    * Visual Studioを利用する場合は実行ファイルがあるフォルダ
@@ -404,7 +404,7 @@ tableOfContents: true
 
      .. code:: xml
 
-        <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
+        <StartWorkingDirectory>$(MSBuildProjectDirectory)</StartWorkingDirectory>
 
    Visual Studioで.csprojファイルを編集するには「ソリューションエクスプローラー」/「ソリューション」で当該プロジェクト名を右クリックし「プロジェクト ファイルの編集」を選ぶ．
 
