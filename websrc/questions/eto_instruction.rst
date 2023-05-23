@@ -2,11 +2,6 @@
 課題の進め方
 ============
 
-.. caution::
-
-   下記の「課題の進め方」はまだ修正中の版です．
-
-
 .. role:: raw-html(raw)
    :format: html
 
