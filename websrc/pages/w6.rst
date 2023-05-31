@@ -32,6 +32,8 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 
                Drawable drawable = new Drawable();
                // Paintを購読
+               // (s,pe) => { ... } の部分はPaintイベントが発生したときに呼ばれる処理であることに注意する．
+               // この時点でコントロールの中身がその部分の通りに描画されるわけではない．
                drawable.Paint += (s, pe) =>
                {
                    Graphics g = pe.Graphics;
@@ -87,7 +89,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
                // Eto.Forms 2.6.1においては，GtkでもSizeがワンテンポ遅れて変化したりする（https://github.com/picoe/Eto/issues/1752）ので
                // 現状ではSizeに依存するコードはかかないほうがよいかもしれない．
                //
-               // Invalidate()はコントロールに再描画を促す．
+               // Invalidate()はコントロールに再描画を促す（結果，Paintイベントを発生させる）．
                drawable.SizeChanged += (s, e) => drawable.Invalidate();
 
                Content = drawable;
@@ -120,7 +122,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 また，新たな型のコンストラクタ．
 
 =============================     =================================
-``RectagnleF(PointF, SizeF)``     指定された位置，サイズの``RectangleF``を作成するコンストラクタ．
+``RectangleF(PointF, SizeF)``     指定された位置，サイズの``RectangleF``を作成するコンストラクタ．
 ``Point(int, int)``               位置を表す型，``Point``のコンストラクタ．x/y座標にはプロパティ``X``と``Y``からアクセス可．
 ``PointF(float, float)``          上の``float``版．
 ``SizeF(float, float)``           ``Size``の``float``版，``SizeF``のコンストラクタ．幅と高さにはプロパティ``Height``と``Width``からアクセス可．
@@ -128,7 +130,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 ``Font(SystemFont,float)``        指定されたシステムフォント，サイズ (pt)の``Font``を作成するコンストラクタ．システムフォントには ``SystemFont.Default``のほか，``SystemFont.Bold``や ``SystemFont.TitleBar`` などがある．
 =============================     ==================================
 
-そして，色を操作するのに用いた以下のstatic メソッドやフィールド．
+そして，色を操作するのに用いた以下のstaticメソッドやフィールド．
 
 ==============================        ===========
 ``Color.FromRgb(int)``                ``0xFF0000``（赤）などのような整数から色を作成．
@@ -502,6 +504,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 
 上のコードのMacでの実行例たとえば以下となる．
 
+.. image:: ./images/eto/mouse_demo2.png
 
 
 複数個の円を描く
