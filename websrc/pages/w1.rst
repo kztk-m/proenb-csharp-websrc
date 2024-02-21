@@ -117,6 +117,9 @@ C#プログラムの基本的な構造
     
     Counter c = new Counter(0); 
 
+この文の実行後，``c``は``new Counter (0)``によって作成された``Counter``クラスのインスタンスを指すこととなる．
+
+
 しかしながら，現在のままではこのカウンター``c``についてできることがない．
 たとえば，``count``はprivateフィールドなので，たとえば以下のプログラムはコンパイル時エラーとなる．
 
@@ -244,12 +247,15 @@ public修飾子が示すように，これらはpublicメソッドとして実�
           // C#では+演算子は文字列の連接にも用いられる．
           // たとえば，"Hello" + "World"の結果は"HelloWorld"である．
           Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
-          c.Inc(); 
-          c.Inc(); 
+
+          c.Inc(); // cの指すカウンタをインクリメント
+          c.Inc(); // cの指すカウンタをインクリメント
           Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
-          c.Reset();
+
+          c.Reset(); // cの指すカウンタをリセット
           Console.WriteLine("c.GetCount() = " + c.GetCount().ToString());  
-          c.Inc();
+
+          c.Inc(); // cの指すカウンタをインクリメント
           Console.WriteLine("c.GetCount() = " + c.GetCount().ToString()); 
        }
    }
@@ -339,7 +345,7 @@ staticメソッドの追加
       return new Counter(i); 
    }
 
-``Int32.Parse``もstaticメソッドの一つである．また，``Console.WriteLine``も実はstaticメソッドであった．
+``Int32.Parse``もstaticメソッドの一つである．また，``Console.WriteLine``も実はstaticメソッドである．
 このようにstaticメソッド``Method``はクラス``C``に対し，``C.Method(arg1, arg2)``のようにすることで呼び出すことができる．
 実際に以下のプログラムをビルド・実行してみよう．
 
@@ -781,12 +787,15 @@ continue文，break文
 
       c.Inc() 
 
-   別の式の一部としても使うことができる．
+   メソッド呼び出し式において``.``の左側には識別子のみならず式も来ることができる．またメソッド呼び出し式も式なので別の式の一部としても使うことができる．
 
    .. code:: cs
 
       c.GetCount().ToString() 
 
+   .. code:: cs 
+
+      Console.WriteLine( (1 + 2).ToString() );
 
 
 オブジェクト生成式（``new``）
