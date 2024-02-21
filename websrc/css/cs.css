@@ -941,6 +941,11 @@ pre.sourceCode.xml .code-control::before {
     display: inline-block;
 }
 
+pre.sourceCode.c .code-control::before {
+    content: 'C';
+    display: inline-block;
+}
+
 
 
 /* .code-control::after { */

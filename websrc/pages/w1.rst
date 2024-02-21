@@ -270,6 +270,39 @@ public修飾子が示すように，これらはpublicメソッドとして実�
 
     C#の慣習として public なメソッドやフィールド（およびプロパティ）の名前は大文字で始める．
 
+
+.. note:: 
+
+   大雑把には，``Counter``クラスはアクセス制御子等を無視すればCにおける以下の構造体定義と関数のあつまりと似たようなものであるように理解できる．
+
+   .. code::c
+
+      struct counter { int count; } 
+
+      struct counter* new_counter() {
+        struct counter* p = new malloc( sizeof(struct counter) ); 
+        construct_counter(p); 
+        return p; 
+      }
+
+      void construct_counter(struct counter* p) {
+        p->count = 0; 
+      }
+
+      void increment(struct counter* p) {
+        p->count++;
+      } 
+
+      void reset(struct counter* p) {
+        p->count = 0; 
+      }
+
+      int get_count(struct counter* p) {
+        return p->count; 
+      }
+
+   クラスと，こうした構造体定義と関数のあつまりの違いには `次回 <./w2.html>`_ 触れる．
+
 staticメソッドの追加
 ~~~~~~~~~~~~~~~~~~~~
 
