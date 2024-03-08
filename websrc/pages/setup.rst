@@ -4,234 +4,29 @@ date:  2022-03-24
 tableOfContents: true
 -----
 
-以下の二つの方法を紹介する．
-  
-- Microsoft Visual Studioを用いる（`Windows編`_/`Mac編`_． 初心者向け）
- 
-- `.NET SDKのインストール （Windows/Mac ほぼ共通）`_ をしてコマンドラインインターフェースにて演習を進める（中級者向け）
-
-後者は，仮想端末での作業に抵抗がなくかつ好みのエディタ（VSCode，Emacs，Viクローン等）を使用したい人にはおススメである．
-本ページではLinuxにおける環境の構築法については述べない．
-
-なお，このページで紹介している方法ではF#演習のための環境構築にもなっている．
-C#演習の第5週・第6週目の課題を進めるには `さらなる準備（別ページ） <./setup_gui.html>`_ が必要である（こちらはC#演習分のみ）．
-
-
-（本ページに掲載されているスクリーンショットは，マイクロソフトの許諾を得て使用しています．）
-
-
-
-===========================
-Visual Studioのインストール
-===========================
-
-.. role:: underline
-   :class:underline 
-
----------
-Windows編
----------
-     
-**インストール中はネットワーク接続が必要なことに注意する．**
-
-#.  `Visual Studio 2022のページ <https://visualstudio.microsoft.com/ja/>`_ において「Visual Studioのダウンロード」にマウスポインタを合わせるといくつかの項目が表示される．その中の「Community 2022」を選択し，Visual Studio Community 2022をダウンロードする．
-
-   すると ``VisualStudioSetup.exe`` というファイルがダウンロードされる．
-
-
-#. ダウンロードしたファイルを実行する．「続行」を押す前にライセンス条項には目を通しておこう．
-  
-
-   #. 途中でインストールする項目が聞かれるので，「ワークロード」タブにある *「.NETデスクトップ開発」* をチェックし，その「インストール詳細」から
-      *「F# デスクトップ言語のサポート」* にもチェックを入れる．7.8 GB弱のディスク容量が必要となる．
- 
-   .. image::images/ss_vs2022_win_installer.png 
-
-#. 「インストール」ボタンを押してインストールを完了させる．2.2 GBほどのダウンロードが生じるので高速なネット回線が利用可能なところで行おう．
-
-   ..
-      .. image::images/ss_dl_win5.png 
-
-#. 起動時にいろいろ聞かれるが適当に答えたのでよい（サインインのアカウントも好きなものでよいし，設定しなくてもよい）．
-   インストールが終了すると自動的にVisual Studio Community 2022が起動され，以下の画面が表示される．インストーラのウィンドウのほうは閉じてOK．
-
-   .. image::images/ss_vs2022_win_startup.png 
-
-#. 動作確認もしておこう．
-  
-   i. 上記で「新しいプロジェクトの作成」を選ぶ．
-
-   #. テンプレート選択画面で，C#の「コンソール アプリケーション」を選ぶ．
-
-      .. image::images/ss_vs2022_win_template_selection.png 
-
-   #. プロジェクト名とソリューション名を聞かれるので適当に入力する．たとえば，どちらも ``HelloWorldCS`` にしたのでよい（``CS``はC#の気持ち）．
-
-
-      .. note:: 
-        プロジェクトは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものであり，ソリューションは関連するプロジェクトをまとめたもの（参考：`What are solutions and projects in Visual Studio? <https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022>`_）．
-        あえて英語版にリンクしたのは，日本語版だと"a project contains all files that are compiled into an executable, library, or website"の"a"や"an"がうまく訳出されていないように感じたため．
-
-      .. image::images/ss_vs2022_win_creating_project.png 
-
-   #. フレームワークを選んで「作成」する．ここではデフォルトのままでよい．
-
-      .. image::images/ss_vs2022_win_fw_selection.png 
-
-   #. エディタで ``Program.cs`` が開かれた状態になる．
-
-      .. image::images/ss_vs2022_win_editor.png 
-
-   #. コードを実行するには上のツールバーの真ん中あたりにある「▶ HelloWorldCS」と書かれたボタンを押す．
-      すると，ビルドが行われ実行形式が作成された後にその実行形式が実行される．
-      ビルド時の出力等が表示された後に，「Microsoft Visual Studio デバッグコンソール」に ``Hello, World!`` と表示されればOK．
-
-      .. image::images/ss_vs2022_win_output.png 
-
-   #. F#でも同様であることを確認しておこう（新しいプロジェクトを作成する際のテンプレートを選ぶ場面で，「すべての言語」を「F#」に変更し，「コンソール アプリケーション」を選べばよい）．
-
-      .. note:: 
-
-         もし以上のとおりやった上でF#でのビルドに失敗し，「パッケージ FSharp.Core が見つかりません。ソース Microsoft Visual Studio Offline Packages には、この ID のパッケージが存在しません。」というエラーメッセージが出る場合は，コマンドライン（WindowsだとPowerShellか「コマンド プロンプト」を利用）から
-
-         ::
-
-            dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
-
-
-         を実行する．あるいは，以下の「`.NET SDKのインストール （Windows/Mac ほぼ共通）`_」の手順1～4を読みSDKをインストールするとよい．（それでも直らなければ，教員・TAに質問をしてください．）
-     
-
------
-Mac編
------
-
-.. C#演習ではVisual Studio 2019 for Macではなく，Visual Studio 2022 for Mac Previewの使用を推奨する．
-
-.. .. note:: 
-
-..    Visual Studio 2019 for Macだと，少くとも私の環境において，第5回および第6回の講義で利用予定である `Eto.Forms <https://github.com/picoe/Eto>`__ の利用に問題が生じためである．
-..    より具体的には，私の環境だと `指示 <https://github.com/picoe/Eto/wiki/Quick-Start>`__ の通りに Eto.Addin.MonoDevelop.mpack の最新版を `Release <https://github.com/picoe/Eto/releases>`__ ページからダウンロードし，拡張機能としてインストールした後で，テンプレート選択画面で `Eto.Forms` を選んでプロジェクトを作成しようとするとソリューション名入力画面でVisual Studioが高い割合で落ちる．
-
-..    プロジェクトやソリューションの作成をコマンドラインで実行した後で，Visual Studioを使うことも可能であるので，Visual Studio 2019 for Macでも演習を進めること自体は可能である．
-..    あるいは，ディスク容量とインストール時間さえ気にしなければ，Visual Studio 2019 for Macをまずはインストールし，
-..    C#の演習の第5・6回目の内容をすすめるときだけ，Visual Studio 2022 for Macを使うという手もある．
-   
-
-
-**インストール中はネットワーク接続が必要なことに注意する．**
-
-#. `Visual Studio 2022のページ <https://visualstudio.microsoft.com/ja/>`_ より「Visual Studio for Macをダウンロード」をたどり，Visual Studio 2022 for Macをダウンロードする．
-
-
-   すると ``visualstudioformacpreviewinstaller-17.5.0.124.dmg``みたいな名前のファイルがダウンロードされる（数字の部分はダウンロードするタイミングによって違うかもしれない）．
-
-
-#. Dock上の「ダウンロード」から上のファイルをクリックする（あるいはFinderでダブルクリックすると），どでかいアイコンが表示されたウィンドウが表示されるので，
-   アイコンをダブルクリックしてインストールを開始する．   
-
-
-#. 「“Install Visual Studio for Mac.app”はインターネットからダウンロードされたアプリケーションです。開いてもよろしいですか?」と聞かれるので，「開く」．
-
-  #. すると「ダウンロード」以下のファイルにアクセスしてよいか聞かれるが，許可する．
-
- 
-  #. その後「Visual Studio for Mac をダウンロードしていただき、ありがとうございます」と書かれた画面が表示される．
-     ライセンス条項を確認し問題なければ「続行」を選んでインストールを続ける．
-   
-#. 「何をインストールしますか？」と聞かれる．「.NET」だけ選べば十分．
-
-#.  あとは，画面に従ってインストールを完了させる（数十分ほど時間がかかるかもしれない）．また，何度かパスワードが聞かれる．
-
-    .. image::images/ss_vs2022_mac_installer.png
-
-#.  上で「完了時にVisual Studio Previewを開く」をチェックしていたら（なにもしていなければそうなっているはず），
-    インストールが終了すると自動的にVisual Studio 2022 for Macが起動される．
-    起動時にいろいろ聞かれるが適当に答えたのでよい（サインインのアカウントも好きなものでよいし，設定しなくてもよい）．
-    最終的に「Visual Studio 2022 for Mac」と書かれたウィンドウが表示される．
-    
-   .. image::images/ss_vs2022_mac_start.png
-
-#.  動作確認もしておこう．
-    
-    i. 上記のウィンドウ（一旦Visual Studioを閉じても，また起動すれば上記が表示される）で「新規」を選択する．
-
-    #. テンプレート選択画面で「コンソールアプリケーション」を選ぶ．
-
-       .. image::images/ss_vs2022_mac_template_selection.png
-
-       - C#/F#の部分は使用する言語を選ぶ．両方の言語について動作確認しよう．
-
-    #. ターゲットフレームワークを聞かれるので適当に選ぶ．
-
-       .. image::images/ss_vs2022_mac_fw_selection.png
-
-      ..  - Visual Studio 2022 for Macでは「.NET 6.0」も選べる．.NET 6.0を選ぶとテンプレートに含まれるHello Worldのプログラムが，
-      ..    C# 9.0の新機能を利用したものとなる．
-
-    #. プロジェクト名とソリューション名を聞かれるので適当に入力する．たとえば，どちらも ``HelloWorldCS`` にしたのでよい（``CS``はC#の気持ち）．
-
-       .. note:: 
-
-         プロジェクトは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものであり，ソリューションは関連するプロジェクトをまとめたもの（参考：`What are solutions and projects in Visual Studio? <https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022>`_）．
-
-
-       .. image::images/ss_vs2022_mac_creating_project.png
-
-    #. エディタで ``Program.cs`` が開かれた状態になる．
-
-       .. image::images/ss_vs2022_mac_editor.png 
-
-
-    #. コードを実行するには左上のほうにある▶ボタンを押す．すると，ビルドが行われ実行形式が作成された後にその実行形式が実行される．
-       ビルド時の出力等がされた後に以下のように「Terminal」/「ターミナル」に ``Hello, World!`` と表示されればOK．
-       
-       .. image::images/ss_vs2022_mac_output.png 
-
-       * 右下の「ターミナル - HelloWorldCS」（``HelloWorldCS``の部分は具体的なプロジェクト名に置き換える）の上にマウスカーソルを合わせる必要があるかもしれない．いちいちマウスオーバーするのが面倒臭いのであれば右上の📌の形のボタンを押して（あるいは，ドロップダウンメニューから「ドッキング」を選択して）位置を固定しておくとよい．
-
-         * 元のマウスオーバすると「枠」がポップアップする設定に戻すには📌を再び押すか，ドロップダウンメニューから「自動的に隠す」（「ドッキング解除」ではない）を選択する．
-
-       .. note::
-
-          2023/04/12 Xcode コマンドラインツールが原因でビルドに失敗することがある模様．以下を試みるとよいかもしれない．
-
-          * Xcode コマンドラインツールのライセンスに同意する（ビルドメッセージにその旨が表示されているかも）
-          * Xcode コマンドラインツールを更新する（もし「システム設定」の「ソフトウェアアップデート」に表示されているなら）
-
-    #. 上記の動作確認はC#/F#の両方について行おう．
-
-
-    .. note:: 
-
-         もし以上のとおりやった上でF#でのビルドに失敗し，「パッケージ FSharp.Core が見つかりません。ソース Microsoft Visual Studio Offline Packages には、この ID のパッケージが存在しません。」というエラーメッセージが出る場合は，コマンドライン（MacだとTerminal.app）から
-
-         ::
-
-            dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
-
-
-         を実行する．あるいは，以下の「`.NET SDKのインストール （Windows/Mac ほぼ共通）`_」の手順1～4を読みSDKをインストールするとよい．（それでも直らなければ，教員・TAに質問をしてください．）
-
-
-.. note::
-
-   Visual Studio for Mac をアンインストールする場合には，アプリケーションフォルダから当該アイコンをゴミ箱に入れるだけでは不十分である．
-   完全にアンインストールするには`公式のアンインストール手順 <https://learn.microsoft.com/en-us/visualstudio/mac/uninstall?view=vsmac-2022>`__ に従ってアンインストールする必要がある．
-
-==============================================
-.NET SDKのインストール （Windows/Mac ほぼ共通）
-==============================================
+.. caution:: 
+
+   `2024年8月一杯でVisual Studio for Macの提供が廃止される <https://learn.microsoft.com/en-us/visualstudio/mac/what-happened-to-vs-for-mac?view=vsmac-2022>`_ こととなった．
+   それにともない，今年は
+     Visual Studio Code + C# Dev Kit or Ionide for F#
+   を用いた環境構築法を紹介することとする．Visual Studio を使いたい人は `昨年度の環境構築法 <./setup_2023.html>`_ を参照されたし．
+
+まずは，`.NET SDKのインストール`_ を行い，その後`Visual Studio Code (VSCode) のインストール・設定`_ を行う．
+自分の好きなエディタ（viやEmacs等）を使用したい人は後者はしなくてもよい．
+
+======================
+.NET SDKのインストール 
+======================
 
 Visual Studioに含まれているので，上記を行っている場合は以下を行う必要はない．
 
-1. `.NET SDKのダウンロードページ <https://dotnet.microsoft.com/ja-jp/download>`_ より，software development kit (SDK)をダウンロードする．
+#. `.NET SDKのダウンロードページ <https://dotnet.microsoft.com/ja-jp/download>`_ より，software development kit (SDK)をダウンロードする．
    - Windowsの人はWindows版のSDKをダウンロードする．
-   - Mac版についてはいわゆるintel MacとM1 Macではダウンロードすべきものが違うので注意．前者はx64版を後者はArm64版をダウンロードしよう．
+   - Mac版についてはいわゆるintel MacとAppleシリコン（M1やM2）のMacではダウンロードすべきものが違うので注意．前者はx64版を後者はArm64版をダウンロードしよう．
 
 #. ダウンロードしたインストーラを実行し，指示に従ってインストールを完了する．
-   - Windows版なら``dotnet-sdk-6.0.407-win-x64.exe``みたいな名前
-   - Macのx64版なら``dotnet-sdk-6.0.407-osx-x64.pkg`` みたいな名前
+   - Windows版なら``dotnet-sdk-8.0.201-win-x64.exe``みたいな名前
+   - Macのx64版なら``dotnet-sdk-8.0.201-osx-x64.pkg``/``dotnet-sdk-8.0.201-osx-arm64.pkg`` みたいな名前
 
 #. ターミナル（WindowsだとPowerShellか「コマンド プロンプト」，MacだとTerminal.appやiTerm.app）を開き，以下を実行する．
 
@@ -239,30 +34,31 @@ Visual Studioに含まれているので，上記を行っている場合は以�
 
       dotnet --list-sdks
 
-   以下は私の環境における出力だが，このようにダウンロードしたSDK（6.0.XXX）が表示されたらばOK．
+   以下は私の環境における出力だが，このようにダウンロードしたSDK（8.0.XXX）が表示されたらばOK．
     
    .. code:: 
 
       6.0.400 [/usr/local/share/dotnet/sdk]
       6.0.407 [/usr/local/share/dotnet/sdk]
+      6.0.408 [/usr/local/share/dotnet/sdk]
+      6.0.410 [/usr/local/share/dotnet/sdk]
+      6.0.419 [/usr/local/share/dotnet/sdk]
       7.0.202 [/usr/local/share/dotnet/sdk]
+      7.0.302 [/usr/local/share/dotnet/sdk]
+      7.0.304 [/usr/local/share/dotnet/sdk]
+      7.0.313 [/usr/local/share/dotnet/sdk]
+      8.0.200 [/usr/local/share/dotnet/sdk]
 
-#. 動作確認もしておこう．
+#. 動作確認もしておこう（動作確認は以下のVSCodeのインストール・設定後にも行うので，この時点では飛ばしてもよい）
    
-   i. 適当なディレクトリに移動して以下を実行する．
+   i. 適当なフォルダに移動して以下を実行する．
 
       .. code:: 
           
           dotnet new console -o HelloWorldCS 
 
-      .. .. note::
 
-      ..    ``--langVersion 8.0``の部分は必須ではない．単に，Visual Studio 2019 にて C#の「コンソール アプリケーション」テンプレートと
-      ..    生成されるHello Worldのコードを一致させたかったためである．なお，上述のように Visual Studio 2022 を使用した場合は，
-      ..    下記とは異なるHello Worldのコード（C# 9.0の機能を利用したもの）が出力される．
-         
-
-   #. ``HelloWorldCS`` というディレクトリができているので，そこに移動する．  
+   #. ``HelloWorldCS`` というフォルダができているので，そこに移動する．  
 
       .. code::
       
@@ -282,7 +78,7 @@ Visual Studioに含まれているので，上記を行っている場合は以�
          Console.WriteLine("Hello, World!");
 
 
-   #. 以下をを実行してビルドする．
+   #. 以下のコマンドを実行してビルドする．
 
       .. code::
  
@@ -294,12 +90,132 @@ Visual Studioに含まれているので，上記を行っている場合は以�
 
           dotnet run 
 
-      すると，"Hello, World!"が表示されるのが確認できるはずだ． 
+      すると，``"Hello, World!"``が表示されるのが確認できるはずだ． 
 
-   #. F#でも同様であることを確認しておこう（``dotnet new``を実行する場面で，``dotnet new console -o HelloWorldCS`` の代わりに ``dotnet new console -lang "F#" -o HelloWorldFS`` とする．また，このコマンドだと``HelloWorldCS``ではなく``HelloWorldFS``というディレクトリが作成される）
+   #. F#でも同様であることを確認しておこう（``dotnet new``を実行する場面で，``dotnet new console -o HelloWorldCS`` の代わりに ``dotnet new console -lang "F#" -o HelloWorldFS`` とする．また，このコマンドだと``HelloWorldCS``ではなく``HelloWorldFS``というフォルダが作成される）
 
 
-      .. .. note::
 
-      ..    F#でもターゲットフレームワークが .NET 5.0 のときと .NET 6.0 のときで出力される Hello World のコードが変わる．
+================================================
+Visual Studio Code (VSCode) のインストール・設定
+================================================
+
+#. `https://code.visualstudio.com/`_ からインストーラをダウンロードする．
+
+#. ダウンロードしたインストーラを実行し，指示に従いインストールする．
+
+#. 左下の歯車アイコンをクリックし「拡張機能」/「Extensions」を選択する．あるいは，WindowsだとControl+Shift+X，MacだとMeta + Shift + Xを押す．
+
+#. お好みで `Japanese Language Pack for Visual Studio Code <https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja>`_ をインストールし，UIを日本語にする．
+
+
+   リンク先のウェブページの「Install」をクリックするとVSCode内で当該拡張機能のページが表示されるので，そこの"Install"をクリックする．
+
+   あるいは， VSCode上で拡張機能の検索画面からインストールする．
+   左下の歯車アイコンをクリックし"Extensions"を選択する．あるいは，WindowsだとControl + Shift + X，MacだとCommand + Shift + Xを押す．
+   するとサイドバーが"EXTENSIONS"に切り替わる．サイドバー上部の検索欄から"Japanese"で検索すると"Japanese Language Pack for Visual Studio Code"が検索結果に現れると思うのでその"install"をクリックする．
+
+   .. note::
+
+      一番左のアイコンが並んでいるやつはアクティビティバーといってサイドバーではない．サイドバーはその隣のやつである．
+
+
+#. `C# Dev Kit <https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit>`_ をインストールする．
+   上と同様にリンク先のウェブページからインストールするか，左下の歯車アイコンをクリックし「拡張機能」/"Extensions"を選択し，
+   拡張機能サイドバーより検索してインストールする（"C#"で検索すれば見つかるはず）．
+   
+   * なお，ライセンスはVisual Studioと同様である．本演習の範囲（学術目的の使用は無償なので）では気にすることはないが，商用のソフトウェアを作成する場合は有償ライセンスが必要となる場合がある．
+     詳しくは `公式FAQ <https://code.visualstudio.com/docs/csharp/cs-dev-kit-faq#_who-can-use-c-dev-kit>`_ を参照．
+
+#. `Ionide for F# <https://marketplace.visualstudio.com/items?itemName=Ionide.Ionide-fsharp>`_ をインストールする．やり方は上と同様．
+
+   .. note:: 
+
+      これを入れると C#プロジェクトを開いた場合もIonideのサイドバーに勝手切り替わるので，C#演習の間は無効化推奨．
+
+#. 動作を確認してみよう．
+
+
+
+   C#編1（プロジェクトの作成にコマンドライン使用；本演習ではオススメ）
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   i. ターミナルでプロジェクトを作成し，それを開く．
+
+      .. note::
+
+         ここでいうプロジェクトとは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものである（参考：`What are solutions and projects in Visual Studio? <https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022>`_）．プロジェクトの設定は``.csproj``ファイルに記述されている．
+
+
+      * 方法1：ターミナル上で上に書いたように``dotnet new console -o HelloWorldCS``で適当なプロジェクト（ここでは``HelloWorldCS``）を作成し，その後``code HelloWorldCS``でVSCodeを開く．
+        少し待つとC# Dev Kitがプロジェクトを認識する（「EXPLORER」サイドバーに「SOLUTION EXPLORER」が増える）．
+
+
+
+      * 方法2：VSCodeで作成したいプロジェクトと同名のフォルダ（``HelloWorldCS``とする）を開く．メニューの"View"→"Terminal"よりターミナルを起動・表示する．
+
+        .. image::images/vscode/vscode_terminal.png            
+
+        ターミナルで
+         
+        .. code::
+         
+           dotnet new console -o .
+         
+        を実行し開いたフォルダと同名のプロジェクトを作成する．
+         
+        .. image::images/vscode/vscode_dotnet_new.png
+
+       「EXPLORER」サイドバーより``.cs``ファイルを選択して少し待つと，C# Dev Kitによりプロジェクトが認識される（同サイドバーに「SOLUTION EXPLORER」が増える）．        
+
+      いずれの場合もC# Dev Kitがプロジェクトを認識した時点で，開いたフォルダ直下に``フォルダ名.sln``なるファイルが作成されるはず．
+
+      .. note:: 
+
+         ``.sln``はソリューションファイルと呼ばれる．ソリューションは関連する複数のプロジェクトをまとめたもの（参考：`What are solutions and projects in Visual Studio? <https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022>`_）
+
+
+
+   #. ``Program.cs``を左のエクスプローラーから選択して開き， *右上*（左にあるものではない）の「再生ボタンの右下に虫がついたアイコン」をクリックする．
+
+      .. image::images/vscode/vscode_run_button.png 
+
+   #. しばらくすると，デバッグコンソールにデバッグメッセージとともに，プログラムの出力
+   
+      .. code::
+         
+         Hello, World!
+         
+      が表示される．
+
+      .. image::images/vscode/vscode_debug_console.png
+
+   C#編2（プロジェクト作成にC# Dev Kitの機能を利用）
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   i.  VSCodeを起動し，「EXPLORER」サイドバー下部"Create .Net Project"をクリックする．
+         あるいは「開く」から適当なフォルダを開き，コマンドパレット（WindowsはControl + Shift + P，MacはCommand + Shift + P）を起動し，``.NET: New Project...``を選択する．非常に多くのコマンドがリストされるが，当該コマンドは途中までタイプすると出てくるはず．
+
+
+
+         .. note:: 
+
+            現在，この方法ではEto.Formsプロジェクトを直接作成はできない．
+
+   #. "Console App"を選択する．
+   #. その後プロジェクト名を聞かれるので適当に選択する．デフォルトのままでもよい．次に，どのフォルダの下に作成するかを聞かれるので適当に選択する．フォルダを開いてからコマンドパレットからプロジェクト作成を行った場合は，デフォルトではそのフォルダの直下になっている．
+      * 注意：Ionideを入れているとこのあたりでサイドバーが切り替わってしまう．その場合は左端上のアイコンからエクスプローラに戻す．
+   #. ターミナル（VSCodeのものでもよい）から``dotnet run``で実行してもよいし，「C#編1」に書いたように右上の「再生ボタンの右下に虫がついたアイコン」で実行してもよい．
+
+
+   F#編
+   ~~~~
+
+   i. ターミナル上で上に書いたように``dotnet new console -lang "F#" -o HelloWorldFS``で適当なプロジェクト（ここでは``HelloWorldFS``）を作成する．
+   #. ``code HelloWorldCS``でVSCodeを開く．
+   #. 少し待つとサイドバーがIonideのものに切り替わる．         
+
+      .. image::images/vscode/vscode_ionide.png 
+
+   #. サイドバー上部の実行ボタンから実行する．あるいはターミナルから``dotnet run``で実行する．
 
