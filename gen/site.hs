@@ -8,9 +8,10 @@ import qualified Data.Time             as Time
 
 import qualified System.Directory      as Dir
 import qualified System.FilePath       as FP
-import qualified Text.Pandoc
+import qualified Text.Pandoc           as P
 import           Text.Pandoc           (ReaderOptions (..), WriterOptions (..))
 import qualified Text.Pandoc.Shared
+import qualified Text.Pandoc.Walk      as P
 
 import qualified Data.Char
 import           Data.Functor.Identity (runIdentity)
@@ -18,6 +19,7 @@ import           Data.String           (fromString)
 import           Data.Text             (Text)
 import qualified Data.Text             as T
 
+import           Control.Category      ((>>>))
 import qualified Data.List             (isPrefixOf)
 
 -- import qualified Debug.Trace
@@ -37,14 +39,14 @@ myReaderOptions =
   defaultHakyllReaderOptions
   {
     -- No smart quotes
-    readerExtensions = Text.Pandoc.disableExtension Text.Pandoc.Ext_smart (readerExtensions defaultHakyllReaderOptions)
+    readerExtensions = P.disableExtension P.Ext_smart (readerExtensions defaultHakyllReaderOptions)
   }
 
 myWriterOptions :: WriterOptions
 myWriterOptions =
   defaultHakyllWriterOptions
   {
-    writerExtensions = Text.Pandoc.disableExtension Text.Pandoc.Ext_smart (writerExtensions defaultHakyllWriterOptions)
+    writerExtensions = P.disableExtension P.Ext_smart (writerExtensions defaultHakyllWriterOptions)
   }
 
 -- from: https://svejcar.dev/posts/2019/11/27/table-of-contents-in-hakyll/
@@ -57,8 +59,8 @@ withTOC = myWriterOptions
             writerTemplate        = Just tocTemplate
           }
 
-tocTemplate :: Text.Pandoc.Template Text
-tocTemplate = either error id . runIdentity . Text.Pandoc.compileTemplate "" $ T.unlines
+tocTemplate :: P.Template Text
+tocTemplate = either error id . runIdentity . P.compileTemplate "" $ T.unlines
   [ "<nav class=\"toc\">"
   , "$toc$"
   , "</nav>"
@@ -113,9 +115,28 @@ adjustJapaneseSpacing = pure . fmap aj
      | isJpChar c = Just (c:cs)
      | otherwise = Nothing
 
+procMarkdownAdmonitions :: P.Pandoc -> P.Pandoc
+procMarkdownAdmonitions = P.walk go
+  where
+    splitAtSoftbreak :: [P.Inline] -> ([P.Inline],[P.Inline])
+    splitAtSoftbreak [] = ([], [])
+    splitAtSoftbreak (i:is) = case i of
+      P.SoftBreak -> ([], is)
+      _           -> let (s, t) = splitAtSoftbreak is in (i:s, t)
 
-rstCompilingRule :: Compiler (Item String)
-rstCompilingRule = do
+    go :: P.Block -> P.Block
+    go b@(P.BlockQuote (P.Para para:bs2)) -- too specific?
+      | ([P.Str "[!NOTE]"],bs1) <- splitAtSoftbreak para = mkDiv "note" "Note" (P.Para bs1 : bs2)
+      | ([P.Str "[!TIPS]"],bs1) <- splitAtSoftbreak para = mkDiv "tips" "Tips" (P.Para bs1 : bs2)
+      | ([P.Str "[!CAUTION]"],bs1) <- splitAtSoftbreak para= mkDiv "caution" "Caution" (P.Para bs1 : bs2)
+      | ([P.Str "[!IMPORTANT]"],bs1) <- splitAtSoftbreak para = mkDiv "important" "Important" (P.Para bs1 : bs2)
+      | ([P.Str "[!WARNING]"],bs1) <- splitAtSoftbreak para = mkDiv "warning" "Warning" (P.Para bs1 : bs2)
+      where
+        mkDiv c t bs = P.Div ("",[c],[]) $ P.Div ("",["title"],[]) [P.Para [P.Str t]] : bs
+    go b                                      = b
+
+pageCompilingRule :: Compiler (Item String)
+pageCompilingRule = do
 --  loadBody "templates/nav.html" :: Compiler Template
 
   underlying <- getUnderlying
@@ -123,6 +144,8 @@ rstCompilingRule = do
   let wopt = case toc of
                Just "true" -> withTOC
                _           -> myWriterOptions
+
+  isMarkdown <- (== ".md") <$> getUnderlyingExtension
 
   fp <- getResourceFilePath
   mt <- getItemModificationTime underlying
@@ -140,6 +163,10 @@ rstCompilingRule = do
   let bn = FP.takeBaseName fp
   let postProc a = relativizeUrls a >>= adjustJapaneseSpacing
 
+  let transform =
+        Text.Pandoc.Shared.headerShift 1
+        >>> (if isMarkdown then procMarkdownAdmonitions else id)
+
   case checkBN bn of
     Just (Q i) -> do
       inst <-
@@ -154,7 +181,7 @@ rstCompilingRule = do
             constField "lastModified" (formatTimeAsJST $ max mt mti) <> -- update lastModified
             ctxt
 
-      pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
+      pandocCompilerWithTransform myReaderOptions wopt transform
         >>= loadAndApplyTemplate "templates/defaultQ.html" ctxt'
         >>= postProc
 
@@ -163,7 +190,7 @@ rstCompilingRule = do
             constField "number"      (show i) <>
             ctxt
 
-      pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
+      pandocCompilerWithTransform myReaderOptions wopt transform
         >>= loadAndApplyTemplate "templates/defaultW.html" ctxt'
         >>= postProc
 
@@ -174,7 +201,7 @@ rstCompilingRule = do
               "templates/defaultSetup.html"
             else
               "templates/default.html"
-      pandocCompilerWithTransform myReaderOptions wopt (Text.Pandoc.Shared.headerShift 1)
+      pandocCompilerWithTransform myReaderOptions wopt transform
         >>= loadAndApplyTemplate tmpl ctxt
         >>= postProc
   where
@@ -215,11 +242,11 @@ main = hakyllWith conf $ do
 
     match "pages/*.md" $ do
       route $ gsubRoute "pages/" (const "") `composeRoutes` setExtension "html"
-      compile rstCompilingRule
+      compile pageCompilingRule
 
     match "pages/*.rst" $ do
       route $ gsubRoute "pages/" (const "") `composeRoutes` setExtension "html"
-      compile rstCompilingRule
+      compile pageCompilingRule
 
     match "pages/*.html" $ do
       route $ gsubRoute "pages/" (const "")
