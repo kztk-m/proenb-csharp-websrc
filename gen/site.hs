@@ -102,7 +102,7 @@ adjustJapaneseSpacing = pure . fmap aj
 
     ajAfterJp :: Char -> String -> String
     ajAfterJp jc [] = [jc]
-    ajAfterJp jc ('\n':cs) | Just rest <- skipTrailingNBSPBeforeJp cs = jc:aj(rest)
+    ajAfterJp jc ('\n':cs) | Just rest <- skipTrailingNBSPBeforeJp cs = jc:aj rest
     ajAfterJp jc (' ':'<':cs) | "a " `Data.List.isPrefixOf` cs || "strong" `Data.List.isPrefixOf` cs || "em" `Data.List.isPrefixOf` cs = jc:"<"++aj cs
     ajAfterJp jc (c:cs) = jc:aj(c:cs)
 
@@ -135,6 +135,15 @@ procMarkdownAdmonitions = P.walk go
         mkDiv c t bs = P.Div ("",[c],[]) $ P.Div ("",["title"],[]) [P.Para [P.Str t]] : bs
     go b                                      = b
 
+myTransformM :: P.Pandoc -> Compiler P.Pandoc
+myTransformM d = do
+  let d' = Text.Pandoc.Shared.headerShift 1 d
+  isMarkdown <- (== ".md") <$> getUnderlyingExtension
+  if isMarkdown
+    then pure $ procMarkdownAdmonitions d'
+    else pure d'
+
+
 pageCompilingRule :: Compiler (Item String)
 pageCompilingRule = do
 --  loadBody "templates/nav.html" :: Compiler Template
@@ -144,8 +153,6 @@ pageCompilingRule = do
   let wopt = case toc of
                Just "true" -> withTOC
                _           -> myWriterOptions
-
-  isMarkdown <- (== ".md") <$> getUnderlyingExtension
 
   fp <- getResourceFilePath
   mt <- getItemModificationTime underlying
@@ -163,15 +170,11 @@ pageCompilingRule = do
   let bn = FP.takeBaseName fp
   let postProc a = relativizeUrls a >>= adjustJapaneseSpacing
 
-  let transform =
-        Text.Pandoc.Shared.headerShift 1
-        >>> (if isMarkdown then procMarkdownAdmonitions else id)
-
   case checkBN bn of
     Just (Q i) -> do
       inst <-
-        if i <= 4 then load "questions/instruction.rst"
-        else           load "questions/eto_instruction.rst"
+        if i <= 4 then load "questions/instruction.md"
+        else           load "questions/eto_instruction.md"
 
       mti <- getItemModificationTime (itemIdentifier inst)
 
@@ -181,7 +184,7 @@ pageCompilingRule = do
             constField "lastModified" (formatTimeAsJST $ max mt mti) <> -- update lastModified
             ctxt
 
-      pandocCompilerWithTransform myReaderOptions wopt transform
+      pandocCompilerWithTransformM myReaderOptions wopt myTransformM
         >>= loadAndApplyTemplate "templates/defaultQ.html" ctxt'
         >>= postProc
 
@@ -190,7 +193,7 @@ pageCompilingRule = do
             constField "number"      (show i) <>
             ctxt
 
-      pandocCompilerWithTransform myReaderOptions wopt transform
+      pandocCompilerWithTransformM myReaderOptions wopt myTransformM
         >>= loadAndApplyTemplate "templates/defaultW.html" ctxt'
         >>= postProc
 
@@ -201,7 +204,7 @@ pageCompilingRule = do
               "templates/defaultSetup.html"
             else
               "templates/default.html"
-      pandocCompilerWithTransform myReaderOptions wopt transform
+      pandocCompilerWithTransformM myReaderOptions wopt myTransformM
         >>= loadAndApplyTemplate tmpl ctxt
         >>= postProc
   where
@@ -237,7 +240,7 @@ main = hakyllWith conf $ do
         templateBodyCompiler
 
     match "questions/*" $ do
-      compile $ pandocCompilerWithTransform myReaderOptions myWriterOptions (Text.Pandoc.Shared.headerShift 1)
+      compile $ pandocCompilerWithTransformM myReaderOptions myWriterOptions myTransformM
 
 
     match "pages/*.md" $ do
