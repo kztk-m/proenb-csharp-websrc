@@ -14,6 +14,8 @@ tableOfContents: true
 まずは，`.NET SDKのインストール`_ を行い，その後`Visual Studio Code (VSCode) のインストール・設定`_ を行う．
 自分の好きなエディタ（viやEmacs等）を使用したい人は後者はしなくてもよい．
 
+（本ページに掲載されているスクリーンショットは，マイクロソフトの許諾を得て使用しています．）
+
 ======================
 .NET SDKのインストール 
 ======================
@@ -109,7 +111,10 @@ Visual Studio Code (VSCode) のインストール・設定
 #. お好みで `Japanese Language Pack for Visual Studio Code <https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja>`_ をインストールし，UIを日本語にする．
 
 
-   リンク先のウェブページの「Install」をクリックするとVSCode内で当該拡張機能のページが表示されるので，そこの"Install"をクリックする．
+   リンク先のウェブページの「Install」ボタンを押すと，「VSCodeで開きますか」旨の質問が表示されるのでそうする旨の選択する．
+   すると，VSCode内で当該拡張機能のページが表示されるので，そこの"Install"を選択する．
+
+   .. image::images/vscode/vscode_extension_j.png 
 
    あるいは， VSCode上で拡張機能の検索画面からインストールする．
    左下の歯車アイコンをクリックし"Extensions"を選択する．あるいは，WindowsだとControl + Shift + X，MacだとCommand + Shift + Xを押す．
