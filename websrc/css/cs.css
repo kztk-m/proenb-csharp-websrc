@@ -746,12 +746,14 @@ section.important {
 
 .note>.title>p::before,
 .warning>.title>p::before,
+.important>.title>p::before,
 .caution>.title>p::before,
 .tip>.title>p::before {
     font-family: 'Material Symbols Outlined';
     font-weight: normal;
     font-style: normal;
     /* font-size: 110%; */
+    font-size: max(20px, 100%);
     display: inline-block;
     line-height: 1;
     text-transform: none;
@@ -773,6 +775,11 @@ section.important {
 
 .tip>.title>p::before {
     content: "\0e0f0";
+}
+
+.important>.title>p::before {
+    content: "\0f5cf";
+
 }
 
 span.metaname {
