@@ -28,6 +28,11 @@
     /* --note-bg-color:        hsl(205, 65%, 94%); */
     --hint-bg-color: hsl(36, 90%, 95%);
     --caution-bg-color: hsl(0, 90%, 95%);
+    --important-bg-color: hsl(255, 90%, 95%);
+
+    --note-title-color: hsl(105, 80%, 25%);
+    --caution-title-color: hsl(0, 80%, 40%);
+    --important-title-color: hsl(225, 80%, 40%);
 
 
 
@@ -674,6 +679,8 @@ div.note,
 section.note,
 div.caution,
 section.caution,
+div.important,
+section.important,
 div.admonition,
 section.admonition,
 div.tip,
@@ -716,6 +723,56 @@ section.caution {
 div.hint,
 section.hint {
     background-color: var(--hint-bg-color);
+}
+
+div.important,
+section.important {
+    background-color: var(--important-bg-color);
+}
+
+.note>.title {
+    color: var(--note-title-color);
+}
+
+.hint>.title {}
+
+.caution>.title {
+    color: var(--caution-title-color);
+}
+
+.important>.title {
+    color: var(--important-title-color);
+}
+
+.note>.title>p::before,
+.warning>.title>p::before,
+.caution>.title>p::before,
+.tip>.title>p::before {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    /* font-size: 110%; */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    vertical-align: text-bottom;
+    margin-right: 0.2em;
+}
+
+.note>.title>p::before {
+    content: "\0e88e";
+}
+
+.caution>.title>p::before {
+    content: "\0e160";
+}
+
+.tip>.title>p::before {
+    content: "\0e0f0";
 }
 
 span.metaname {
@@ -822,6 +879,23 @@ th>p {
 img.enlargeable {
     cursor: pointer;
 }
+
+/* p:has(img.enlargeable)::after {
+    content: "画像をクリックして拡大";
+    display: block;
+    position: absolute;
+    top: calc(10%);
+    left: calc(40%);
+    font-size: 150%;
+    color: #CCC;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 0px auto;
+    padding: 0.3rem;
+    border-radius: 1rem;
+    pointer-events: none;
+    backdrop-filter: blur(5px);
+    transform: translate(-50%, -50%);
+} */
 
 .modal-pane {
     display: none;
@@ -966,7 +1040,19 @@ pre.sourceCode.c .code-control::before {
 
 span.copy-button::before {
     /* content: '\01F4CB Copy';  */
-    content: 'Copy';
+    /* content: 'Copy'; */
+    content: '\0e14d';
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 120%;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
 }
 
 span.copy-button.failed::before {
