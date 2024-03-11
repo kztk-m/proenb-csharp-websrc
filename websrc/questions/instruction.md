@@ -38,7 +38,7 @@
 できあがった `Program.cs`をClassroom内の当該回の「課題」より提出する．Visual Studioを使用した場合は，`Program.cs` は「作成したプロジェクト名」のフォルダ以下に含まれているが，当該フォルダは下記の場所にある．
 
 * Windowsの場合．まず，当該フォルダはデフォルトだと，ユーザフォルダの`source\repos`以下にある．
-  なお，ユーザフォルダはデフォルトだと `<code>C:\Users\<span class="metaname">ユーザ名</span></code>` であり，
+  なお，ユーザフォルダはデフォルトだと<code>C:\Users\\<span class="metaname">ユーザ名</span></code>であり，
   エクスプローラーのアドレスバーに`%HOMEPATH%`を入力すれば移動できるはず．
   また，Visual Studioの起動後の画面で *「ローカルフォルダを開く」* を選んだのでも場所がわかる（ダイアログが開くのでアドレスをコピーする）．
 

@@ -39,7 +39,8 @@ myReaderOptions =
   defaultHakyllReaderOptions
   {
     -- No smart quotes
-    readerExtensions = P.disableExtension P.Ext_smart (readerExtensions defaultHakyllReaderOptions)
+    readerExtensions = P.disableExtension P.Ext_smart (readerExtensions defaultHakyllReaderOptions),
+    readerColumns = 10000 -- suppress Markdown to determine the proportion of table columns
   }
 
 myWriterOptions :: WriterOptions
@@ -127,7 +128,7 @@ procMarkdownAdmonitions = P.walk go
     go :: P.Block -> P.Block
     go b@(P.BlockQuote (P.Para para:bs2)) -- too specific?
       | ([P.Str "[!NOTE]"],bs1) <- splitAtSoftbreak para = mkDiv "note" "Note" (P.Para bs1 : bs2)
-      | ([P.Str "[!TIPS]"],bs1) <- splitAtSoftbreak para = mkDiv "tips" "Tips" (P.Para bs1 : bs2)
+      | ([P.Str "[!TIP]"],bs1) <- splitAtSoftbreak para = mkDiv "tip" "Tip" (P.Para bs1 : bs2)
       | ([P.Str "[!CAUTION]"],bs1) <- splitAtSoftbreak para= mkDiv "caution" "Caution" (P.Para bs1 : bs2)
       | ([P.Str "[!IMPORTANT]"],bs1) <- splitAtSoftbreak para = mkDiv "important" "Important" (P.Para bs1 : bs2)
       | ([P.Str "[!WARNING]"],bs1) <- splitAtSoftbreak para = mkDiv "warning" "Warning" (P.Para bs1 : bs2)
