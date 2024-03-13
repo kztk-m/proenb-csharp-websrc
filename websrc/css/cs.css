@@ -21,8 +21,10 @@
     --figure-fg-color: white;
     --figure-border-color: #AAA;
 
-    --tip-bg-color: hsl(59, 95%, 93%);
-    --example-bg-color: hsl(205, 40%, 99%);
+    /* --tip-bg-color: hsl(59, 95%, 93%); */
+    --tip-bg-color: hsl(169, 50%, 95%);
+    /* --example-bg-color: hsl(205, 40%, 99%); */
+    --example-bg-color: hsl(250, 60%, 98%);
     --example-border-color: hsl(205, 10%, 58%);
     --note-bg-color: hsl(105, 50%, 95%);
     /* --note-bg-color:        hsl(205, 65%, 94%); */
@@ -30,6 +32,7 @@
     --caution-bg-color: hsl(0, 90%, 95%);
     --important-bg-color: hsl(255, 90%, 95%);
 
+    --tip-title-color: hsl(169, 80%, 25%);
     --note-title-color: hsl(105, 80%, 25%);
     --caution-title-color: hsl(0, 80%, 40%);
     --important-title-color: hsl(225, 80%, 40%);
@@ -115,22 +118,18 @@ pre {
 code {
     display: inline-block;
     background-color: var(--code-bg-color);
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
 
-    /* padding-top:   0.1em; */
-    /* padding-bottom: 0.1em; */
-
-    font-size: 100%;
+    font-size: 95%;
 
     margin-left: 0.1rem;
     margin-right: 0.1rem;
 
-    padding: 0.2rem 0.3rem;
+    padding: 0.15em 0.3em;
 
     /* border-style: solid; */
     /* border-width: 0.08em; */
-    border-color: var(--code-border-color);
+    /* border-color: var(--code-border-color); */
+    white-space: break-spaces;
 
     border-radius: 0.25rem;
 }
@@ -138,6 +137,7 @@ code {
 pre code {
     background-color: transparent;
     border-style: none;
+    font-size: 100%;
     display: block;
     border-width: 0px;
     padding: 0px;
@@ -674,8 +674,8 @@ div.caution,
 section.caution,
 div.important,
 section.important,
-div.admonition,
-section.admonition,
+div.example,
+section.example,
 div.tip,
 section.tip,
 div.hint,
@@ -696,11 +696,19 @@ section.tip {
 div.example,
 section.example {
     background-color: var(--example-bg-color);
-    border: 0.15rem solid var(--example-border-color);
+    /* border: 0.15rem solid var(--example-border-color); */
 }
 
 .example>p:first-child {
     font-weight: bold;
+}
+
+.example:not(:has(p, p > .title))::before {
+    content: "例";
+    display: inline-block;
+    font-weight: bold;
+
+    margin-top: 1rem;
 }
 
 div.note,
@@ -727,7 +735,9 @@ section.important {
     color: var(--note-title-color);
 }
 
-.hint>.title {}
+.tip>.title {
+    color: var(--tip-title-color);
+}
 
 .caution>.title {
     color: var(--caution-title-color);
