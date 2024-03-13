@@ -158,14 +158,6 @@ pre {
     overflow: auto;
 }
 
-body {
-    margin: 0px;
-}
-
-/* body { */
-/*     padding-left: 1em; */
-/*     padding-right: 1em; */
-/* } */
 
 h1 {
     font-size: 200%;
@@ -259,6 +251,7 @@ body {
     margin-right: auto;
     padding-left: 0px;
     padding-right: 0px;
+    line-height: 1.5;
 }
 
 
@@ -1159,7 +1152,7 @@ ul.changes>li.planned {
 ul.changes>li::marker {
     content: "☑";
     font-size: 1.2em;
-    line-height: 100%;
+    line-height: 1;
 }
 
 ul.changes>li.planned::marker {
