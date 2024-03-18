@@ -8,8 +8,8 @@ tableOfContents: true
 
    `2024年8月一杯でVisual Studio for Macの提供が廃止される <https://learn.microsoft.com/en-us/visualstudio/mac/what-happened-to-vs-for-mac?view=vsmac-2022>`_ こととなった．
    それにともない，今年は
-     Visual Studio Code + C# Dev Kit or Ionide for F#
-   を用いた環境構築法を紹介することとする．Visual Studio を使いたい人は `昨年度の環境構築法 <./setup_2023.html>`_ を参照されたし．
+     Visual Studio Code上でC# Dev KitおよびIonide for F#
+   を用いた環境構築法を紹介することとする．Visual Studio を使いたい人は `昨年度の環境構築法 <./setup_gui_2023.html>`_ を参照されたし．
 
 まずは，`.NET SDKのインストール`_ を行い，その後`Visual Studio Code (VSCode) のインストール・設定`_ を行う．
 自分の好きなエディタ（viやEmacs等）を使用したい人は後者はしなくてもよい．
@@ -81,7 +81,7 @@ C#演習の第5週・第6週目の課題を進めるには `さらなる準備�
 
       HelloWorldCS.csproj  Program.cs           obj/
 
-   プログラムを書くには， ``Program.cs`` を変更すればよい．現時点では ``Program.cs`` の中身は以下の通りである．
+   プログラムを書くには， ``Program.cs`` を変更すればよい．現時点では ``Program.cs`` の中身は以下の通りである（``cat Program.cs``を実行するなどすると見られる）．
 
    .. code:: cs 
    
@@ -122,9 +122,10 @@ Visual Studio Code (VSCode) のインストール・設定
 
 
    リンク先のウェブページの「Install」ボタンを押すと，「VSCodeで開きますか」旨の質問が表示されるのでそうする旨の選択する．
-   すると，VSCode内で当該拡張機能のページが表示されるので，そこの"Install"を選択する．
+   すると，VSCode内で当該拡張機能のページが表示されるので，そこの"Install"ボタンを選択する．
 
    .. image::images/vscode/vscode_extension_j.png 
+      :alt: "Install"ボタンは当該拡張機能のページの上部にある．
 
    あるいは， VSCode上で拡張機能の検索画面からインストールする．
    左下の歯車アイコンをクリックし"Extensions"を選択する．あるいは，WindowsだとControl + Shift + X，MacだとCommand + Shift + Xを押す．
@@ -178,6 +179,7 @@ i. ターミナルでプロジェクトを作成し，それを開く．
    * 方法2：VSCodeで作成したいプロジェクトと同名のフォルダ（``HelloWorldCS``とする）を開く（ **Windowsでは「ファイルを開く」ではなく「フォルダーを開く」から開く** ）．メニューの「表示」→「ターミナル」よりターミナルを起動・表示する．
 
       .. image::images/vscode/vscode_terminal.png            
+         :alt:   VSCodeの内蔵ターミナルは画面下部に表示される．
 
       ターミナルで
       
@@ -200,10 +202,10 @@ i. ターミナルでプロジェクトを作成し，それを開く．
       ``.sln``はソリューションファイルと呼ばれる．ソリューションは関連する複数のプロジェクトをまとめたもの（参考：`What are solutions and projects in Visual Studio? <https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022>`_）
 
 #. ターミナルから``dotnet run``を実行してもよいが，ここでは別の方法を紹介する．
-   ``Program.cs``を左のエクスプローラーから選択して開き， *右上*（左にあるものではない）の「再生ボタンの右下に虫がついたアイコン」をクリックする．
+   ``Program.cs``を左のエクスプローラーから選択して開き，エディタパネル *右上*（左にあるものではない）の「再生ボタンの右下に虫がついたアイコン」をクリックする．
    このボタンは``.cs``ファイルに関連するプロジェクトをデバッグ実行する（右側の ﹀ から通常の実行に切り替えられる）．
 
-   .. image::images/vscode/vscode_run_button.png 
+   .. image::images/vscode/vscode_run_button.png       
 
 #. しばらくすると，デバッグコンソールにデバッグメッセージとともに，プログラムの出力
 
@@ -211,10 +213,11 @@ i. ターミナルでプロジェクトを作成し，それを開く．
       
       Hello, World!
       
-   が表示される．最初の実行では「実行とデバッグ」にサイドバーが切り替わるかもしれないが，アクティビティーバーの最上部のエクスプローラーを選択すると戻すことができる．
+   が表示される．最初の実行では「実行とデバッグ」にサイドバーが切り替わるかもしれないが，アクティビティーバー（一番左にあるアイコンが並んでいるバー）の一番上のアイコン（マウスをホバーすると「エクスプローラー」と出るもの）を選択すると戻すことができる．メニューの「表示」→「エクスプローラー」を選択したのでもよい．
 
 
    .. image::images/vscode/vscode_debug_console.png
+      :alt:   より詳しくは，画面下部のデバッグコンソールに水色のデバッグメッセージとともに青色で"Hello World"が表示される．
 
    .. note::
 

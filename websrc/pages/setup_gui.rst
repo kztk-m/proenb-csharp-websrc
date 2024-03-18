@@ -8,7 +8,7 @@ tableOfContents: true
 
    `2024年8月一杯でVisual Studio for Macの提供が廃止される <https://learn.microsoft.com/en-us/visualstudio/mac/what-happened-to-vs-for-mac?view=vsmac-2022>`_ こととなった．
    それにともない，今年は
-     Visual Studio Code + C# Dev Kit or Ionide for F#
+     Visual Studio Code上でC# Dev KitおよびIonide for F#
    を用いた環境構築法を紹介することとする．Visual Studio を使いたい人は `昨年度の環境構築法 <./setup_gui_2023.html>`_ を参照されたし．
 
 
