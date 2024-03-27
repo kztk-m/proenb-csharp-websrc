@@ -1,1 +1,4 @@
 packages: gen/*.cabal
+
+package hakyll
+    flags: +previewserver +watchServer
