@@ -153,6 +153,26 @@ Visual Studio Code (VSCode) のインストール・設定
       右下の歯車アイコンをクリックし表示されるメニューから「無効にする」を選択する
       （有効にする際も最後に「有効にする」を選択する以外は同様）．
 
+#. .. _command_code_install:
+
+   （オプショナル & Macの場合）コマンドパレット （Command + Shift + Pを押すと出てくる）から，
+
+   .. code::
+
+      シェル コマンド: PATH 内に 'code' コマンドをインストールします
+      Shell Command: Install 'code' command in PATH
+
+   を選択し（当該コマンドは"Shell C"ぐらいまで入力した出てくるはず），``code``コマンドをインストールする．これによりターミナルから``code FOLDER``とすることでVSCodeを起動できるようになる．
+
+   .. note:: 
+
+      `公式ドキュメント <https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line>`_ によると，
+
+          Restart the terminal for the new $PATH value to take effect. You'll be able to type 'code .' in any folder to start editing files in that folder.
+
+      とあるが，私の環境だと``Shell Command: Install 'code' command in PATH``をすることで，``/usr/local/bin``以下に実行形式ファイル``code``がインストールされた（そして記述に反して環境変数``PATH``は変更されなかった）ので，
+      もともと``/usr/local/bin``がパスに通っているのならばターミナルの再起動は必要がないかもしれない．
+
 
 動作確認
 --------
@@ -173,7 +193,7 @@ i. ターミナルでプロジェクトを作成し，それを開く．
       ここでいうプロジェクトとは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものである（参考：`What are solutions and projects in Visual Studio? <https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022>`_）．プロジェクトの設定は``.csproj``ファイルに記述されている．
 
 
-   * 方法1：ターミナル上で， `上に書いた <#check_dotnetsdk_install>`_ ように``dotnet new console -o HelloWorldCS``で適当なプロジェクト（ここでは``HelloWorldCS``）を作成し，その後``code HelloWorldCS``でVSCodeを開く．
+   * 方法1：ターミナル上で， `上に書いた <#check_dotnetsdk_install>`_ ように``dotnet new console -o HelloWorldCS``で適当なプロジェクト（ここでは``HelloWorldCS``）を作成し，その後``code HelloWorldCS``でVSCodeを開く（Macの場合は``code``コマンドの`インストールが必要 <#command_code_install>`_）．
       少し待つとC# Dev Kitがプロジェクトを認識する（「エクスプローラー」サイドバーに「ソリューション エクスプローラー」が増える）．
 
    * 方法2：VSCodeで作成したいプロジェクトと同名のフォルダ（``HelloWorldCS``とする）を開く（ **Windowsでは「ファイルを開く」ではなく「フォルダーを開く」から開く** ）．メニューの「表示」→「ターミナル」よりターミナルを起動・表示する．
