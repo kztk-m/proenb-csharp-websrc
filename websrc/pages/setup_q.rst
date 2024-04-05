@@ -26,6 +26,11 @@ tableOfContents: true
 
 とする．
 
+.. important:: 
+
+   Windowsのユーザの方はエクスプローラーの設定を，ファイルの拡張子が表示されるように変更することをおすすめします．
+   また，本講義では「ファイル名」と単に言った場合には「拡張子」を含みます．
+
 .. ファイル名はそれぞれ
 
 .. - :raw-html:`<code style="display: inline-block; padding: 0.4em"><span class="metaname">学籍番号</span>_Q0_F.png</code>`
