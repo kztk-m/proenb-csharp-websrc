@@ -158,6 +158,9 @@ pre {
     overflow: auto;
 }
 
+pre.asciiart {
+    line-height: 1;
+}
 
 h1 {
     font-size: 200%;
