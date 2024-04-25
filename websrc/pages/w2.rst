@@ -392,15 +392,11 @@ C#では，数値型をより広い型や浮動小数点数型に変換したり
 
    .. code:: cs
 
-      object o = new Object();
-      ((MobilePhone) o).Mail(); // 例外発生
-
-   以下はキャストに成功する．
-
-   .. code:: cs
-
-      Phone p = new MobilePhone("090-0000-0000", "nobody@example.com" ); 
-      ((MobilePhone) p).Mail(); // Mailed!
+      object o = new Phone("090-0000-0000");
+      // 以下はキャスト成功
+      ((Phone) o).Call(); // Called! 
+      // 以下は例外発生
+      ((MobilePhone) o).Mail(); 
 
 なお，暗黙の型変換が行える場合にもキャストを用いて陽に行ってもよい．
 
