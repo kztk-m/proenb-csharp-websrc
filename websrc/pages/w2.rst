@@ -293,7 +293,9 @@ C#には``object``という，全ての型の祖先となる型が存在する�
         public static void Main()
         {
             Console.WriteLine(new Phone("090-0000-0000"));
+            // Phone {number = 090-0000-0000 }
             Console.WriteLine(new MobilePhone("090-0000-0000", "nobody@example.com"));
+            // MobilePhone {number = 090-0000-0000, email = nobody@example.com}
         }
     }
 
