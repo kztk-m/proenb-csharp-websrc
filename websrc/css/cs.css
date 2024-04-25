@@ -194,13 +194,13 @@ figure {
 
 @media only screen and (min-width: 768px) {
     figure {
-        max-width: 50%;
+        max-width: 70%;
     }
 }
 
 @media only screen and (min-width: 1024px) {
     figure {
-        max-width: 400px;
+        max-width: 60%;
     }
 }
 
@@ -208,12 +208,14 @@ figure {
 
 
 figure {
-    background-color: var(--figure-bg-color);
+    /* background-color: var(--figure-bg-color);
     border-style: solid;
     border-width: 0.075rem;
-    border-color: var(--figure-border-color);
+    border-color: var(--figure-border-color); */
     padding: 0.5rem;
 
+    margin-block-start: 1.5rem;
+    margin-block-end: 1.5rem;
 
     margin-left: auto;
     margin-right: auto;
@@ -233,6 +235,7 @@ img {
 
 figure img {
     width: 100%;
+    max-width: initial;
     height: auto;
 }
 
@@ -378,7 +381,7 @@ header nav span.ddt {
 }
 
 header nav .dd li {
-    display: inline-block;
+    display: block;
     margin: 0px;
 
     /* white-space: nowrap;  */
