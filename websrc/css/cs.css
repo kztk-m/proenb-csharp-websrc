@@ -80,6 +80,7 @@ h5,
 h6,
 div.title {
     font-family: sans-serif;
+    line-height: 1.2;
 }
 
 div.title {
@@ -641,27 +642,31 @@ header p {
 #基本課題::after {
     content: "必須";
     font-size: 0.8rem;
-    padding: 0.1rem 0.5rem;
+    padding: 0.15rem 0.5rem;
     display: inline-block;
     color: var(--question-mandatory-fg);
     background-color: var(--question-mandatory-bg);
     border-radius: 2rem;
-
-    vertical-align: text-bottom;
     margin-left: 0.2rem;
+
+    vertical-align: baseline;
+    position: relative;
+    bottom: 0.15rem;
 }
 
 #発展課題::after {
     content: "オプショナル";
     font-size: 0.8rem;
-    padding: 0.1rem 0.5rem;
+    padding: 0.15rem 0.5rem;
     display: inline-block;
     color: var(--question-optional-fg);
     background-color: var(--question-optional-bg);
     border-radius: 2rem;
-
-    vertical-align: text-bottom;
     margin-left: 0.2rem;
+
+    vertical-align: baseline;
+    position: relative;
+    bottom: 0.15rem;
 }
 
 
