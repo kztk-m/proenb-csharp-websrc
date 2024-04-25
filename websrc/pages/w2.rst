@@ -272,15 +272,32 @@ C#には``object``という，全ての型の祖先となる型が存在する�
 
 .. code:: cs
 
-   int a = 1; 
-   bool b = true;
-   double c = 2.3; 
+    class Phone
+    {
+        // ...
+        public override string ToString() 
+        {
+            return "Phone {number = " + number + "}";  
+        }
+    }
+    class MobilePhone 
+    {
+        // ...
+        public override string ToString() 
+        {
+            return "MobilePhone {number = " + number + ", email = " + email + "}";  
+        }
+    }
+    class Program 
+    {
+        public static void Main()
+        {
+            Console.WriteLine(new Phone("090-0000-0000"));
+            Console.WriteLine(new MobilePhone("090-0000-0000", "nobody@example.com"));
+        }
+    }
 
-   Console.WriteLine(a); // 1
-   Console.WriteLine(b); // True
-   Console.WriteLine(c); // 2.3 
-
-以上のコードが``a``と``b``と``c``の型が違うにもかかわらず動作するのは，``Console.WriteLine(object)``が中で``ToString()``を呼んでいるためである．
+以上のコードがユーザ定義型のオブジェクトに対しても動作するのは，``Console.WriteLine(object)``が中で``ToString()``を呼んでいるためである．
 
 ========================
 オーバロード（overload）
