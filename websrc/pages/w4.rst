@@ -21,7 +21,10 @@ tableOfContents: true
   {
      static void Main()
      {
-         // ディクショナリの作成
+         // キーの型がstringでバリューの型がintであるディクショナリの作成
+         // 添字として使われるデータの部分をキー
+         // それに対応したデータをバリューと呼ぶ．
+         // 用語が衝突しているが，式の評価結果である値とは直接は関係はない．
          Dictionary<string, int> dict = new Dictionary<string, int>();
 
          // 辞書に要素を追加するには Add メソッドを用いる．
@@ -40,9 +43,6 @@ tableOfContents: true
 
          Console.WriteLine();
          // foreach 文では個々の要素は KeyValuePair<string, int> として手に入る
-         // 添字として使われるデータの部分をキー
-         // それに対応したデータをバリューと呼ぶ．
-         // 用語が衝突しているが，式の評価結果である値とは直接は関係はない．
          foreach ( KeyValuePair<string, int> kv in dict )
          {
              Console.WriteLine( kv.Key + " -> " + kv.Value );
@@ -110,7 +110,7 @@ tableOfContents: true
 ``Dictionary<TKey,TValue>()``    キーが``TKey``，バリューが``TValue``型であるようなディクショナリを作成するコンストラクタ．
 ``Add(TKey, TValue)``            キーとバリューの対応を付けを辞書に追加する．キーが辞書にすでに存在していたら例外（後述）発生．
 ``this[TKey]``                   インデクサー．``dict[k] = v``は``k``が辞書に存在しない場合は``dict.Add(k,v)``と同様．存在する場合はバリューを``v``で上書き．
-                                 ``dick[k]``を式として使うときはキーが辞書に存在してなければ例外発生．
+                                 ``dict[k]``を式として使うときはキーが辞書に存在してなければ例外発生．
 ``Keys``                         キーのコレクションを表すプロパティ．読み出し専用．
 ``Values``                       バリューのコレクションを表すプロパティ．読み出し専用．
 ``Remove(TKey)``                 指定されたキーと対応するバリューを取り除く．返り値はキーの有無（取り除けたか否か）を表す``bool``
@@ -460,7 +460,7 @@ tableOfContents: true
                try
                {
                    // ファイルの中身を一行ずつ処理する．ファイルが大きいときなどメモリ使用量を気にするとき．
-                   string s;
+                   string? s; // string?はstringのnull許容版．sr.ReadLine()の返り値の型はstring? 
                    while ((s = sr.ReadLine()) != null)
                    {
                        Console.WriteLine(s);
@@ -594,7 +594,7 @@ usingブロック内で例外が発生した場合にもそうでない場合に
 
            // txtはtxtsの各要素を"\n"を間に挟んでつなげた文字列
            // つまり，txt = txts[0] + "\n" + txts[1] + "\n" + ... + "\n" + txts[txts.Length - 1]
-           string txt = String.Join("\n", txts);
+           string txt = string.Join("\n", txts);
 
            // 文字列の内容を一気に書く
            File.WriteAllText("./MyText1.txt", txt);
@@ -629,7 +629,7 @@ usingブロック内で例外が発生した場合にもそうでない場合に
 
 ===================================       ===================================================================
 ``File.WriteAllText(string,string)``      static メソッド．与えられたパスのファイルを開いて，与えられた文字列で上書きして閉じる．パスにファイルが存在してなければ作成する．
-``File.WriteAllLines(string,string[])``   static メソッド．与えられたパスのファイルを開いて，与えられた文字列の配列で上書きして閉じる．パスにファイルが存在してなければ作成する．
+``File.WriteAllLines(string,string[])``   static メソッド．与えられたパスのファイルを開いて，各行の中身が与えられた文字列の配列になるように上書きして閉じる．パスにファイルが存在してなければ作成する．
 ``File.CreateText(string)``               static メソッド．与えられたパスのファイルを上書きモードで開き，そこへ書きこむための``StreamWriter``オブジェクトを返す．パスにファイルが存在してなければ作成する．
 ``StreamWriter.WriteLine(string)``        ストリームへ与えられた文字列を出力する．
 =====================================     ===================================================================
@@ -756,7 +756,7 @@ usingブロック内で例外が発生した場合にもそうでない場合に
 ``Join(string, string[])``    staticメソッド．文字列の配列を与えられた区切りを中に入れて連接する．
 ``Split(char)``               文字列を与えられた区切り文字で分割した配列を返す．
 ``Split(string)``             文字列を与えられた区切り文字列で分割した配列を返す．
-``Split()``                   文字列を与えられた空白文字文字で分割した配列を返す．
+``Split()``                   文字列を空白文字（改行やタブ文字や非ASCII空白も含む）で分割した配列を返す．
 ``StartsWith(string)``        文字列が与えられた文字列で始まっているか判定する．
 ``IndexOf(string)``           与えられた文字列が文字列中で最初に出現するインデックスを返す．
 ``Substring(int)``            与えられたインデックス以降からなる文字列を返す．
