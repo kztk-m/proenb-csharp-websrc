@@ -22,6 +22,8 @@ Eto.Formsのテンプレートからデフォルト設定で生成されるコ�
 .. code:: cs
 
    // PROJECTNAME/MainForm.cs
+   // PROJECTNAMEの部分は dotnet new etoapp を実行したディレクトリ名．
+   //（-oや-nで陽に指定しなければ）下記のコードが含まれているプロジェクトの名前でもある．
    using System;
    using Eto.Forms;
    using Eto.Drawing; 
@@ -42,6 +44,7 @@ Eto.Formsのテンプレートからデフォルト設定で生成されるコ�
 .. code:: cs
 
    // PROJECTNAME.BACKEND/Program.cs
+   // BACKENDの部分は（dotnet new etoappの際に陽に指定しなければ）MacかWpfかGTK
    using System;
    using Eto.Forms;
 
