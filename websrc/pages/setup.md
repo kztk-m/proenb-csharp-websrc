@@ -19,15 +19,15 @@ tableOfContents: true
 
 ## インストール
 
-#. [.NET SDKのダウンロードページ](https://dotnet.microsoft.com/ja-jp/download) より，software development kit (SDK)をダウンロードする．2025年度は`.NET 8.0`のものを使用することとする．
+1. [.NET SDKのダウンロードページ](https://dotnet.microsoft.com/ja-jp/download) より，software development kit (SDK)をダウンロードする．2025年度は`.NET 8.0`のものを使用することとする．
    * Windowsの人はWindows版のSDKをダウンロードする．
    * Mac版についてはいわゆるintel MacとAppleシリコン（M1やM2）のMacではダウンロードすべきものが違うので注意．前者はx64版を後者はArm64版をダウンロードしよう．
 
-#. ダウンロードしたインストーラを実行し，指示に従ってインストールを完了する．
-   - Windows版なら``dotnet-sdk-8.0.407-win-x64.exe``みたいな名前
-   - Macのx64版なら``dotnet-sdk-8.0.407-osx-x64.pkg``/``dotnet-sdk-8.0.407-osx-arm64.pkg`` みたいな名前
+1. ダウンロードしたインストーラを実行し，指示に従ってインストールを完了する．
+   * Windows版なら``dotnet-sdk-8.0.407-win-x64.exe``みたいな名前
+   * Macのx64版なら``dotnet-sdk-8.0.407-osx-x64.pkg``/``dotnet-sdk-8.0.407-osx-arm64.pkg`` みたいな名前
 
-#. ターミナル（WindowsだとPowerShellか「コマンド プロンプト」，MacだとTerminal.appやiTerm.app）を開き，以下を実行する．
+1. ターミナル（WindowsだとPowerShellか「コマンド プロンプト」，MacだとTerminal.appやiTerm.app）を開き，以下を実行する．
 
    ```console
    dotnet --list-sdks
@@ -65,7 +65,7 @@ tableOfContents: true
    cd HelloWorldCS 
    ```
 
-   中身を``ls``で確認してみよう．たとえば，Macだと以下のように表示される（Windowsだと ``ls`` は ``dir`` の別名なので，表示は多少異なる）． 
+   中身を``ls``で確認してみよう．たとえば，Macだと以下のように表示される（Windowsだと ``ls`` は ``dir`` の別名なので，表示は多少異なる）．
 
    ```console
    HelloWorldCS.csproj  Program.cs           obj/
@@ -84,13 +84,13 @@ tableOfContents: true
    dotnet build
    ```
 
-1. 以下を実行してビルドしたプログラムを実行する． 
+1. 以下を実行してビルドしたプログラムを実行する．
 
    ```console
    dotnet run 
    ```
 
-   すると，``"Hello, World!"``が表示されるのが確認できるはずだ． 
+   すると，``"Hello, World!"``が表示されるのが確認できるはずだ．
 
 1. F#でも同様であることを確認しておこう（``dotnet new``を実行する場面で，``dotnet new console -o HelloWorldCS`` の代わりに ``dotnet new console -lang "F#" -o HelloWorldFS`` とする．また，このコマンドだと``HelloWorldCS``ではなく``HelloWorldFS``というフォルダが作成される）
 
@@ -103,7 +103,6 @@ tableOfContents: true
 1. ダウンロードしたインストーラを実行し，指示に従いインストールする．
 
 1. お好みで[Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja>)をインストールし，UIを日本語にする．
-
 
    リンク先のウェブページの「Install」ボタンを押すと，「VSCodeで開きますか」旨の質問が表示されるのでそうする旨の選択する．
    すると，VSCode内で当該拡張機能のページが表示されるので，そこの"Install"ボタンを選択する．
@@ -128,7 +127,7 @@ tableOfContents: true
 
 1. [Ionide for F#](https://marketplace.visualstudio.com/items?itemName=Ionide.Ionide-fsharp)をインストールする．やり方は上と同様．
 
-2. [（オプショナル & Macの場合）`code`コマンドをインストールする]{#command_code_install}．コマンドパレット （Command + Shift + Pを押すと出てくる）から，
+1. [（オプショナル & Macの場合）`code`コマンドをインストールする]{#command_code_install}．コマンドパレット （Command + Shift + Pを押すと出てくる）から，
 
    ```text
    シェル コマンド: PATH 内に 'code' コマンドをインストールします
@@ -176,7 +175,7 @@ tableOfContents: true
 
      ![](images/vscode/vscode_dotnet_new.png)
 
-     「エクスプローラ」サイドバーより``.cs``ファイルを選択して少し待つと，C# Dev Kitによりプロジェクトが認識される（同サイドバーに「SOLUTION EXPLORER」が増える）．        
+     「エクスプローラ」サイドバーより``.cs``ファイルを選択して少し待つと，C# Dev Kitによりプロジェクトが認識される（同サイドバーに「SOLUTION EXPLORER」が増える）．
 
    いずれの場合もC# Dev Kitがプロジェクトを認識した時点で，開いたフォルダ直下に``フォルダ名.sln``なるファイルが作成されるはず．
 
@@ -208,7 +207,6 @@ tableOfContents: true
 
 ### C#編2（プロジェクト作成にC# Dev Kitの機能を利用）
 
-
 1. 次のいずれかを行う．
 
    * VSCodeを起動し，どのフォルダも開いていない状態にて「エクスプローラー」サイドバー下部「.NET プロジェクトを作成」をクリックする．
@@ -237,5 +235,5 @@ tableOfContents: true
    ![](images/vscode/vscode_ionide.png)
 
 1. ターミナルから``dotnet run``で実行する．
-   
+
    Ionideのサイドバーの上部の実行ボタンからも実行できる…はずだが，Windows環境だとサイドバー上部の実行ボタンから実行すると，ターミナルが一瞬で閉じてしまう模様．
