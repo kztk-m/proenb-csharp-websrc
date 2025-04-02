@@ -124,17 +124,11 @@ tableOfContents: true
    拡張機能サイドバーより検索してインストールする（"C#"で検索すれば見つかるはず）．
 
    * なお，ライセンスはVisual Studioと同様である．本演習の範囲（学術目的の使用は無償なので）では気にすることはないが，商用のソフトウェアを作成する場合は有償ライセンスが必要となる場合がある．
-     詳しくは[公式FAQ](https://code.visualstudio.com/docs/csharp/cs-dev-kit-faq#_who-can-use-c-dev-kit>)を参照．
+     詳しくは[公式FAQ](https://code.visualstudio.com/docs/csharp/cs-dev-kit-faq#_who-can-use-c-dev-kit)を参照．
 
-1. [Ionide for F#](https://marketplace.visualstudio.com/items?itemName=Ionide.Ionide-fsharp>)をインストールする．やり方は上と同様．
+1. [Ionide for F#](https://marketplace.visualstudio.com/items?itemName=Ionide.Ionide-fsharp)をインストールする．やり方は上と同様．
 
-   > [!NOTE]
-   > この拡張機能を入れると C#プロジェクトを開いた場合もIonideのサイドバーに勝手切り替わるので， **C#演習の間は無効化推奨**．
-   > 無効にするには，左の歯車アイコンをクリックし「拡張機能」を選択し，その後サイドバーで当該拡張機能の
-   > 右下の歯車アイコンをクリックし表示されるメニューから「無効にする」を選択する
-   >（有効にする際も最後に「有効にする」を選択する以外は同様）．
-
-1. [（オプショナル & Macの場合）`code`コマンドをインストールする]{#command_code_install}．コマンドパレット （Command + Shift + Pを押すと出てくる）から，
+2. [（オプショナル & Macの場合）`code`コマンドをインストールする]{#command_code_install}．コマンドパレット （Command + Shift + Pを押すと出てくる）から，
 
    ```text
    シェル コマンド: PATH 内に 'code' コマンドをインストールします
@@ -187,7 +181,7 @@ tableOfContents: true
    いずれの場合もC# Dev Kitがプロジェクトを認識した時点で，開いたフォルダ直下に``フォルダ名.sln``なるファイルが作成されるはず．
 
    > [!NOTE]
-   > `.sln`はソリューションファイルと呼ばれる．ソリューションは関連する複数のプロジェクトをまとめたもの（参考：[What are solutions and projects in Visual Studio?](https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022>)）
+   > `.sln`はソリューションファイルと呼ばれる．ソリューションは関連する複数のプロジェクトをまとめたもの（参考：[What are solutions and projects in Visual Studio?](https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022)）
 
 1. ターミナルから``dotnet run``を実行してもよいが，ここでは別の方法を紹介する．
    ``Program.cs``を左のエクスプローラーから選択して開き，エディタパネル *右上*（左にあるものではない）の「再生ボタンの右下に虫がついたアイコン」をクリックする．
@@ -229,9 +223,8 @@ tableOfContents: true
 
 1. 「コンソール アプリ」を選択する．
 1. 選択後の手順はステップは最初のステップにおける選択およびWindows/Macで少し異なる
-   * Windowsで「.NET プロジェクトを作成」からプロジェクトを作成しようとした場合：「プロジェクトの場所」というファイル選択ダイアログが出てくるので，プロジェクトを置くフォルダを選択する．次に
-      プロジェクト名を聞かれるので適当に選択する．デフォルトのままでもよい．
-   * プロジェクトをコマンドパレットから作成しようとした場合，あるいはMac：その後プロジェクト名を聞かれるので適当に選択する．デフォルトのままでもよい．次に，どのフォルダの下に作成するかを聞かれるので適当に選択する．フォルダを開いてからコマンドパレットからプロジェクト作成を行った場合は，デフォルトではそのフォルダの直下になっている．
+   * *Windowsで「.NET プロジェクトを作成」からプロジェクトを作成しようとした場合*：「プロジェクトの場所」というファイル選択ダイアログが出てくるので，プロジェクトを置くフォルダを選択する．次にプロジェクト名を聞かれるので適当に選択する．デフォルトのままでもよい．
+   * *プロジェクトをコマンドパレットから作成しようとした場合，あるいはMac*：その後プロジェクト名を聞かれるので適当に選択する．デフォルトのままでもよい．次に，どのフォルダの下に作成するかを聞かれるので適当に選択する．フォルダを開いてからコマンドパレットからプロジェクト作成を行った場合は，デフォルトではそのフォルダの直下になっている．
 1. ターミナル（VSCodeのものでもよい）から`dotnet run`で実行してもよいし，「C#編1」に書いたように右上の「再生ボタンの右下に虫がついたアイコン」で実行してもよい．
 
 ### F#編
@@ -239,7 +232,7 @@ tableOfContents: true
 1. ターミナルでプロジェクトを作成し，それを開く．[C#編1（プロジェクトの作成にコマンドライン使用；本演習ではオススメ）](#cs_console) とほぼ同様
    の方法で `dotnet new console` コマンドに `-lang "F#"` というオプションを渡すだけなので，詳細は割愛．
 
-1. 少し待つとサイドバーがIonideのものに切り替わる．
+1. （オプショナル）サイドバーをIonideのものに切り替える．アクティビティーバー（一番左にあるアイコンが並んでいるバー）からIonideのアイコンを選択することで切り替えられる．なお元にもどすには，アクティビティーバーの一番上のアイコン（マウスをホバーすると「エクスプローラー」と出るもの）を選択すればよい．
 
    ![](images/vscode/vscode_ionide.png)
 
