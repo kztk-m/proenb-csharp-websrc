@@ -3,6 +3,26 @@
 REPO=git@github.com:kztk-m/proenb-csharp.git
 DEPLOY=./deploy
 
+# Check everything has been pushed
+
+STATUS=`git status '!:deploy.sh'`
+# echo $STATUS
+WT_CLEAN=false
+if echo $STATUS | grep -q 'Your branch is up to date';
+then 
+    if echo $STATUS | grep -q 'nothing to commit, working tree clean'; 
+    then 
+        WT_CLEAN=true
+    fi 
+fi 
+
+if ! "${WT_CLEAN}";
+then 
+    echo "An unstaged change or unpushed commit is detected. Here's the output of 'git status' excluding this file." 
+    echo "$STATUS" | sed 's/^/> /'
+    exit 1
+fi 
+
 # Commit Message 
 COMMIT=$(git log -1 HEAD --pretty=format:%H)
 
