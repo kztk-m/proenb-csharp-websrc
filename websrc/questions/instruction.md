@@ -7,7 +7,7 @@
 ## プロジェクト/ソリューションの作成
 
 > [!NOTE]
-> 再掲：プロジェクトは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものであり，ソリューションは関連するプロジェクトをまとめたもの（参考：[What are solutions and projects in Visual Studio](https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022>)）．
+> 再掲：プロジェクトは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものであり，ソリューションは関連するプロジェクトをまとめたもの（参考：[What are solutions and projects in Visual Studio](https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022)）．
 
 適当な名前（たとえば課題3の解答なので``Q3``にするなど）のフォルダを適当な場所に作成し，
 VSCodeで作成したフォルダを開く．そして，VSCode内のターミナルで以下を実行する．
