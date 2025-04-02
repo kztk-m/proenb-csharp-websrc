@@ -291,6 +291,11 @@ footer a:visited {
     color: inherit;
 }
 
+ul,
+ol {
+    padding-left: 2.5rem;
+}
+
 
 /* ------------------------------------ */
 
@@ -1157,6 +1162,28 @@ span.copy-button.failed::after {
 .copy-button.failed {
     background-color: red;
     color: white;
+}
+
+/* task-list */
+
+ul.task-list {
+    list-style-type: none;
+}
+
+ul.task-list li {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+}
+
+ul.task-list>li {
+    position: relative;
+}
+
+ul.task-list>li input[type=checkbox]:first-child {
+    position: absolute;
+    margin: 0.2em;
+    left: -2em;
+    top: 0.3em;
 }
 
 
