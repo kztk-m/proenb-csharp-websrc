@@ -102,7 +102,7 @@ tableOfContents: true
 
 1. ダウンロードしたインストーラを実行し，指示に従いインストールする．
 
-1. お好みで[Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja>)をインストールし，UIを日本語にする．
+1. お好みで[Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)をインストールし，UIを日本語にする．
 
    リンク先のウェブページの「Install」ボタンを押すと，「VSCodeで開きますか」旨の質問が表示されるのでそうする旨の選択する．
    すると，VSCode内で当該拡張機能のページが表示されるので，そこの"Install"ボタンを選択する．
