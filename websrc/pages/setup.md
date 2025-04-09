@@ -6,7 +6,7 @@ tableOfContents: true
 
 > [!CAUTION]
 > [2024年8月一杯でVisual Studio for Macの提供が廃止される](https://learn.microsoft.com/en-us/visualstudio/mac/what-happened-to-vs-for-mac?view=vsmac-2022) こととなった．
-> それにともない，今年はVisual Studio Code上でC# Dev KitおよびIonide for F#を用いた環境構築法を紹介することとする．Visual Studio を使いたい人は[2023年度の環境構築法](./setup_gui_2023.html)を参照されたし．
+> それにともない，今年はVisual Studio Code上でC# Dev KitおよびIonide for F#を用いた環境構築法を紹介することとする．Visual Studio を使いたい人は[2023年度の環境構築法](./setup_2023.html)を参照されたし．
 
 まずは，[.NET SDKのインストール](#dotnet_sdk) を行い，その後[Visual Studio Code (VSCode) のインストール・設定](#vscode)を行う．
 自分の好きなエディタ（viやEmacs等）を使用したい人は後者はしなくてもよい．
@@ -18,6 +18,8 @@ tableOfContents: true
 # .NET SDKのインストール {#dotnet_sdk}
 
 ## インストール
+
+::: Instructions
 
 1. [.NET SDKのダウンロードページ](https://dotnet.microsoft.com/ja-jp/download) より，software development kit (SDK)をダウンロードする．2025年度は`.NET 8.0`のものを使用することとする．
    * Windowsの人はWindows版のSDKをダウンロードする．
@@ -49,9 +51,13 @@ tableOfContents: true
    8.0.407 [/usr/local/share/dotnet/sdk]
    ```
 
+:::
+
 ## 動作確認 {#check_dotnetsdk_install}
 
 （動作確認は以下のVSCodeのインストール・設定後にも行うので，この時点では飛ばしてもよい）
+
+::: Instructions
 
 1. 適当なフォルダに移動して以下を実行する．
 
@@ -94,9 +100,13 @@ tableOfContents: true
 
 1. F#でも同様であることを確認しておこう（``dotnet new``を実行する場面で，``dotnet new console -o HelloWorldCS`` の代わりに ``dotnet new console -lang "F#" -o HelloWorldFS`` とする．また，このコマンドだと``HelloWorldCS``ではなく``HelloWorldFS``というフォルダが作成される）
 
+:::
+
 # Visual Studio Code (VSCode) のインストール・設定 {#vscode}
 
 ## インストール・設定
+
+::: Instructions
 
 1. <https://code.visualstudio.com/> からインストーラをダウンロードする．
 
@@ -146,49 +156,59 @@ tableOfContents: true
    > とあるが，私の環境だと`Shell Command: Install 'code' command in PATH`をすることで，`/usr/local/bin`下に実行形式ファイル`code`がインストールされた（そして記述に反して環境変数`PATH`は変更されなかった）ので，
    > もともと`/usr/local/bin`がパスに通っているのならばターミナルの再起動は必要がないかもしれない（2023年3月27日時点）．
 
+:::
+
 ## 動作確認
+
+以下を行う．
+
+* [C#編1](#cs_console)か[C#編2](#cs_dev_kit)のいずれか，および
+* [F#編](#fs)
 
 > [!NOTE]
 > いずれの方法でも，フォルダを開くタイミングで「このフォルダー内のファイルの作成者を信頼しますか？」なるダイアログで出てくるかもしれない．その場合は，**今回については**自分が用意したファイルであるはずなので「はい，…」を選択する．
 
 ### C#編1（プロジェクトの作成にコマンドライン使用；本演習ではオススメ） {#cs_console}
 
-1. ターミナルでプロジェクトを作成し，それを開く．
+::: Instructions
+
+1. ターミナルでプロジェクトを作成し，それを開く．具体的には以下の[方法1](#terminal_first)と[方法2](#vscode_first)のいずれかを行う．いずれの場合もC# Dev Kitがプロジェクトを認識した時点で，開いたフォルダ直下に``フォルダ名.sln``なるファイルが作成されるはず．
 
    > [!NOTE]
-   > ここでいうプロジェクトとは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものである（参考：[What are solutions and projects in Visual Studio?](https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022)）．プロジェクトの設定は`.csproj`ファイルに記述されている．
+   > ここでいうプロジェクトとは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものである．プロジェクトの設定は`.csproj`ファイルに記述されている．
+   > 複数のプロジェクトをまとめたものはソリューションと呼ばれ，`.sln`ファイルにその情報が記述されている（参考：[What are solutions and projects in Visual Studio?](https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022)）
 
-   * 方法1：ターミナル上で， [上に書いた](#check_dotnetsdk_install)ように`dotnet new console -o HelloWorldCS`で適当なプロジェクト（ここでは`HelloWorldCS`）を作成し，その後`code HelloWorldCS`でVSCodeを開く（Macの場合は`code`コマンドの[インストールが必要](#command_code_install)）．
-      少し待つとC# Dev Kitがプロジェクトを認識する（「エクスプローラー」サイドバーに「ソリューション エクスプローラー」が増える）．
+   #### 方法1：ターミナルでプロジェクトを作成してからVSCodeでそのフォルダを開く {#terminal_first}
 
-   * 方法2：VSCodeで作成したいプロジェクトと同名のフォルダ（``HelloWorldCS``とする）を開く（ **Windowsでは「ファイルを開く」ではなく「フォルダーを開く」から開く** ）．メニューの「表示」→「ターミナル」よりターミナルを起動・表示する．
+   ターミナル上で， [上に書いた](#check_dotnetsdk_install)ように`dotnet new console -o HelloWorldCS`で適当なプロジェクト（ここでは`HelloWorldCS`）を作成し，その後`code HelloWorldCS`でVSCodeを開く（Macの場合は`code`コマンドの[インストールが必要](#command_code_install)）．
+   少し待つとC# Dev Kitがプロジェクトを認識する（「エクスプローラー」サイドバーに「ソリューション エクスプローラー」が増える）．
 
-     ![VSCodeの内蔵ターミナルは画面下部に表示される](images/vscode/vscode_terminal.png)\
+   #### 方法2：VSCodeでフォルダを開いてからVSCode内ターミナルでプロジェクトを作成する {#vscode_first}
 
-     ターミナルで
+   VSCodeで作成したいプロジェクトと同名のフォルダ（``HelloWorldCS``とする）を開く（ **Windowsでは「ファイルを開く」ではなく「フォルダーを開く」から開く** ）．メニューの「表示」→「ターミナル」よりターミナルを起動・表示する．
 
-     ```console
-     dotnet new console -o .
-     ```
+   ![VSCodeの内蔵ターミナルは画面下部に表示される](images/vscode/vscode_terminal.png)\
 
-     を実行し開いたフォルダと同名のプロジェクトを作成する．
+   ターミナルで
 
-     ![](images/vscode/vscode_dotnet_new.png)
+   ```console
+   dotnet new console -o .
+   ```
 
-     「エクスプローラ」サイドバーより``.cs``ファイルを選択して少し待つと，C# Dev Kitによりプロジェクトが認識される（同サイドバーに「SOLUTION EXPLORER」が増える）．
+   を実行し開いたフォルダと同名のプロジェクトを作成する．
 
-   いずれの場合もC# Dev Kitがプロジェクトを認識した時点で，開いたフォルダ直下に``フォルダ名.sln``なるファイルが作成されるはず．
+   ![](images/vscode/vscode_dotnet_new.png)
 
-   > [!NOTE]
-   > `.sln`はソリューションファイルと呼ばれる．ソリューションは関連する複数のプロジェクトをまとめたもの（参考：[What are solutions and projects in Visual Studio?](https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022)）
+   エクスプローラ」サイドバーより``.cs``ファイルを選択して少し待つと，C# Dev Kitによりプロジェクトが認識される（同サイドバーに「SOLUTION EXPLORER」が増える）．
 
-1. ターミナルから``dotnet run``を実行してもよいが，ここでは別の方法を紹介する．
+
+2. ターミナルから``dotnet run``を実行してもよいが，ここでは別の方法を紹介する．
    ``Program.cs``を左のエクスプローラーから選択して開き，エディタパネル *右上*（左にあるものではない）の「再生ボタンの右下に虫がついたアイコン」をクリックする．
    このボタンは``.cs``ファイルに関連するプロジェクトをデバッグ実行する（右側の ﹀ から通常の実行に切り替えられる）．
 
    ![](images/vscode/vscode_run_button.png)
 
-1. しばらくすると，デバッグコンソールにデバッグメッセージとともに，プログラムの出力
+3. しばらくすると，デバッグコンソールにデバッグメッセージとともに，プログラムの出力
 
    ```console
    Hello, World!
@@ -205,7 +225,11 @@ tableOfContents: true
    >
    > また，ターミナルから``dotnet run``を実行するのでもよい．
 
-### C#編2（プロジェクト作成にC# Dev Kitの機能を利用）
+:::
+
+### C#編2（プロジェクト作成にC# Dev Kitの機能を利用）{#cs_dev_kit}
+
+::: Instructions
 
 1. 次のいずれかを行う．
 
@@ -225,7 +249,11 @@ tableOfContents: true
    * *プロジェクトをコマンドパレットから作成しようとした場合，あるいはMac*：その後プロジェクト名を聞かれるので適当に選択する．デフォルトのままでもよい．次に，どのフォルダの下に作成するかを聞かれるので適当に選択する．フォルダを開いてからコマンドパレットからプロジェクト作成を行った場合は，デフォルトではそのフォルダの直下になっている．
 1. ターミナル（VSCodeのものでもよい）から`dotnet run`で実行してもよいし，「C#編1」に書いたように右上の「再生ボタンの右下に虫がついたアイコン」で実行してもよい．
 
-### F#編
+:::
+
+### F#編 {#fs}
+
+::: Instructions
 
 1. ターミナルでプロジェクトを作成し，それを開く．[C#編1（プロジェクトの作成にコマンドライン使用；本演習ではオススメ）](#cs_console) とほぼ同様
    の方法で `dotnet new console` コマンドに `-lang "F#"` というオプションを渡すだけなので，詳細は割愛．
@@ -237,3 +265,5 @@ tableOfContents: true
 1. ターミナルから``dotnet run``で実行する．
 
    Ionideのサイドバーの上部の実行ボタンからも実行できる…はずだが，Windows環境だとサイドバー上部の実行ボタンから実行すると，ターミナルが一瞬で閉じてしまう模様．
+
+:::
