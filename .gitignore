@@ -4,3 +4,8 @@ dist-newstyle
 .markdownlint.json
 .vscode
 deploy
+
+node_modules
+.stylelintrc 
+package-lock.json
+package.json 
