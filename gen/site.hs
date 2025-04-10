@@ -47,7 +47,8 @@ myWriterOptions :: WriterOptions
 myWriterOptions =
   defaultHakyllWriterOptions
   {
-    writerExtensions = P.disableExtension P.Ext_smart (writerExtensions defaultHakyllWriterOptions)
+    writerExtensions = P.disableExtension P.Ext_smart (writerExtensions defaultHakyllWriterOptions), 
+    writerSectionDivs = True 
   }
 
 -- from: https://svejcar.dev/posts/2019/11/27/table-of-contents-in-hakyll/

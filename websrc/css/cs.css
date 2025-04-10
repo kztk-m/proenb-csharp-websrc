@@ -1,6 +1,12 @@
 /* stylelint-disable selector-class-pattern */
 /* stylelint-disable selector-id-pattern */
 :root {
+    /* main */ 
+    --main-bg-color: white; 
+    --main-fg-color: #111; 
+
+    /* nav */
+
     --header-nav-bg-color: hsl(275deg 80% 33%);
     --header-nav-bg-highlight-color: hsl(275deg 60% 48%);
     --header-nav-border-color: hsl(275deg 45% 45%);
@@ -8,11 +14,11 @@
     --header-nav-fg-color: white;
     --header-nav-current-link-color: hsl(40deg 90% 55%);
     --header-border-color: #AAA;
+
+    /* ---- */ 
+
     --strong-color: hsl(10deg 100% 48%);
     --code-bg-color: hsl(240deg 30% 96%);
-    
-    /* --code-border-color: #e2e2e2; */
-
     --code-meta-bg-color: hsl(240deg 30% 92%);
     --code-border-color: var(--code-meta-bg-color);
 
@@ -82,6 +88,8 @@
 
 html {
     scroll-behavior: smooth;
+    color: var(--main-fg-color);
+    background-color: var(--main-bg-color);
 }
 
 /* font setting */
@@ -171,6 +179,14 @@ h2 {
     margin-bottom: 1rem;
     padding: 0.1rem 0;
     font-size: 145%;
+    position: sticky; 
+    top: -1px; 
+    z-index: 1; 
+    background-color: var(--main-bg-color);
+}
+
+h2.stuck {
+    box-shadow: 0 3px 3px -3px rgb(0 0 0 / 30%);
 }
 
 h2:first-child {

@@ -66,7 +66,7 @@ function addModalImageViewPane() {
     });
 }
 
-function addTouchEventHadnlingToDD() {
+function addTouchEventHandlingToDD() {
     const dds = document.querySelectorAll('.dd');
     // FIXME: Just adding 'touchstart' would be enough for iPad 
     dds.forEach(elem => {
@@ -154,12 +154,21 @@ function addCopyButtons() {
     });
 }
 
+function addIntersectionObserver() {
+    const observer = new IntersectionObserver(
+        ([e]) => e.target.classList.toggle('stuck', e.intersectionRatio < 1),
+        { threshold: [1] }
+    );
+
+    document.querySelectorAll('h2').forEach((e) => observer.observe(e));
+}
 
 window.onload = function () {
     addClassToCurrentPageLinks();
     addModalImageViewPane();
-    addTouchEventHadnlingToDD();
+    addTouchEventHandlingToDD();
     addCopyButtons();
+    addIntersectionObserver();
 };
 
 
