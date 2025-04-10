@@ -98,7 +98,11 @@ tableOfContents: true
 
    すると，``"Hello, World!"``が表示されるのが確認できるはずだ．
 
-1. F#でも同様であることを確認しておこう（``dotnet new``を実行する場面で，``dotnet new console -o HelloWorldCS`` の代わりに ``dotnet new console -lang "F#" -o HelloWorldFS`` とする．また，このコマンドだと``HelloWorldCS``ではなく``HelloWorldFS``というフォルダが作成される）
+1. F#でも同様であることを確認しておこう．
+
+   i. まず，今`HelloWorldCS`の中にいるのであれば，その外に移動する．
+
+   i. そして，上記において，``dotnet new``を実行する場面で，``dotnet new console -o HelloWorldCS`` の代わりに ``dotnet new console -lang "F#" -o HelloWorldFS`` とする．また，このコマンドだと``HelloWorldCS``ではなく``HelloWorldFS``というフォルダが作成される．
 
 :::
 
@@ -177,6 +181,9 @@ tableOfContents: true
    > [!NOTE]
    > ここでいうプロジェクトとは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものである．プロジェクトの設定は`.csproj`ファイルに記述されている．
    > 複数のプロジェクトをまとめたものはソリューションと呼ばれ，`.sln`ファイルにその情報が記述されている（参考：[What are solutions and projects in Visual Studio?](https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022)）
+
+   > [!CAUTION]
+   > プロジェクトはネストさせない．つまり，`.csproj`が含まれているフォルダ以下に別の`.csproj`が含まれているフォルダを作らない．
 
    #### 方法1：ターミナルでプロジェクトを作成してからVSCodeでそのフォルダを開く {#terminal_first}
 
