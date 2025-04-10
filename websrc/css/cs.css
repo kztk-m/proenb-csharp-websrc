@@ -615,7 +615,7 @@ header p {
     z-index: 1;
 }
 
-#基本課題::after {
+#基本課題 h2::after {
     content: "必須";
     font-size: 0.8rem;
     padding: 0.15rem 0.5rem;
@@ -629,7 +629,7 @@ header p {
     bottom: 0.15rem;
 }
 
-#発展課題::after {
+#発展課題 h2::after {
     content: "オプショナル";
     font-size: 0.8rem;
     padding: 0.15rem 0.5rem;
