@@ -1051,31 +1051,67 @@ ul.task-list>li input[type="checkbox"]:first-child {
 
 /* 更新ログ関連 */
 
+ul.changes {
+    /* Safari doesn't support the content property for ::marker */ 
+    list-style-type: none;
+}
+
 ul.changes>li {
     padding-left: 0.8ch;
     margin-top: 0.3em;
     margin-bottom: 0.3em;
+    position: relative;
 }
 
 ul.changes>li.planned {
     color: var(--todo-color);
 }
 
-ul.changes>li::marker {
+ul.changes>li::before {
     content: "☑";
     font-size: 1.2em;
     line-height: 1;
-}
-
-ul.changes>li.planned::marker {
-    content: "☐";
+    position: absolute;
+    right: 100%;
+    bottom: calc(100% - 1cap - 0.3em/1.2);
 }
 
 ul.changes>li.planned::before {
-    content: "[予定] ";
+    content: "☐";
 }
 
+/* ul.changes>li.planned::before {
+    content: "[予定] ";
+} */
+
 /* Instructions */
+
+ol {
+    counter-reset: item;
+    list-style-type: none;
+}
+
+ol > li {
+    position: relative;
+}
+
+ol > li::before {
+    content: counter(item) ". ";
+    counter-increment: item;
+    position: absolute;
+    left: calc(-3ch - 0.7em);
+    width: 3ch;
+    text-align: right;
+    top: 0;
+}
+
+ol ol > li::before {
+    content: counter(item, lower-roman) ". ";
+}
+
+ol ol ol > li::before {
+    content: counter(item, lower-alpha) ". ";
+}
 
 .Instructions ol > li 
 {
