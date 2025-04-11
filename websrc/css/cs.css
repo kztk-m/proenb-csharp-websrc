@@ -68,7 +68,12 @@
 
     /* table */ 
 
-    --table-border-color: #222;
+    --table-border-color: #ddd;
+    --table-th-bg-color: rgb(246 247 248); 
+    --table-td-odd-bg-color: white; 
+    --table-td-even-bg-color: white; 
+
+    /* --table-td-even-bg-color: rgb(250 251 253);  */
 
     /* todo */ 
 
@@ -152,6 +157,7 @@ pre code {
     border-width: 0;
     padding: 0;
     margin: 0;
+    white-space: pre; 
 }
 
 pre.sourceCode {
@@ -833,14 +839,35 @@ a:visited {
 
 table {
     margin: 2rem auto;
-    border-top: .1rem solid var(--table-border-color);
-    border-bottom: .1rem solid var(--table-border-color);
     border-collapse: collapse;
+
+    /* border-top: .1rem solid var(--table-border-color);
+    border-bottom: .1rem solid var(--table-border-color); */
 }
 
-thead tr:last-child th {
-    border-bottom: .075rem solid var(--table-border-color);
+table td, table th
+{
+    border: 0.075rem solid var(--table-border-color);
 }
+
+table th 
+{
+    background-color: var(--table-th-bg-color);
+}
+
+table tr:nth-child(even) 
+{
+    background-color: var(--table-td-even-bg-color);
+}
+
+table tr:nth-child(odd)
+{
+    background-color: var(--table-td-odd-bg-color);
+}
+
+/* thead tr:last-child th {
+    border-bottom: .075rem solid var(--table-border-color);
+} */
 
 td,
 th {
