@@ -89,6 +89,7 @@
     /* metrics */ 
 
     --pre-padding: 0.75rem;
+    --shadow-size: 0.4rem;
 }
 
 html {
@@ -252,11 +253,17 @@ li {
     margin-bottom: 0.7em;
 }
 
-li > p:first-child {
+li > p:first-child, 
+td > p:first-child,
+li > pre:first-child,
+td > pre:first-child {
     margin-top: 0;
 }
 
-li > p:last-child {
+li > p:last-child,
+td > p:last-child,
+li > pre:last-child,
+td > pre:last-child  {
     margin-bottom: 0;
 }
 
@@ -1170,6 +1177,54 @@ ol ol ol > li::before {
     border-left: none; 
     padding-left: 0;
 }
+
+/* scroll */
+
+.scroll-wrapper
+{
+    position: relative;
+}
+
+.scroll-wrapper.table 
+{
+    max-width: min-content;
+    margin: 2rem auto; 
+}
+
+.scroll-box > * 
+{
+    margin: 0; 
+}
+
+.scroll-box::before
+{
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.scroll-box.horizontal
+{
+    width: 100%; 
+    overflow: auto;
+}
+
+
+.scroll-box.off-left::before {
+    box-shadow: inset var(--shadow-size) 0 var(--shadow-size) calc(0px - var(--shadow-size)) rgb(0 0 0/40%);
+}
+
+.scroll-box.off-right::before {
+    box-shadow: inset calc(0px - var(--shadow-size)) 0 var(--shadow-size) calc(0px - var(--shadow-size)) rgb(0 0 0/40%); 
+}
+
+.scroll-box.off-left.off-right::before {
+    box-shadow: 
+        inset var(--shadow-size) 0 var(--shadow-size) calc(0px - var(--shadow-size)) rgb(0 0 0/40%),
+        inset calc(0px - var(--shadow-size)) 0 var(--shadow-size) calc(0px - var(--shadow-size)) rgb(0 0 0/40%); 
+}
+
 
 /*
   Here, .directorylist part is just a straightforward adaptation of 

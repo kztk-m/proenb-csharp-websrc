@@ -163,12 +163,62 @@ function addIntersectionObserver() {
     document.querySelectorAll('h2').forEach((e) => observer.observe(e));
 }
 
+function installScroll() {
+    document.querySelectorAll('.scroll-box').forEach((sc) => {
+        var isScrolling = false;
+
+        const addScrollClass = () => {
+            const scH = sc.scrollHeight;
+            const scW = sc.scrollWidth;
+            const scTop = sc.scrollTop;
+            const scLeft = sc.scrollLeft;
+
+            const clH = sc.clientHeight;
+            const clW = sc.clientWidth;
+
+            if (scTop > 0) {
+                sc.classList.add('off-top');
+            }
+            else {
+                sc.classList.remove('off-top');
+            }
+            if (Math.abs(scH - scTop - clH) >= 1) {
+                sc.classList.add('off-bottom');
+            }
+            else {
+                sc.classList.remove('off-bottom');
+            }
+            if (scLeft > 0) {
+                sc.classList.add('off-left');
+            }
+            else {
+                sc.classList.remove('off-left');
+            }
+            if (Math.abs(scW - scLeft - clW) >= 1) {
+                sc.classList.add('off-right');
+            }
+            else {
+                sc.classList.remove('off-right');
+            }
+        };
+
+        sc.addEventListener('scroll', (event) => {
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => { addScrollClass(); isScrolling = false; });
+                isScrolling = true;
+            }
+        });
+        window.requestAnimationFrame(() => { addScrollClass() });
+    });
+}
+
 window.onload = function () {
     addClassToCurrentPageLinks();
     addModalImageViewPane();
     addTouchEventHandlingToDD();
     addCopyButtons();
     addIntersectionObserver();
+    installScroll();
 };
 
 
