@@ -996,6 +996,12 @@ pre.sourceCode.cs .code-control::before {
     display: inline-block;
 }
 
+pre.sourceCode.json .code-control::before {
+    content: 'JSON';
+    display: inline-block;
+}
+
+
 pre.sourceCode.xml .code-control::before {
     content: 'XML';
     display: inline-block;
