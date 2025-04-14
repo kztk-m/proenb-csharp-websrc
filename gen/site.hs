@@ -229,6 +229,10 @@ main = hakyllWith conf $ do
         route   idRoute
         compile copyFileCompiler
 
+    match "files/**" $ do 
+        route $ gsubRoute "files/" (const "")
+        compile copyFileCompiler
+
     match "css/*" $ do
         route   idRoute
         compile compressCssCompiler
@@ -243,7 +247,6 @@ main = hakyllWith conf $ do
 
     match "questions/*" $ do
       compile $ pandocCompilerWithTransformM myReaderOptions myWriterOptions myTransformM
-
 
     match "pages/*.md" $ do
       route $ gsubRoute "pages/" (const "") `composeRoutes` setExtension "html"
