@@ -1,0 +1,9 @@
+# コメント行
+Chocolate,  2
+   Chips ,14  
+# 空行は空白を含んでいてもよい
+      
+Candy,5
+Chocolate,40
+      #コメントでない行
+Candy,25

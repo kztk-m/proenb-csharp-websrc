@@ -1,0 +1,3 @@
+Chocolate,2
+Chips,0
+Candy,5
