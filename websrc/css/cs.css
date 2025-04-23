@@ -90,6 +90,10 @@
 
     --pre-padding: 0.75rem;
     --shadow-size: 0.4rem;
+
+    /* font */
+
+    --math-font: "Liberation Serif", "Times New Roman", serif
 }
 
 html {
@@ -827,6 +831,15 @@ strong {
 em {
     font-style: normal;
     font-weight: bold;
+}
+
+.math {
+    font-family: var(--math-font);
+}
+
+.math em {
+    font-style: italic;
+    font-weight: normal;
 }
 
 a {
