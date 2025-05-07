@@ -35,10 +35,23 @@ fi
 
 rm -rf $DEPLOY
 
+# ./site.sh will change the current directory. So, we save it beforehand.
 CURRENTDIR=`pwd`
 
 # Use rebuild not to keep removed files. 
-sh ./site.sh rebuild 
+sh ./site.sh rebuild
+
+if test $? -ne 0; 
+then 
+    echo "./site.sh failed for some reasons."
+    exit 1 
+fi 
+if test ! -e "_site";
+then 
+    echo "Something wrong happened in ./site.sh."
+    exit 1
+fi 
+
 cd $CURRENTDIR
 
 git clone --depth 1 $REPO $DEPLOY
