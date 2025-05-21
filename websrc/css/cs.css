@@ -267,9 +267,11 @@ img {
 }
 
 figure img {
-    width: 100%;
+    /* width: 100%;
+    max-width: initial; */
     max-width: initial;
     height: auto;
+    display: block; 
 }
 
 li {
