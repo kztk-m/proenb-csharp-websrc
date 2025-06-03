@@ -43,11 +43,11 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
                    g.Clear(Colors.White);
 
                    // 50 px 幅の格子を描く
-                   for (int x = 0; x < this.Size.Width; x += 50)
+                   for (int x = 0; x < drawable.Size.Width; x += 50)
                    {
                        g.DrawLine(Colors.LightGrey, new Point(x, 0), new Point(x, drawable.Size.Height));
                    }
-                   for (int y = 0; y < this.Size.Height; y += 50)
+                   for (int y = 0; y < drawable.Size.Height; y += 50)
                    {
                        g.DrawLine(Colors.LightGrey, new Point(0, y), new Point(drawable.Size.Width, y));
                    }
@@ -134,7 +134,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
 
 ==============================        ===========
 ``Color.FromRgb(int)``                ``0xFF0000``（赤）などのような整数から色を作成．
-``Color.FromArgb(int)``               ``0xFFFF0000``（不透明な赤）などのような整数から色を作成．
+``Color.FromArgb(int)``               ``0xFF880000``（不透明な暗めの赤）などのような整数から色を作成．
 ``Color.FromArgb(int,int,int,int)``   R, G, B, Aのそれぞれの要素（0-255）から色を作成（メソッドの名前に反して順番はRGBAなのに注意）．Aは255が不透明．0は透明．
 ``Colors.Blue``など                   規定の色を表す定数．        
 ==============================        ===========
@@ -449,8 +449,8 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
    {
        class ColoredCircle
        {
-           public PointF Center { get; set; }
-           public Color Color { get; set; }
+           public PointF Center { get; }
+           public Color Color { get; }
 
            public ColoredCircle(PointF center, Color col)
            {
@@ -533,8 +533,8 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
    {
        class ColoredCircle
        {
-           public PointF Center { get; set; }
-           public Color Color { get; set; }
+           public PointF Center { get; }
+           public Color Color { get; }
 
            public ColoredCircle(PointF center, Color col)
            {
@@ -614,7 +614,7 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
                // 200x200のビットマップを作成．透明度付き
                // PixelFormat.Format32bppRgba は1画素が32ビット（4バイト）で表されていて，
                // 上位から順に アルファ，赤，緑，青 がそれぞれ8ビット（1バイト）ずつ並んでいることを表す．
-               bitmap = new Bitmap(200, 200, PixelFormat.Format32bppRgba);
+               bitmap = new Bitmap(Math.Max(ClientSize.Width, 1), Math.Max(ClientSize.Height, 1), PixelFormat.Format32bppRgba);
 
                Paint += (s, pe) =>
                {
@@ -686,4 +686,4 @@ Eto.Forms の ``Drawable`` コントロールを利用することで，直線�
        }
    }
 
-実行例は上と変わらないので割愛．
+実行例は上と変わらないので割愛．ただし，Retina等の論理ピクセルと物理ピクセルが一致しない環境では，こちらのやり方だと円の表示がリストを使うやり方に比べ荒くなる．（防ぐには``Form``のプロパティ``LogicalPixelSize``を取得し，``LogicalPixelSize``だけ大きな画像を用意し，``LogicalPixelSize``分縮小して表示するようにする）．
