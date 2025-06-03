@@ -225,11 +225,19 @@ figure {
     figure {
         max-width: 70%;
     }
+
+    figure img {
+        max-width: 100%; 
+    }
 }
 
 @media only screen and (width >= 1024px) {
     figure {
         max-width: 60%;
+    }
+
+    figure img {
+        max-width: 100%; 
     }
 }
 
@@ -240,7 +248,7 @@ figure figcaption {
 }
 
 img {
-    max-width: 80%;
+    max-width: 70%;
     height: auto; 
     object-fit: scale-down;
     margin-left: auto;
@@ -269,7 +277,9 @@ img {
 figure img {
     /* width: 100%;
     max-width: initial; */
-    max-width: initial;
+
+    /* max-width: initial; */
+    
     height: auto;
     display: block; 
 }
