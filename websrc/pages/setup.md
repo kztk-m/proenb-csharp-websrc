@@ -21,13 +21,13 @@ tableOfContents: true
 
 ::: Instructions
 
-1. [.NET SDKのダウンロードページ](https://dotnet.microsoft.com/ja-jp/download) より，software development kit (SDK)をダウンロードする．2025年度は`.NET 8.0`のものを使用することとする．
+1. [.NET SDKのダウンロードページ](https://dotnet.microsoft.com/ja-jp/download) より，software development kit (SDK)をダウンロードする．2026年度は`.NET 10.0`のものを使用することとする．
    * Windowsの人はWindows版のSDKをダウンロードする．
    * Mac版についてはいわゆるintel MacとAppleシリコン（M1やM2）のMacではダウンロードすべきものが違うので注意．前者はx64版を後者はArm64版をダウンロードしよう．
 
 1. ダウンロードしたインストーラを実行し，指示に従ってインストールを完了する．
-   * Windows版なら``dotnet-sdk-8.0.407-win-x64.exe``みたいな名前
-   * Macのx64版なら``dotnet-sdk-8.0.407-osx-x64.pkg``/``dotnet-sdk-8.0.407-osx-arm64.pkg`` みたいな名前
+   * Windows版なら``dotnet-sdk-10.0.201-win-x64.exe``みたいな名前
+   * Macのx64版なら``dotnet-sdk-10.0.201-osx-x64.pkg``/``dotnet-sdk-10.0.201-osx-arm64.pkg`` みたいな名前
 
 1. ターミナル（WindowsだとPowerShellか「コマンド プロンプト」，MacだとTerminal.appやiTerm.app）を開き，以下を実行する．
 
@@ -35,7 +35,7 @@ tableOfContents: true
    dotnet --list-sdks
    ```
 
-   以下は私の環境における出力だが，このようにダウンロードしたSDK（上の`8.0.407`）が表示されたらばOK．
+   以下は私の環境における出力だが，このようにダウンロードしたSDK（上の`10.0.207`）が表示されたらばOK．
 
    ```console
    6.0.400 [/usr/local/share/dotnet/sdk]
@@ -49,6 +49,8 @@ tableOfContents: true
    7.0.313 [/usr/local/share/dotnet/sdk]
    8.0.200 [/usr/local/share/dotnet/sdk]
    8.0.407 [/usr/local/share/dotnet/sdk]
+   8.0.414 [/usr/local/share/dotnet/sdk]
+   10.0.201 [/usr/local/share/dotnet/sdk]
    ```
 
 :::
@@ -207,7 +209,6 @@ tableOfContents: true
    ![](images/vscode/vscode_dotnet_new.png)
 
    エクスプローラ」サイドバーより``.cs``ファイルを選択して少し待つと，C# Dev Kitによりプロジェクトが認識される（同サイドバーに「SOLUTION EXPLORER」が増える）．
-
 
 2. ターミナルから``dotnet run``を実行してもよいが，ここでは別の方法を紹介する．
    ``Program.cs``を左のエクスプローラーから選択して開き，エディタパネル *右上*（左にあるものではない）の「再生ボタンの右下に虫がついたアイコン」をクリックする．
