@@ -23,11 +23,14 @@ tableOfContents: true
 
 1. [.NET SDKのダウンロードページ](https://dotnet.microsoft.com/ja-jp/download) より，software development kit (SDK)をダウンロードする．2026年度は`.NET 10.0`のものを使用することとする．
    * Windowsの人はWindows版のSDKをダウンロードする．
-   * Mac版についてはいわゆるintel MacとAppleシリコン（M1やM2）のMacではダウンロードすべきものが違うので注意．前者はx64版を後者はArm64版をダウンロードしよう．
+   * Mac版についてはいわゆるintel MacとAppleシリコン（M4やM5など）のMacではダウンロードすべきものが違うので注意．前者はx64版を後者はArm64版をダウンロードしよう．
 
 1. ダウンロードしたインストーラを実行し，指示に従ってインストールを完了する．
+
    * Windows版なら``dotnet-sdk-10.0.201-win-x64.exe``みたいな名前
    * Macのx64版なら``dotnet-sdk-10.0.201-osx-x64.pkg``/``dotnet-sdk-10.0.201-osx-arm64.pkg`` みたいな名前
+
+   （いずれも`201`の部分は異なるかもしれない）
 
 1. ターミナル（WindowsだとPowerShellか「コマンド プロンプト」，MacだとTerminal.appやiTerm.app）を開き，以下を実行する．
 
@@ -35,7 +38,7 @@ tableOfContents: true
    dotnet --list-sdks
    ```
 
-   以下は私の環境における出力だが，このようにダウンロードしたSDK（上の`10.0.207`）が表示されたらばOK．
+   以下は私の環境における出力だが，このようにダウンロードしたSDK（上の`10.0.201`）が表示されたらばOK．
 
    ```console
    6.0.400 [/usr/local/share/dotnet/sdk]
@@ -61,23 +64,36 @@ tableOfContents: true
 
 ::: Instructions
 
-1. 適当なフォルダに移動して以下を実行する．
+1. 適当なフォルダ（ただし，後述する*プロジェクトフォルダ*の中を避ける）に移動して以下を実行する．
 
    ```console
    dotnet new console -o HelloWorldCS 
    ```
+  
+   「適当なフォルダ」への移動方法によくわからなければ，[後述のVSCodeでフォルダを開いてからVSCode内のターミナルを利用する方法](#vscode_first)をとるとよい．  
 
-1. ``HelloWorldCS`` というフォルダができているので，そこに移動する．  
+   > [!NOTE]
+   >
+   > なお，ターミナルで今いるフォルダ（カレントディレクトリ）がわからなくなった場合は以下のいずれかを行う．
+   > そもそも[VSCodeでフォルダを開いてからその中でターミナルを起動する](#vscode_first)ほうがよいかもしれない．
+   > 1. Windowsの場合．`explorer .`を実行する．すると，今いるフォルダがエクスプローラーで開かれる．
+   > 1. Macの場合．`open .`を実行する．すると，今いるフォルダがFinderで開かれる．なお，`open`コマンドは引数を関連付けられたアプリで開く（例：`open foo.html`だと`foo.html`を規定のブラウザで開く）．
+   > 1. （ある程度慣れている人向け）`pwd` コマンドを実行する．このコマンドは今いるフォルダのパスを表示してくれる．
+   > 1. （慣れている人向け）そもそもシェルのプロンプトに現在のフォルダを表示させる．PowerShellだとデフォルトでそうなっているはず．
+
+2. ``HelloWorldCS`` というフォルダができているので，`cd`コマンドでそこに移動する．  
 
    ```console
    cd HelloWorldCS 
    ```
 
-   中身を``ls``で確認してみよう．たとえば，Macだと以下のように表示される（Windowsだと ``ls`` は ``dir`` の別名なので，表示は多少異なる）．
+   中身を``ls``で確認してみよう．このコマンドは現在のフォルダ直下のファイル一覧（一部除く）をリストしてくれる．たとえば，Macだと以下のように表示される（Windowsだと``ls``は``dir``の別名なので，表示は多少異なる）．
 
    ```console
    HelloWorldCS.csproj  Program.cs           obj/
    ```
+
+   こうした`.csproj`ファイルを直下に含むフォルダを*プロジェクトフォルダ*と呼ぶ．
 
    プログラムを書くには ``Program.cs`` を変更すればよい．現時点では ``Program.cs`` の中身は以下の通りである（``cat Program.cs``を実行するなどすると見られる）．
 
@@ -86,13 +102,13 @@ tableOfContents: true
    Console.WriteLine("Hello, World!");
    ```
 
-1. 以下のコマンドを実行してビルドする．
+3. 以下のコマンドを実行してビルドする．
 
    ```console
    dotnet build
    ```
 
-1. 以下を実行してビルドしたプログラムを実行する．
+4. 以下を実行してビルドしたプログラムを実行する．
 
    ```console
    dotnet run 
@@ -100,9 +116,9 @@ tableOfContents: true
 
    すると，``"Hello, World!"``が表示されるのが確認できるはずだ．
 
-1. F#でも同様であることを確認しておこう．
+5. F#でも同様であることを確認しておこう．
 
-   i. まず，今`HelloWorldCS`の中にいるのであれば，その外に移動する．
+   i. まず，今`HelloWorldCS`の中にいるのであれば，その外に移動する．これはプロジェクトフォルダをネストしないためである．
 
    i. そして，上記において，``dotnet new``を実行する場面で，``dotnet new console -o HelloWorldCS`` の代わりに ``dotnet new console -lang "F#" -o HelloWorldFS`` とする．また，このコマンドだと``HelloWorldCS``ではなく``HelloWorldFS``というフォルダが作成される．
 
@@ -130,7 +146,7 @@ tableOfContents: true
    するとサイドバーが"EXTENSIONS"に切り替わる．サイドバー上部の検索欄から"Japanese"で検索すると"Japanese Language Pack for Visual Studio Code"が検索結果に現れると思うのでその"install"をクリックする．
 
    > [!NOTE]
-   > 一番左のアイコンが並んでいる部分はアクティビティバーであってサイドバーではない．上のスクリーンショットでは表示されていないが，サイドバーはその隣の領域である．
+   > 一番左のアイコンが並んでいる部分は*アクティビティバー*と呼ばれる．サイドバーではない．上のスクリーンショットでは表示されていないが，サイドバーはその隣の領域である．
 
    しばらくするとインストールが完了し，VSCodeの再起動が求められるので指示に従う．
 
@@ -181,11 +197,11 @@ tableOfContents: true
 1. ターミナルでプロジェクトを作成し，それを開く．具体的には以下の[方法1](#terminal_first)と[方法2](#vscode_first)のいずれかを行う．いずれの場合もC# Dev Kitがプロジェクトを認識した時点で，開いたフォルダ直下に``フォルダ名.sln``なるファイルが作成されるはず．
 
    > [!NOTE]
-   > ここでいうプロジェクトとは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものである．プロジェクトの設定は`.csproj`ファイルに記述されている．
+   > ここでいうプロジェクトとは一つの実行形式やライブラリを作成するためのコード等を全てまとめたものである．大雑把には`.csproj`ファイルを直下に含むようなフォルダのこと．プロジェクトの設定はこの`.csproj`ファイルに記述されている．
    > 複数のプロジェクトをまとめたものはソリューションと呼ばれ，`.sln`ファイルにその情報が記述されている（参考：[What are solutions and projects in Visual Studio?](https://docs.microsoft.com/en-us/visualstudio/ide/solutions-and-projects-in-visual-studio?view=vs-2022)）
 
    > [!CAUTION]
-   > プロジェクトはネストさせない．つまり，`.csproj`が含まれているフォルダ以下に別の`.csproj`が含まれているフォルダを作らない．
+   > **プロジェクトはネストさせない**．つまり，`.csproj`が含まれているフォルダ以下に別の`.csproj`が含まれているフォルダを作らない．
 
    #### 方法1：ターミナルでプロジェクトを作成してからVSCodeでそのフォルダを開く {#terminal_first}
 
@@ -194,7 +210,7 @@ tableOfContents: true
 
    #### 方法2：VSCodeでフォルダを開いてからVSCode内ターミナルでプロジェクトを作成する {#vscode_first}
 
-   VSCodeで作成したいプロジェクトと同名のフォルダ（``HelloWorldCS``とする）を開く（ **Windowsでは「ファイルを開く」ではなく「フォルダーを開く」から開く** ）．メニューの「表示」→「ターミナル」よりターミナルを起動・表示する．
+   VSCodeで作成したいプロジェクトと同名のフォルダ（``HelloWorldCS``とする）を新規作成し開く（ **Windowsでは「ファイルを開く」ではなく「フォルダーを開く」から開く** ）．ただし，他のプロジェクトの中は避ける．メニューの「表示」→「ターミナル」よりターミナルを起動・表示する．
 
    ![VSCodeの内蔵ターミナルは画面下部に表示される](images/vscode/vscode_terminal.png)\
 
