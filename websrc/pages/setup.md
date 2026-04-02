@@ -4,10 +4,6 @@ date:  2022-03-24
 tableOfContents: true
 ---
 
-> [!CAUTION]
-> [2024年8月一杯でVisual Studio for Macの提供が廃止される](https://learn.microsoft.com/en-us/visualstudio/mac/what-happened-to-vs-for-mac?view=vsmac-2022) こととなった．
-> それにともない，今年はVisual Studio Code上でC# Dev KitおよびIonide for F#を用いた環境構築法を紹介することとする．Visual Studio を使いたい人は[2023年度の環境構築法](./setup_2023.html)を参照されたし．
-
 まずは，[.NET SDKのインストール](#dotnet_sdk) を行い，その後[Visual Studio Code (VSCode) のインストール・設定](#vscode)を行う．
 自分の好きなエディタ（viやEmacs等）を使用したい人は後者はしなくてもよい．
 
@@ -23,12 +19,12 @@ tableOfContents: true
 
 1. [.NET SDKのダウンロードページ](https://dotnet.microsoft.com/ja-jp/download) より，software development kit (SDK)をダウンロードする．2026年度は`.NET 10.0`のものを使用することとする．
    * Windowsの人はWindows版のSDKをダウンロードする．
-   * Mac版についてはいわゆるintel MacとAppleシリコン（M4やM5など）のMacではダウンロードすべきものが違うので注意．前者はx64版を後者はArm64版をダウンロードしよう．
+   * Mac版についてはAppleシリコン（M4やM5など）のMacといわゆるintel Macとではダウンロードすべきものが違うので注意．前者はArm64版を後者はx64版をダウンロードしよう．
 
 1. ダウンロードしたインストーラを実行し，指示に従ってインストールを完了する．
 
-   * Windows版なら``dotnet-sdk-10.0.201-win-x64.exe``みたいな名前
-   * Macのx64版なら``dotnet-sdk-10.0.201-osx-x64.pkg``/``dotnet-sdk-10.0.201-osx-arm64.pkg`` みたいな名前
+   * Windowsなら``dotnet-sdk-10.0.201-win-x64.exe``みたいな名前
+   * Macなら``dotnet-sdk-10.0.201-osx-arm64.pkg``/``dotnet-sdk-10.0.201-osx-x64.pkg``みたいな名前
 
    （いずれも`201`の部分は異なるかもしれない）
 
@@ -38,7 +34,7 @@ tableOfContents: true
    dotnet --list-sdks
    ```
 
-   以下は私の環境における出力だが，このようにダウンロードしたSDK（上の`10.0.201`）が表示されたらばOK．
+   以下は私の環境における出力だが，このようにダウンロードしたSDK（上の`10.0.201`）が表示されたらOK．
 
    ```console
    6.0.400 [/usr/local/share/dotnet/sdk]
@@ -60,7 +56,7 @@ tableOfContents: true
 
 ## 動作確認 {#check_dotnetsdk_install}
 
-（動作確認は以下のVSCodeのインストール・設定後にも行うので，この時点では飛ばしてもよい）
+（後述の[VSCodeのインストール・設定](#vscode)後に確認すれば十分であるため，この時点では飛ばしてもよい）
 
 ::: Instructions
 
@@ -70,7 +66,7 @@ tableOfContents: true
    dotnet new console -o HelloWorldCS 
    ```
   
-   「適当なフォルダ」への移動方法によくわからなければ，[後述のVSCodeでフォルダを開いてからVSCode内のターミナルを利用する方法](#vscode_first)をとるとよい．  
+   「適当なフォルダ」への移動方法がよくわからなければ，[後述のVSCodeでフォルダを開いてからVSCode内のターミナルを利用する方法](#vscode_first)をとるとよい．  
 
    > [!NOTE]
    >
@@ -95,7 +91,7 @@ tableOfContents: true
 
    こうした`.csproj`ファイルを直下に含むフォルダを*プロジェクトフォルダ*と呼ぶ．
 
-   プログラムを書くには ``Program.cs`` を変更すればよい．現時点では ``Program.cs`` の中身は以下の通りである（``cat Program.cs``を実行するなどすると見られる）．
+   プログラムを書くには ``Program.cs`` を変更すればよい．現時点では ``Program.cs`` の中身は以下の通りである．（``cat Program.cs``を実行するなどすると見られる．コマンドプロンプトだと`cat`の代わりに`type Program.cs`を実行する．）
 
    ```cs
    // See https://aka.ms/new-console-template for more information
@@ -132,17 +128,17 @@ tableOfContents: true
 
 1. <https://code.visualstudio.com/> からインストーラをダウンロードする．
 
-1. ダウンロードしたインストーラを実行し，指示に従いインストールする．
+1. ダウンロードしたインストーラを実行し，指示に従いインストールする．Windowsの場合に`code`コマンドを使いたい場合は「PATHへの追加」をチェックする．
 
 1. お好みで[Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)をインストールし，UIを日本語にする．
 
-   リンク先のウェブページの「Install」ボタンを押すと，「VSCodeで開きますか」旨の質問が表示されるのでそうする旨の選択する．
+   リンク先のウェブページの「Install」ボタンを押すと，「VSCodeで開きますか」旨の質問が表示されるのでそうする旨の選択をする．
    すると，VSCode内で当該拡張機能のページが表示されるので，そこの"Install"ボタンを選択する．
 
    !["Install"ボタンは当該拡張機能のページの上部にある](images/vscode/vscode_extension_j.png)
 
    あるいは， VSCode上で拡張機能の検索画面からインストールする．
-   左下の歯車アイコンをクリックし"Extensions"を選択する，かWindowsだとControl + Shift + X，MacだとCommand + Shift + Xを押す．
+   左下の歯車アイコンをクリックし"Extensions"を選択するか，WindowsだとControl + Shift + X，MacだとCommand + Shift + Xを押す．
    するとサイドバーが"EXTENSIONS"に切り替わる．サイドバー上部の検索欄から"Japanese"で検索すると"Japanese Language Pack for Visual Studio Code"が検索結果に現れると思うのでその"install"をクリックする．
 
    > [!NOTE]
@@ -166,7 +162,7 @@ tableOfContents: true
    Shell Command: Install 'code' command in PATH
    ```
 
-   を選択し（当該コマンドは"Shell C"ぐらいまで入力した出てくるはず），`code`コマンドをインストールする．これによりターミナルから`code FOLDER`とすることでVSCodeを起動できるようになる．
+   を選択し（当該コマンドは"Shell C"ぐらいまで入力すると出てくるはず），`code`コマンドをインストールする．これによりターミナルから`code FOLDER`とすることでVSCodeを起動できるようになる．
 
    > [!NOTE]
    > [公式ドキュメント](https://code.visualstudio.com/docs/setup/mac#_launch-vs-code-from-the-command-line) によると，
@@ -205,7 +201,7 @@ tableOfContents: true
 
    #### 方法1：ターミナルでプロジェクトを作成してからVSCodeでそのフォルダを開く {#terminal_first}
 
-   ターミナル上で， [上に書いた](#check_dotnetsdk_install)ように`dotnet new console -o HelloWorldCS`で適当なプロジェクト（ここでは`HelloWorldCS`）を作成し，その後`code HelloWorldCS`でVSCodeを開く（Macの場合は`code`コマンドの[インストールが必要](#command_code_install)）．
+   ターミナル上で， [上に書いた](#check_dotnetsdk_install)ように`dotnet new console -o HelloWorldCS`で適当なプロジェクト（ここでは`HelloWorldCS`）を作成し，その後`code HelloWorldCS`でVSCodeを開く（Windowsの場合はインストール時に「PATHへの追加」のチェックが必要，Macの場合は`code`コマンドの[インストールが必要](#command_code_install)）．
    少し待つとC# Dev Kitがプロジェクトを認識する（「エクスプローラー」サイドバーに「ソリューション エクスプローラー」が増える）．
 
    #### 方法2：VSCodeでフォルダを開いてからVSCode内ターミナルでプロジェクトを作成する {#vscode_first}
@@ -224,10 +220,10 @@ tableOfContents: true
 
    ![](images/vscode/vscode_dotnet_new.png)
 
-   エクスプローラ」サイドバーより``.cs``ファイルを選択して少し待つと，C# Dev Kitによりプロジェクトが認識される（同サイドバーに「SOLUTION EXPLORER」が増える）．
+   エクスプローラーサイドバーより``.cs``ファイルを選択して少し待つと，C# Dev Kitによりプロジェクトが認識される（同サイドバーに「SOLUTION EXPLORER」が増える）．
 
 2. ターミナルから``dotnet run``を実行してもよいが，ここでは別の方法を紹介する．
-   ``Program.cs``を左のエクスプローラーから選択して開き，エディタパネル *右上*（左にあるものではない）の「再生ボタンの右下に虫がついたアイコン」をクリックする．
+   ``Program.cs``を左のエクスプローラーから選択して開き，エディタパネル *右上*（左のアクティビティーバーにあるものではない）の「再生ボタンの右下に虫がついたアイコン」をクリックする．
    このボタンは``.cs``ファイルに関連するプロジェクトをデバッグ実行する（右側の ﹀ から通常の実行に切り替えられる）．
 
    ![](images/vscode/vscode_run_button.png)
@@ -238,7 +234,7 @@ tableOfContents: true
    Hello, World!
    ```
 
-   が表示される．最初の実行では「実行とデバッグ」にサイドバーが切り替わるかもしれないが，アクティビティーバー（一番左にあるアイコンが並んでいるバー）の一番上のアイコン（マウスをホバーすると「エクスプローラー」と出るもの）を選択すると戻すことができる．メニューの「表示」→「エクスプローラー」を選択したのでもよい．
+   が表示される．最初の実行では「実行とデバッグ」にサイドバーが切り替わるかもしれないが，アクティビティーバー（一番左にあるアイコンが並んでいるバー）の一番上のアイコン（マウスをホバーすると「エクスプローラー」と出るもの）を選択すると戻すことができる．メニューの「表示」→「エクスプローラー」を選択するのでもよい．
 
    ![より詳しくは，画面下部のデバッグコンソールに水色のデバッグメッセージとともに青色で"Hello World"が表示される](images/vscode/vscode_debug_console.png)\
 
@@ -268,7 +264,7 @@ tableOfContents: true
      を選択する．非常に多くのコマンドがリストされるが，当該コマンドは`.NET: N`のあたりまでタイプすると出てくるはず．
 
 1. 「コンソール アプリ」を選択する．
-1. 選択後の手順はステップは最初のステップにおける選択およびWindows/Macで少し異なる
+1. 選択後の手順は，最初のステップにおける選択およびWindows/Macで少し異なる．
    * *Windowsで「.NET プロジェクトを作成」からプロジェクトを作成しようとした場合*：「プロジェクトの場所」というファイル選択ダイアログが出てくるので，プロジェクトを置くフォルダを選択する．次にプロジェクト名を聞かれるので適当に選択する．デフォルトのままでもよい．
    * *プロジェクトをコマンドパレットから作成しようとした場合，あるいはMac*：その後プロジェクト名を聞かれるので適当に選択する．デフォルトのままでもよい．次に，どのフォルダの下に作成するかを聞かれるので適当に選択する．フォルダを開いてからコマンドパレットからプロジェクト作成を行った場合は，デフォルトではそのフォルダの直下になっている．
 1. ターミナル（VSCodeのものでもよい）から`dotnet run`で実行してもよいし，「C#編1」に書いたように右上の「再生ボタンの右下に虫がついたアイコン」で実行してもよい．
