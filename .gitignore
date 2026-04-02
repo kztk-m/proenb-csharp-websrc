@@ -9,3 +9,7 @@ node_modules
 .stylelintrc 
 package-lock.json
 package.json 
+
+.claude
+CLAUDE.md
+GEMINI.md
