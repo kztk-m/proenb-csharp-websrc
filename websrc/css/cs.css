@@ -882,7 +882,7 @@ section.caution {
 div.hint,
 section.hint {
     background-color: var(--hint-bg-color);
-    border-color: var(--tip-border-color);
+    border-color: var(--hint-border-color);
 }
 
 div.important,
