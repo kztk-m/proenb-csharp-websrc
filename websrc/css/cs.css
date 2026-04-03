@@ -794,8 +794,8 @@ h2#発展課題::after,
     bottom: 0.15rem;
 }
 
-.q_in_class::after {
-    content: "講義中に解答・提出しない";
+h2.q_in_class::after {
+    content: "提出しない・講義中に解答";
     font-size: 0.8rem;
     padding: 0.15rem 0.5rem;
     display: inline-block;
