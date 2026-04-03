@@ -23,7 +23,7 @@
 
     /* ---- */
 
-    --strong-color: hsl(10deg 100% 48%);
+    --strong-color: hsl(350deg 95% 47%);
     --code-bg-color: hsl(240deg 30% 96%);
     --code-meta-bg-color: hsl(240deg 30% 92%);
     --code-border-color: var(--code-meta-bg-color);
@@ -155,7 +155,7 @@ div.title {
 pre,
 code,
 .directorylist li {
-    font-family: "Anonymous Pro", inconsolata, Monaco, Consolas, monospace;
+    font-family: "Anonymous Pro", inconsolata, Menlo, Consolas, monospace;
 }
 
 /* ------------------------------------ */
