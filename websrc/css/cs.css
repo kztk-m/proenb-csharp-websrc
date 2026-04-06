@@ -1260,6 +1260,50 @@ span.copy-button.failed::after {
     color: white;
 }
 
+/* I/O examples. It shares the layout with named code blocks. */
+
+.io-examples {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem 0.5rem;
+    align-items: stretch;
+    margin: 1.5rem auto;
+}
+
+.io-examples figure {
+    margin: 0;
+    /* border: 0.1em solid var(--code-border-color); */
+    border-radius: 0.3rem;
+    padding: 0;
+    max-width: initial;
+    /* background-color: color-mix(in oklab, var(--code-bg-color) 50%, white); */
+}
+
+
+/* .io-examples figure:nth-child(odd) pre {
+    border-radius: 0.3rem 0 0 0.3rem;
+    border-right: none;
+}
+
+.io-examples figure:nth-child(even) pre {
+    border-radius: 0 0.3rem 0.3rem 0;
+} */
+
+.io-examples figure pre {
+    margin: 0;
+    /* border-radius: 0; */
+}
+
+.io-examples figcaption {
+    /* reset existing style */
+    text-align: left;
+    /* font-weight: normal; */
+}
+
+/* .io-examples figcaption a {
+    color: inherit;
+} */
+
 /* task-list */
 
 ul.task-list {
