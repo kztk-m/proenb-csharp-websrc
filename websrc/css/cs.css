@@ -132,6 +132,7 @@ html {
     background-color: var(--main-bg-color);
 
     font-feature-settings: "palt";
+    text-autospace: normal;
 }
 
 /* font setting */
