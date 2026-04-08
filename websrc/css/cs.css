@@ -271,56 +271,19 @@ section+section {
     margin-top: 3rem;
 }
 
-@media only screen and (width >=768px) {
-    figure {
-        max-width: 70%;
-    }
-
-    figure img {
-        max-width: 100%;
-    }
-}
-
-@media only screen and (width >=1024px) {
-    figure {
-        max-width: 60%;
-    }
-
-    figure img {
-        max-width: 100%;
-    }
-}
-
-
 figure figcaption {
     text-align: center;
     font-weight: bold;
 }
 
 img {
-    max-width: 70%;
+    max-width: 80vw;
     height: auto;
     object-fit: scale-down;
     margin-left: auto;
     margin-right: auto;
 }
 
-.image_container {
-    max-width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.image_container p {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-.image_container img {
-    max-width: 80%;
-}
 
 figure img {
     /* width: 100%;
@@ -564,6 +527,14 @@ header p {
     margin-right: 3vw;
 }
 
+figure {
+    max-width: 94vw;
+}
+
+figure img {
+    max-width: 100%;
+}
+
 
 @media only screen and (width >=800px) {
     :root {
@@ -658,6 +629,18 @@ header p {
         display: none;
     }
 
+    img {
+        max-width: calc(0.7 * (100vw - var(--toc-width) - var(--toc-gap)));
+    }
+
+    figure {
+        max-width: calc(0.7 * (100vw - var(--toc-width) - var(--toc-gap)));
+    }
+
+    figure img {
+        max-width: 100%;
+    }
+
 
     /* .toc a.toc-active {
         position: relative;
@@ -731,10 +714,6 @@ main {
 
 header nav ul {
     max-width: unset;
-}
-
-.image_container img {
-    max-width: 45%;
 }
 
 .qnav ul {
@@ -1133,25 +1112,30 @@ th>p {
 /* modal img */
 
 img.enlargeable {
-    cursor: pointer;
+    cursor: zoom-in;
 }
 
-/* p:has(img.enlargeable)::after {
+*:has(> img.enlargeable) {
+    position: relative;
+    display: inline-block;
+}
+
+*:has(> img.enlargeable)::after {
     content: "画像をクリックして拡大";
     display: block;
     position: absolute;
-    top: calc(10%);
-    left: calc(40%);
-    font-size: 150%;
-    color: #CCC;
-    background-color: rgba(0, 0, 0, 0.5);
+    top: calc(50%);
+    left: calc(50%);
+    font-size: 100%;
+    color: #666;
+    background-color: rgba(220, 220, 220, 0.75);
     margin: 0px auto;
-    padding: 0.3rem;
-    border-radius: 1rem;
+    padding: 0.3em 1em;
+    border-radius: 2em;
     pointer-events: none;
     backdrop-filter: blur(5px);
     transform: translate(-50%, -50%);
-} */
+}
 
 .modal-pane {
     display: none;
