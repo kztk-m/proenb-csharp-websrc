@@ -10,7 +10,7 @@ function addClassToCurrentPageLinks() {
         const tPage = tURL[tURL.length - 1];
 
         if (tPage == p) {
-            elem.className += ' current-link';
+            elem.classList.add('current-link');
         }
     });
 }
@@ -44,7 +44,6 @@ function addModalImageViewPane() {
         }
     });
     window.addEventListener('keydown', function (event) {
-        console.log(event.key);
         if (event.key == 'Escape') {
             div.style.display = "none";
         }
@@ -117,35 +116,17 @@ function addCopyButtons() {
         const copyButton = document.createElement("span");
         copyButton.classList.add('copy-button');
 
-        const k = function () {
+        copyButton.addEventListener('click', function (e) {
             navigator.clipboard.writeText(elem.innerText).then(function () {
-                // copyButton.classList.add('copied');                        
+                // copyButton.classList.add('copied');
                 // setTimeout(function () {
                 //     copyButton.classList.remove('copied');
-                // }, 3000); 
-            }).catch(function (error) {
-                try {
-                    console.log("fall back to execCommand");
-                    elem.select();
-                    document.execCommand("copy");
-                }
-                catch (err) {
-                    copyButton.classList.add('copy-failed');
-                    setTimeout(function () {
-                        copyButton.classList.remove('copy-failed');
-                    }, 3000);
-                }
-            });
-        };
-
-        copyButton.addEventListener('click', function (e) {
-            navigator.permissions.query({ name: "clipboard-write" }).then(result => {
-                if (result.state == "granted" || result.state == "prompt") {
-                    k();
-                }
-            }).catch(function (error) {
-                // try without permission
-                k();
+                // }, 3000);
+            }).catch(function () {
+                copyButton.classList.add('copy-failed');
+                setTimeout(function () {
+                    copyButton.classList.remove('copy-failed');
+                }, 3000);
             });
         });
 
@@ -212,6 +193,43 @@ function installScroll() {
     });
 }
 
+function activateTocTracking() {
+    const toc = document.querySelector('nav.toc');
+    if (!toc) return;
+
+    const tocLinks = Array.from(toc.querySelectorAll('a[href^="#"]'));
+    if (tocLinks.length === 0) return;
+
+    const idToLink = new Map(
+        tocLinks.map(a => [decodeURIComponent(a.getAttribute('href').slice(1)), a])
+    );
+
+    const mainbody = document.querySelector('section.mainbody');
+    if (!mainbody) return;
+
+    // Observe <section> elements that correspond to a TOC entry
+    const sections = Array.from(mainbody.querySelectorAll('section[id]'))
+        .filter(s => idToLink.has(s.id));
+
+    if (sections.length === 0) return;
+
+    const visibleSections = new Set();
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                visibleSections.add(entry.target);
+            } else {
+                visibleSections.delete(entry.target);
+            }
+        });
+        tocLinks.forEach(a => a.classList.remove('toc-active'));
+        visibleSections.forEach(s => idToLink.get(s.id)?.classList.add('toc-active'));
+    });
+
+    sections.forEach(s => observer.observe(s));
+}
+
 window.onload = function () {
     addClassToCurrentPageLinks();
     addModalImageViewPane();
@@ -219,6 +237,7 @@ window.onload = function () {
     addCopyButtons();
     addIntersectionObserver();
     installScroll();
+    activateTocTracking();
 };
 
 
