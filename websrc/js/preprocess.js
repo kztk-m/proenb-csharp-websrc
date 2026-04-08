@@ -56,7 +56,7 @@ function addModalImageViewPane() {
 
     document.querySelectorAll('img').forEach(elem => {
         if (elem.clientHeight < elem.naturalHeight) {
-            elem.className += ' enlargeable'
+            elem.classList.add('enlargeable');
             elem.onclick = function () {
                 div.style.display = "block";
                 img.src = elem.src;
