@@ -123,9 +123,9 @@ function addCopyButtons() {
                 //     copyButton.classList.remove('copied');
                 // }, 3000);
             }).catch(function () {
-                copyButton.classList.add('copy-failed');
+                copyButton.classList.add('failed');
                 setTimeout(function () {
-                    copyButton.classList.remove('copy-failed');
+                    copyButton.classList.remove('failed');
                 }, 3000);
             });
         });
