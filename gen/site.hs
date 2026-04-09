@@ -1,7 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE MultiWayIf        #-}
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid           (mappend)
 import           Hakyll
 
 import qualified Data.Time             as Time
@@ -54,8 +53,7 @@ myWriterOptions =
 -- from: https://svejcar.dev/posts/2019/11/27/table-of-contents-in-hakyll/
 withTOC :: WriterOptions
 withTOC = myWriterOptions
-          { -- writerNumberSections  = True
-          -- ,
+          { -- writerNumberSections  = True,
             writerTableOfContents = True,
             writerTOCDepth        = 3,
             writerTemplate        = Just tocTemplate
@@ -70,10 +68,6 @@ tocTemplate = either error id . runIdentity . P.compileTemplate "" $ T.unlines
   ]
 
 data ParseBN = W Int | Q Int
-
-getWeekNumber :: ParseBN -> Int
-getWeekNumber (W i) = i
-getWeekNumber (Q i) = i
 
 adjustJapaneseSpacing :: Item String -> Compiler (Item String)
 adjustJapaneseSpacing = pure . fmap aj
@@ -110,8 +104,8 @@ adjustJapaneseSpacing = pure . fmap aj
 
     skipTrailingNBSPBeforeJp :: String -> Maybe String
     skipTrailingNBSPBeforeJp [] = Just []
-    skipTrailingNBSPBeforeJp ('\n':cs) = Nothing
-    skipTrailingNBSPBeforeJp ('\r':cs) = Nothing
+    skipTrailingNBSPBeforeJp ('\n':_) = Nothing
+    skipTrailingNBSPBeforeJp ('\r':_) = Nothing
     skipTrailingNBSPBeforeJp (c:cs)
      | Data.Char.isSpace c = skipTrailingNBSPBeforeJp cs
      | isJpChar c = Just (c:cs)
@@ -127,7 +121,7 @@ procMarkdownAdmonitions = P.walk go
       _           -> let (s, t) = splitAtSoftbreak is in (i:s, t)
 
     go :: P.Block -> P.Block
-    go b@(P.BlockQuote (P.Para para:bs2)) -- too specific?
+    go (P.BlockQuote (P.Para para:bs2)) -- too specific?
       | ([P.Str "[!NOTE]"],bs1) <- splitAtSoftbreak para = mkDiv "note" "Note" (P.Para bs1 : bs2)
       | ([P.Str "[!TIP]"],bs1) <- splitAtSoftbreak para = mkDiv "tip" "Tip" (P.Para bs1 : bs2)
       | ([P.Str "[!CAUTION]"],bs1) <- splitAtSoftbreak para= mkDiv "caution" "Caution" (P.Para bs1 : bs2)
@@ -148,8 +142,6 @@ myTransformM d = do
 
 pageCompilingRule :: Compiler (Item String)
 pageCompilingRule = do
---  loadBody "templates/nav.html" :: Compiler Template
-
   underlying <- getUnderlying
   toc        <- getMetadataField underlying "tableOfContents"
   let wopt = case toc of
@@ -263,38 +255,9 @@ main = hakyllWith conf $ do
         >>= relativizeUrls >>= adjustJapaneseSpacing
 
 
-    -- match (fromList ["about.rst", "contact.markdown"]) $ do
-    --     route   $ setExtension "html"
-    --     compile $ pandocCompiler
-    --         >>= loadAndApplyTemplate "templates/default.html" defaultContext
-    --         >>= relativizeUrls
-
-    -- match "posts/*" $ do
-    --     route $ setExtension "html"
-    --     compile $ pandocCompiler
-    --         >>= loadAndApplyTemplate "templates/post.html"    postCtx
-    --         >>= loadAndApplyTemplate "templates/default.html" postCtx
-    --         >>= relativizeUrls
-
-    -- create ["archive.html"] $ do
-    --     route idRoute
-    --     compile $ do
-    --         posts <- recentFirst =<< loadAll "posts/*"
-    --         let archiveCtx =
-    --                 listField "posts" postCtx (return posts) `mappend`
-    --                 constField "title" "Archives"            `mappend`
-    --                 defaultContext
-
-    --         makeItem ""
-    --             >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-    --             >>= loadAndApplyTemplate "templates/default.html" archiveCtx
-    --             >>= relativizeUrls
-
     match "index.html" $ do
         route idRoute
         compile $ do
---          loadBody "templates/nav.html" :: Compiler Template
---            posts <- recentFirst =<< loadAll "posts/*"
           let indexCtx = defaultContext
 
           getResourceBody
@@ -304,8 +267,3 @@ main = hakyllWith conf $ do
 
 
 
---------------------------------------------------------------------------------
-postCtx :: Context String
-postCtx =
-    dateField "date" "%B %e, %Y" `mappend`
-    defaultContext
