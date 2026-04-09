@@ -1,12 +1,12 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE MultiWayIf #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PatternGuards #-}
 
 import Hakyll
 
 import qualified Data.Time as Time
 
-import qualified System.Directory as Dir
 import qualified System.FilePath as FP
 import Text.Pandoc (ReaderOptions (..), WriterOptions (..))
 import qualified Text.Pandoc as P
@@ -15,11 +15,9 @@ import qualified Text.Pandoc.Walk as P
 
 import qualified Data.Char
 import Data.Functor.Identity (runIdentity)
-import Data.String (fromString)
 import Data.Text (Text)
 import qualified Data.Text as T
 
-import Control.Category ((>>>))
 import qualified Data.List (isPrefixOf)
 
 -- import qualified Debug.Trace
