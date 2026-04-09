@@ -284,6 +284,11 @@ img {
     margin-right: auto;
 }
 
+img.retina {
+    zoom: 0.5;
+    max-width: 160vw;
+}
+
 img+br {
     display: none;
 }
@@ -634,6 +639,10 @@ figure img {
 
     img {
         max-width: calc(0.7 * (min(92vw, var(--body-max-width)) - var(--toc-width) - var(--toc-gap)));
+    }
+
+    img.retina {
+        max-width: calc(1.4 * (min(92vw, var(--body-max-width)) - var(--toc-width) - var(--toc-gap)));
     }
 
     figure {

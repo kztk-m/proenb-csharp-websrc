@@ -18,12 +18,14 @@ function addClassToCurrentPageLinks() {
 function assignEnlargeable() {
     // We never assign enlargeable to img in the modal pane.
     document.querySelectorAll('img:not(#modalImage)').forEach(elem => {
+        const scale = elem.classList.contains('retina') ? 0.5 : 1;
+
         // The element is shrunken and can be enlarged when
         // presented in the view port.
         elem.classList.toggle('enlargeable',
             elem.clientHeight < elem.naturalHeight &&
-            elem.clientHeight < window.innerHeight &&
-            elem.clientWidth < window.innerWidth);
+            scale * elem.clientHeight < window.innerHeight &&
+            scale * elem.clientWidth < window.innerWidth);
     });
 }
 
@@ -69,6 +71,7 @@ function addModalImageViewPane() {
             if (elem.classList.contains('enlargeable')) {
                 div.style.display = "block";
                 img.src = elem.src;
+                img.classList.toggle('retina', elem.classList.contains('retina'));
             }
         });
     });
