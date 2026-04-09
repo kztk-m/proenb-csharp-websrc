@@ -1,45 +1,52 @@
 /* stylelint-disable selector-class-pattern */
 /* stylelint-disable selector-id-pattern */
 :root {
+    color-scheme: light dark;
+
     /* main */
-    --main-bg-color: white;
-    --main-fg-color: #111;
+    --main-bg-color: light-dark(white, #223);
+    --main-fg-color: light-dark(#111, #e0e0e5);
 
     /* nav */
 
-    --header-nav-bg-color: hsl(275deg 80% 33%);
-    --header-nav-bg-highlight-color: hsl(275deg 60% 48%);
-    --header-nav-border-color: hsl(275deg 45% 45%);
-    --header-bg-color: hsl(275deg 80% 95%);
-    --header-nav-fg-color: white;
-    --header-nav-current-link-color: hsl(40deg 90% 55%);
-    --header-border-color: #AAA;
+    --header-nav-bg-color: light-dark(hsl(275deg 80% 33%), hsl(275deg 50% 25%));
+    --header-nav-bg-highlight-color: light-dark(hsl(275deg 60% 48%), hsl(275deg 45% 35%));
+    --header-nav-border-color: light-dark(hsl(275deg 45% 45%), hsl(275deg 45% 40%));
+    --header-bg-color: light-dark(hsl(275deg 80% 95%), hsl(275deg 80% 12%));
+    --header-nav-fg-color: light-dark(white, #f0f0f0);
+    --header-nav-current-link-color: light-dark(hsl(40deg 90% 55%), hsl(40deg 90% 35%));
+    --header-border-color: light-dark(#AAA, #5f5678);
 
-    --header-qnav-current-link-color: hsl(275deg 60% 58%);
+    --header-qnav-current-link-color: light-dark(hsl(275deg 60% 58%), hsl(275deg 40% 45%));
+    --header-qnav-hover-bg-color:
+        light-dark(color-mix(in oklab, var(--header-bg-color) 90%, var(--header-nav-bg-color)),
+            color-mix(in oklab, var(--header-bg-color) 75%, white));
 
     /* toc */
 
-    --toc-bg-color: hsl(275deg 20% 97%);
-    --toc-active-heading-bg-color: hsl(245deg 60% 95%);
-    --toc-active-heading-left-border-color: hsl(245deg 80% 85%);
+    --toc-bg-color: light-dark(hsl(275deg 20% 97%), hsl(265deg 15% 28%));
+    --toc-active-heading-bg-color: light-dark(hsl(245deg 60% 95%), hsl(252deg 35% 40%));
+    --toc-active-heading-left-border-color: light-dark(hsl(245deg 80% 85%), hsl(245deg 50% 60%));
     /* --toc-active-heading-color: hsl(40deg 90% 80%); */
 
-    /* ---- */
+    /* emphasis */
 
-    --strong-color: hsl(350deg 95% 47%);
-    --code-bg-color: hsl(240deg 30% 96%);
-    --code-meta-bg-color: hsl(240deg 30% 92%);
-    --code-border-color: var(--code-meta-bg-color);
+    --strong-color: light-dark(hsl(350deg 90% 47%), oklch(66% 0.17 25));
+    --em-color: light-dark(hsl(25deg 30% 15%), oklch(80% 0.09 82));
+
+    /* code */
+
+    --code-bg-color: light-dark(hsl(240deg 30% 96%), oklch(32% 0.045 283));
+    --code-meta-bg-color: light-dark(hsl(240deg 30% 92%), oklch(37% 0.07 283));
+    --code-border-color: light-dark(var(--code-meta-bg-color), oklch(40% 0.05 283));
+
+    --inline-code-bg-color: light-dark(var(--code-bg-color), transparent);
 
     /* footer and border */
 
-    --footer-color: #999;
-    --border-color: #AAA;
+    --footer-color: light-dark(#999, #888);
+    --border-color: light-dark(#AAA, #6f6f86);
 
-    /* figure */
-
-    --figure-fg-color: white;
-    --figure-border-color: #AAA;
 
     /* admonitions */
 
@@ -50,44 +57,56 @@
     --caution-bg-color: hsl(0deg 90% 95%);
     --important-bg-color: hsl(255deg 90% 95%); */
 
-    --tip-bg-color: color-mix(in oklab, var(--tip-border-color) 5%, white);
-    --example-bg-color: color-mix(in oklab, var(--example-border-color) 5%, white);
-    --note-bg-color: color-mix(in oklab, var(--note-border-color) 5%, white);
-    --hint-bg-color: color-mix(in oklab, var(--hint-border-color) 5%, white);
-    --caution-bg-color: color-mix(in oklab, var(--caution-border-color) 5%, white);
-    --important-bg-color: color-mix(in oklab, var(--important-border-color) 5%, white);
+    --tip-bg-color:
+        light-dark(color-mix(in oklab, var(--tip-border-color) 5%, white),
+            color-mix(in oklab, var(--tip-border-color) 20%, var(--main-bg-color)));
+    --example-bg-color:
+        light-dark(color-mix(in oklab, var(--example-border-color) 5%, white),
+            color-mix(in oklab, var(--example-border-color) 20%, var(--main-bg-color)));
+    --note-bg-color:
+        light-dark(color-mix(in oklab, var(--note-border-color) 5%, white),
+            color-mix(in oklab, var(--note-border-color) 20%, var(--main-bg-color)));
+    --hint-bg-color:
+        light-dark(color-mix(in oklab, var(--hint-border-color) 5%, white),
+            color-mix(in oklab, var(--hint-border-color) 20%, var(--main-bg-color)));
+    --caution-bg-color:
+        light-dark(color-mix(in oklab, var(--caution-border-color) 5%, white),
+            color-mix(in oklab, var(--caution-border-color) 20%, var(--main-bg-color)));
+    --important-bg-color:
+        light-dark(color-mix(in oklab, var(--important-border-color) 5%, white),
+            color-mix(in oklab, var(--important-border-color) 20%, var(--main-bg-color)));
 
 
-    --tip-title-color: hsl(169deg 80% 25%);
-    --note-title-color: hsl(105deg 80% 25%);
-    --caution-title-color: hsl(0deg 80% 40%);
-    --important-title-color: hsl(225deg 80% 40%);
+    --tip-title-color: light-dark(hsl(169deg 80% 25%), oklch(76% 0.10 182));
+    --note-title-color: light-dark(hsl(105deg 80% 25%), oklch(76% 0.13 138));
+    --caution-title-color: light-dark(hsl(0deg 80% 40%), oklch(69% 0.15 21));
+    --important-title-color: light-dark(hsl(225deg 80% 40%), oklch(71% 0.12 269));
 
     /* admonition borders */
 
-    --example-border-color: hsl(205deg 10% 58%);
-    --note-border-color: hsl(105deg 60% 45%);
-    --hint-border-color: hsl(36deg 90% 55%);
-    --caution-border-color: hsl(0deg 70% 55%);
-    --tip-border-color: hsl(169deg 60% 40%);
-    --important-border-color: hsl(225deg 70% 55%);
+    --example-border-color: light-dark(hsl(205deg 10% 58%), hsl(205deg 10% 43%));
+    --note-border-color: light-dark(hsl(105deg 60% 45%), hsl(105deg 40% 35%));
+    --hint-border-color: light-dark(hsl(36deg 90% 55%), hsl(36deg 90% 35%));
+    --caution-border-color: light-dark(hsl(0deg 70% 55%), hsl(0deg 40% 40%));
+    --tip-border-color: light-dark(hsl(169deg 60% 40%), hsl(169deg 50% 30%));
+    --important-border-color: light-dark(hsl(225deg 70% 55%), hsl(225deg 40% 45%));
 
     /* link */
 
     /* --link-color: hsl(205deg 100% 50%); */
-    --link-color: hsl(220deg 75% 50%);
+    --link-color: light-dark(hsl(220deg 75% 50%), oklch(78% 0.11 265));
     /* --visited-link-color: hsl(205deg 90% 35%); */
-    --visited-link-color: hsl(260deg 50% 42%);
+    --visited-link-color: light-dark(hsl(260deg 50% 42%), oklch(73% 0.09 310));
 
     /* code highlights */
 
-    --code-kw-color: blue;
-    --code-co-color: #008000;
-    --code-dt-color: blue;
-    --code-st-color: #a31515;
-    --code-ex-color: #999;
-    --code-metaname-bg-color: white;
-    --code-metaname-border-color: rgb(0 0 0 / 30%);
+    --code-kw-color: light-dark(blue, oklch(75% 0.14 273));
+    --code-co-color: light-dark(#008000, oklch(78% 0.08 158));
+    --code-dt-color: var(--code-kw-color);
+    --code-st-color: light-dark(#a31515, oklch(70% 0.14 349));
+    --code-ex-color: light-dark(#999, #CCC);
+    --code-metaname-bg-color: var(--main-bg-color);
+    --code-metaname-border-color: light-dark(rgb(0 0 0 / 30%), rgb(255 255 255 / 30%));
 
     /* nav */
 
@@ -95,29 +114,29 @@
 
     /* table */
 
-    --table-border-color: #ddd;
-    --table-th-bg-color: rgb(246 247 248);
-    --table-td-odd-bg-color: white;
-    --table-td-even-bg-color: white;
+    --table-border-color: light-dark(#ddd, #5f5f6f);
+    --table-th-bg-color: light-dark(rgb(246 247 248), hsl(230deg 17% 23%));
+    --table-td-odd-bg-color: var(--main-bg-color);
+    --table-td-even-bg-color: var(--main-bg-color);
 
     /* --table-td-even-bg-color: rgb(250 251 253);  */
 
     /* todo */
 
-    --todo-color: hsl(230deg 95% 45%);
+    --todo-color: light-dark(hsl(230deg 95% 45%), oklch(70% 0.1 60));
 
     /* exercises */
 
-    --question-mandatory-fg: white;
-    --question-mandatory-bg: red;
-    --question-optional-fg: white;
-    --question-optional-bg: hsl(110deg 95% 38%);
-    --question-in-class-fg: white;
-    --question-in-class-bg: hsl(34deg 100% 53%);
+    --question-mandatory-fg: light-dark(white, var(--main-fg-color));
+    --question-mandatory-bg: light-dark(red, hsl(0deg 50% 40%));
+    --question-optional-fg: light-dark(white, var(--main-fg-color));
+    --question-optional-bg: light-dark(hsl(110deg 95% 38%), hsl(110deg 75% 27%));
+    --question-in-class-fg: light-dark(white, var(--main-fg-color));
+    --question-in-class-bg: light-dark(hsl(34deg 100% 53%), hsl(34deg 75% 40%));
 
 
     /* instruction */
-    --instruction-left-border-color: #e8e8e8;
+    --instruction-left-border-color: light-dark(#e8e8e8, #556);
 
     /* metrics */
 
@@ -128,7 +147,16 @@
 
     /* font */
 
-    --math-font: "Liberation Serif", "Times New Roman", serif
+    --math-font: "Liberation Serif", "Times New Roman", serif;
+    --strong-weight: bold;
+    --em-weight: bold;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --strong-weight: 600;
+        --em-weight: 500;
+    }
 }
 
 html {
@@ -185,7 +213,7 @@ pre {
 
 code {
     display: inline-block;
-    background-color: var(--code-bg-color);
+    background-color: var(--inline-code-bg-color);
     font-size: 95%;
     margin-left: 0.1rem;
     margin-right: 0.1rem;
@@ -757,7 +785,7 @@ header nav ul {
 }
 
 .qnav a:hover {
-    background-color: color-mix(in oklab, var(--header-bg-color) 90%, var(--header-nav-bg-color));
+    background-color: var(--header-qnav-hover-bg-color);
 }
 
 @media screen and (width < 600px) {
@@ -853,7 +881,8 @@ h2#発展課題::after,
     bottom: 0.15rem;
 }
 
-h2.q_in_class::after {
+h2.q_in_class::after,
+h3. q_in_class::after {
     content: "提出しない・講義中に解答";
     font-size: 0.8rem;
     padding: 0.15rem 0.5rem;
@@ -1031,7 +1060,7 @@ span.with-prompt::before {
 
 strong {
     font-style: normal;
-    font-weight: bold;
+    font-weight: var(--strong-weight);
     color: var(--strong-color);
 
     /* background: linear-gradient(to top, #FF6 40%, transparent 50%); */
@@ -1039,7 +1068,8 @@ strong {
 
 em {
     font-style: normal;
-    font-weight: bold;
+    font-weight: var(--em-weight);
+    color: var(--em-color);
 }
 
 .math {
@@ -1143,7 +1173,7 @@ img.enlargeable {
 }
 
 img.enlargeable:hover {
-    filter: drop-shadow(0 0 1rem rgba(0 0 0 / 8%));
+    filter: drop-shadow(0 0 1rem light-dark(rgba(0 0 0 / 8%), rgba(255 255 255/18%)));
 }
 
 .modal-pane {
