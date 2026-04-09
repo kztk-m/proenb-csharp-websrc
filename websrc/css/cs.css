@@ -113,7 +113,7 @@
     --question-optional-fg: white;
     --question-optional-bg: hsl(110deg 95% 38%);
     --question-in-class-fg: white;
-    --question-in-class-bg: hsl(34deg, 100%, 53%);
+    --question-in-class-bg: hsl(34deg 100% 53%);
 
 
     /* instruction */
@@ -179,6 +179,8 @@ pre {
     border-color: var(--code-border-color);
     border-radius: 0.3rem;
     overflow: auto;
+
+    line-height: 1.4;
 }
 
 code {
@@ -191,10 +193,6 @@ code {
     white-space: break-spaces;
     border-radius: 0.25rem;
     /* border: 0.075rem solid var(--code-border-color); */
-}
-
-pre {
-    line-height: 1.4;
 }
 
 pre code {
@@ -286,6 +284,9 @@ img {
     margin-right: auto;
 }
 
+img+br {
+    display: none;
+}
 
 figure img {
     /* width: 100%;
@@ -538,7 +539,7 @@ figure img {
 }
 
 
-@media only screen and (width >=800px) {
+@media screen and (width >=800px) {
     :root {
         --toc-width: 17.5rem;
         --toc-gap: 1.5rem;
@@ -619,7 +620,7 @@ figure img {
         width: 0.25rem;
         height: 100%;
         top: 0;
-        left: 0rem;
+        left: 0;
         background-color: var(--toc-active-heading-left-border-color);
     }
 
@@ -750,7 +751,7 @@ header nav ul {
     background-color: color-mix(in oklab, var(--header-bg-color) 90%, var(--header-nav-bg-color));
 }
 
-@media only screen and (width < 600px) {
+@media screen and (width < 600px) {
     #home-link-text {
         display: none;
     }
@@ -764,12 +765,11 @@ header nav ul {
         line-height: 1;
         text-transform: none;
         letter-spacing: normal;
-        word-wrap: normal;
         white-space: nowrap;
         direction: ltr;
         vertical-align: text-bottom;
-        display: inline-block;
 
+        /* HOME icon */
         content: "\e88a";
     }
 
@@ -863,18 +863,12 @@ h2.q_in_class::after {
 
 /* Special items */
 
-div.note,
-section.note,
-div.caution,
-section.caution,
-div.important,
-section.important,
-div.example,
-section.example,
-div.tip,
-section.tip,
-div.hint,
-section.hint {
+.note,
+.caution,
+.important,
+.example,
+.tip,
+.hint {
     padding: 0.6em 1rem;
     border-radius: 0.5rem;
     margin-top: 1.5rem;
@@ -890,18 +884,16 @@ section.hint {
 .important:first-child,
 .example:first-child,
 .hint:first-child {
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 
-div.tip,
-section.tip {
+.tip {
     background-color: var(--tip-bg-color);
     border-color: var(--tip-border-color);
 }
 
-div.example,
-section.example {
+.example {
     background-color: var(--example-bg-color);
     border-color: var(--example-border-color);
 }
@@ -917,26 +909,22 @@ section.example {
     margin-top: 1rem;
 }
 
-div.note,
-section.note {
+.note {
     background-color: var(--note-bg-color);
     border-color: var(--note-border-color);
 }
 
-div.caution,
-section.caution {
+.caution {
     background-color: var(--caution-bg-color);
     border-color: var(--caution-border-color);
 }
 
-div.hint,
-section.hint {
+.hint {
     background-color: var(--hint-bg-color);
     border-color: var(--hint-border-color);
 }
 
-div.important,
-section.important {
+.important {
     background-color: var(--important-bg-color);
     border-color: var(--important-border-color);
 }
@@ -971,7 +959,6 @@ section.important {
     line-height: 1;
     text-transform: none;
     letter-spacing: normal;
-    word-wrap: normal;
     white-space: nowrap;
     direction: ltr;
     vertical-align: text-bottom;
@@ -1120,18 +1107,20 @@ img.enlargeable {
 *:has(> img.enlargeable) {
     position: relative;
     display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 *:has(> img.enlargeable)::after {
     content: "画像をクリックして拡大";
     display: block;
     position: absolute;
-    top: calc(50%);
-    left: calc(50%);
+    top: 50%;
+    left: 50%;
     font-size: 100%;
     color: #666;
-    background-color: rgba(220, 220, 220, 0.75);
-    margin: 0px auto;
+    background-color: rgb(220 220 220 / 75%);
+    margin: 0 auto;
     padding: 0.3em 1em;
     border-radius: 2em;
     pointer-events: none;
@@ -1218,26 +1207,25 @@ img.enlargeable {
     /* border-bottom: max(0.05rem, 1px) solid var(--border-color); */
 }
 
+.sourceCode .code-control::before {
+    display: inline-block;
+}
 
 pre.sourceCode.cs .code-control::before {
     content: 'C#';
-    display: inline-block;
 }
 
 pre.sourceCode.json .code-control::before {
     content: 'JSON';
-    display: inline-block;
 }
 
 
 pre.sourceCode.xml .code-control::before {
     content: 'XML';
-    display: inline-block;
 }
 
 pre.sourceCode.c .code-control::before {
     content: 'C';
-    display: inline-block;
 }
 
 

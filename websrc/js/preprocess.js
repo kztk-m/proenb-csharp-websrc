@@ -9,15 +9,25 @@ function addClassToCurrentPageLinks() {
         const tURL = elem.href.split("/");
         const tPage = tURL[tURL.length - 1];
 
-        if (tPage == p) {
+        if (tPage === p) {
             elem.classList.add('current-link');
         }
     });
 }
 
-function addModalImageViewPane() {
-    const mainElem = document.getElementsByTagName("body")[0];
+function assignEnlargeable() {
+    // We never assign enlargeable to img in the modal pane.
+    document.querySelectorAll('img:not(#modalImage)').forEach(elem => {
+        // The element is shrunken and can be enlarged when
+        // presented in the view port.
+        elem.classList.toggle('enlargeable',
+            elem.clientHeight < elem.naturalHeight &&
+            elem.clientHeight < window.innerHeight &&
+            elem.clientWidth < window.innerWidth);
+    });
+}
 
+function addModalImageViewPane() {
     // <div id="modalPane" class="modal-pane">
     //     <span class="close-button">&times;</span>
     //     <img id="modalImage" class="modal-image">
@@ -34,9 +44,9 @@ function addModalImageViewPane() {
     const closeButton = document.createElement("span");
     closeButton.setAttribute("class", "close-button");
     closeButton.appendChild(document.createTextNode(""));
-    closeButton.onclick = function () {
+    closeButton.addEventListener('click', function () {
         div.style.display = "none";
-    };
+    });
 
     div.addEventListener('click', function (event) {
         if (!img.contains(event.target)) {
@@ -52,16 +62,15 @@ function addModalImageViewPane() {
     div.appendChild(closeButton);
     div.appendChild(img);
 
-    mainElem.appendChild(div);
+    document.body.appendChild(div);
 
-    document.querySelectorAll('img').forEach(elem => {
-        if (elem.clientHeight < elem.naturalHeight) {
-            elem.classList.add('enlargeable');
-            elem.onclick = function () {
+    document.querySelectorAll('img:not(#modalImage)').forEach(elem => {
+        elem.addEventListener('click', function () {
+            if (elem.classList.contains('enlargeable')) {
                 div.style.display = "block";
                 img.src = elem.src;
-            };
-        }
+            }
+        });
     });
 }
 
@@ -69,13 +78,13 @@ function addTouchEventHandlingToDD() {
     const dds = document.querySelectorAll('.dd');
     // FIXME: Just adding 'touchstart' would be enough for iPad 
     dds.forEach(elem => {
-        elem.addEventListener('touchstart', function (event) {
+        elem.addEventListener('touchstart', function () {
             if (elem.classList.contains('touched')) {
                 elem.classList.remove('touched');
             }
             else {
-                dds.forEach(elem => {
-                    elem.classList.remove('touched');
+                dds.forEach(dd => {
+                    dd.classList.remove('touched');
                 });
                 elem.classList.add('touched');
             }
@@ -116,7 +125,7 @@ function addCopyButtons() {
         const copyButton = document.createElement("span");
         copyButton.classList.add('copy-button');
 
-        copyButton.addEventListener('click', function (e) {
+        copyButton.addEventListener('click', function () {
             navigator.clipboard.writeText(elem.innerText).then(function () {
                 // copyButton.classList.add('copied');
                 // setTimeout(function () {
@@ -135,7 +144,7 @@ function addCopyButtons() {
     });
 }
 
-function addIntersectionObserver() {
+function addStickyHeadingObserver() {
     const observer = new IntersectionObserver(
         ([e]) => e.target.classList.toggle('stuck', e.intersectionRatio < 1),
         { threshold: [1] }
@@ -146,7 +155,7 @@ function addIntersectionObserver() {
 
 function installScroll() {
     document.querySelectorAll('.scroll-box').forEach((sc) => {
-        var isScrolling = false;
+        let isScrolling = false;
 
         const addScrollClass = () => {
             const scH = sc.scrollHeight;
@@ -157,33 +166,13 @@ function installScroll() {
             const clH = sc.clientHeight;
             const clW = sc.clientWidth;
 
-            if (scTop > 0) {
-                sc.classList.add('off-top');
-            }
-            else {
-                sc.classList.remove('off-top');
-            }
-            if (Math.abs(scH - scTop - clH) >= 1) {
-                sc.classList.add('off-bottom');
-            }
-            else {
-                sc.classList.remove('off-bottom');
-            }
-            if (scLeft > 0) {
-                sc.classList.add('off-left');
-            }
-            else {
-                sc.classList.remove('off-left');
-            }
-            if (Math.abs(scW - scLeft - clW) >= 1) {
-                sc.classList.add('off-right');
-            }
-            else {
-                sc.classList.remove('off-right');
-            }
+            sc.classList.toggle('off-top', scTop > 0);
+            sc.classList.toggle('off-bottom', Math.abs(scH - scTop - clH) >= 1);
+            sc.classList.toggle('off-left', scLeft > 0);
+            sc.classList.toggle('off-right', Math.abs(scW - scLeft - clW) >= 1);
         };
 
-        sc.addEventListener('scroll', (event) => {
+        sc.addEventListener('scroll', () => {
             if (!isScrolling) {
                 window.requestAnimationFrame(() => { addScrollClass(); isScrolling = false; });
                 isScrolling = true;
@@ -230,14 +219,19 @@ function activateTocTracking() {
     sections.forEach(s => observer.observe(s));
 }
 
-window.onload = function () {
+window.addEventListener('DOMContentLoaded', function () {
     addClassToCurrentPageLinks();
     addModalImageViewPane();
     addTouchEventHandlingToDD();
     addCopyButtons();
-    addIntersectionObserver();
+    addStickyHeadingObserver();
     installScroll();
     activateTocTracking();
-};
+});
+
+window.addEventListener('load', function () {
+    assignEnlargeable();
+    window.addEventListener('resize', assignEnlargeable);
+});
 
 
