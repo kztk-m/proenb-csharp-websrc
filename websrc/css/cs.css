@@ -101,7 +101,7 @@
     /* code highlights */
 
     --code-kw-color: light-dark(blue, oklch(75% 0.14 273));
-    --code-co-color: light-dark(#008000, oklch(78% 0.08 158));
+    --code-co-color: light-dark(#008000, oklch(72% 0.08 158));
     --code-dt-color: var(--code-kw-color);
     --code-st-color: light-dark(#a31515, oklch(70% 0.14 349));
     --code-ex-color: light-dark(#999, #CCC);
