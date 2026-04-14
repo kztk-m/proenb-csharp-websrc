@@ -138,6 +138,9 @@
     /* instruction */
     --instruction-left-border-color: light-dark(#e8e8e8, #556);
 
+    /* directory list */
+    --directorylist-line-color: light-dark(#bbb, #556);
+
     /* metrics */
 
     --pre-padding: 0.75rem;
@@ -1583,9 +1586,9 @@ ol ol ol>li::before {
     top: -.5rem;
     content: '';
     display: block;
-    border-left: 0.1rem solid #ddd;
+    border-left: 0.1rem solid var(--directorylist-line-color);
     height: 1rem;
-    border-bottom: 0.1rem solid #ddd;
+    border-bottom: 0.1rem solid var(--directorylist-line-color);
     width: 1.2rem;
 }
 
@@ -1595,7 +1598,7 @@ ol ol ol>li::before {
     bottom: -0.5rem;
     content: '';
     display: block;
-    border-left: 0.1rem solid #ddd;
+    border-left: 0.1rem solid var(--directorylist-line-color);
     height: 100%;
 }
 
