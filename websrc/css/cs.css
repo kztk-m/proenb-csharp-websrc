@@ -277,6 +277,10 @@ h2:first-child {
     margin-top: 0;
 }
 
+section section {
+    scroll-margin-top: 2.5rem;
+}
+
 h3 {
     font-size: 120%;
     margin-top: 1.5rem;
