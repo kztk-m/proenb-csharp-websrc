@@ -2,3 +2,6 @@ packages: gen/*.cabal
 
 package hakyll
     flags: +previewserver +watchServer
+
+constraints: 
+    network >= 3.2.7 
