@@ -903,8 +903,22 @@ h3.q_in_class::after {
     bottom: 0.15rem;
 }
 
+#基本課題 p,
+#発展課題 p {
+    user-select: none;
+    position: relative;
+}
 
-
+tiny-warning {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    color: transparent;
+    font-size: 1px;
+    overflow: hidden;
+    user-select: all;
+}
 
 /* Special items */
 
